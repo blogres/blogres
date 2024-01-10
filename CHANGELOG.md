@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.1](https://github.com/blogres/blogres/compare/v5.11.0...v5.11.1) (2024-01-10)
+
+
+### 🐛Bug Fixes
+
+* 更新`blogres`,`ico`等 ([24ea81a](https://github.com/blogres/blogres/commit/24ea81a5affcf4b972fe8adcfa43b1a80c1d3873))
+
 ## [5.11.0](https://github.com/blogres/blogres/compare/v5.10.0...v5.11.0) (2024-01-10)
 
 
