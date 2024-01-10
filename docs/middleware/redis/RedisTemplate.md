@@ -217,7 +217,7 @@ public class RedisUtils {
 
 ```
 
-使用例子 [实现基于 session+redis 的防重复提交](https://niuger.github.io/java/PreventDuplicateSubmissions.html)
+使用例子 [实现基于 session+redis 的防重复提交](https://blogres.github.io/java/PreventDuplicateSubmissions.html)
 
 ```java
 @Aspect

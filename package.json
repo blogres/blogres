@@ -1,7 +1,7 @@
 {
-  "name": "niuger",
+  "name": "blogres",
   "version": "5.11.0",
-  "description": "牛哥·Blog",
+  "description": "Blog",
   "license": "MIT",
   "scripts": {
     "build:vite": "vuepress-vite build docs",

@@ -169,7 +169,7 @@ outpp
   "secret_source": "Actions",
   "workflow_ref": "to/to/.github/workflows/echogithub.yml@refs/heads/main",
   "workflow_sha": "1b7f2d4cb839ca1b993a0b7a",
-  "workspace": "/home/runner/work/niuger/niuger",
+  "workspace": "/home/runner/work/blogres/blogres",
   "action": "github_context_step",
   "event_path": "/home/runner/work/_temp/_github_workflow/event.json",
   "action_repository": "",

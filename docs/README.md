@@ -8,7 +8,7 @@ title: 首页
 bgImage: /bg.png
 bgImageDark: /bg-dark.png
 heroFullScreen: false
-heroText: NiuGer
+heroText: BlogRes
 tagline: 🍎13刘海变窄说明了什么？说明它脱发了！也变强了！！
 
 projects:  

@@ -10,7 +10,7 @@ body:
     attributes:
       label: 文件地址
       description: 您报告的是哪个文件地址
-      value: https://niuger.github.io/
+      value: https://blogres.github.io/
       placeholder: package name
     validations:
       required: true

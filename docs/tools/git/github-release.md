@@ -16,7 +16,7 @@ tag:
 
 <!-- more -->
 
-[项目源码](https://github.com/niuger/niuger)
+[项目源码](https://github.com/blogres/blogres)
 
 ## 使用流程
 

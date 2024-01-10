@@ -46,7 +46,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # 
-          repository-name: niuger/niuger.github.io
+          repository-name: blogres/blogres.github.io
           # 部署的分支名称
           branch: pages-node${{ matrix.node }}
           folder: docs/.vuepress/dist

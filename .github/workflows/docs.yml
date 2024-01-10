@@ -45,7 +45,7 @@ jobs:
       - name: 部署文档
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          repository-name: niuger/niuger.github.io
+          repository-name: blogres/blogres.github.io
           branch: gh-pages
           folder: docs/.vuepress/dist
           token: ${{ secrets.RELEASE_TOKEN }} 

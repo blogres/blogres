@@ -11,11 +11,11 @@ export default hopeTheme({
 
     favicon: "/favicon.ico",
 
-    hostname: "https://niuger.github.io",
+    hostname: "https://blogres.github.io",
 
     author: {
-        // Copyright © 20xx ${name} 和主页卡片名称
-        name: "NiuGer",
+        // Copyright © 20xx ${name} 和主页卡片名称{blog.name}为null时
+        name: "blogres",
         // 根据自己的域名设置
         url: "/article",
     },
@@ -23,7 +23,7 @@ export default hopeTheme({
     darkmode: "toggle",/*toggle,auto*/
 
     //仓库
-    repo: "https://github.com/niuger/niuger",
+    repo: "https://github.com/blogres/blogres",
 
     //文档在仓库中的目录
     docsDir: "docs",
@@ -48,14 +48,14 @@ export default hopeTheme({
 
     blog: {
         avatar: "/blog.png",
-        name: "牛哥·Blog",
+        name: "Blog",
         intro: "/about-this",
         sidebarDisplay: "mobile",
         description: "爱搬砖的后端开发者",
 
         medias: {
-            Gitee: "https://gitee.com/niuger/niuger",
-            Github: "https://github.com/niuger/niuger",
+            Gitee: "https://gitee.com/blogres/blogres",
+            Github: "https://github.com/blogres/blogres",
             Zhihu: "https://www.zhihu.com/people/tops6",
             OSChina: [
                 "https://my.oschina.net/jinfang",
@@ -98,7 +98,7 @@ export default hopeTheme({
             // 评论模块设置教程：https://vuepress-theme-hope.github.io/v2/zh/guide/feature/comment.html
             // Giscus配置地址：https://giscus.app/zh-CN
             provider: "Giscus",  //Giscus、Waline
-            repo: "niuger/discussions",
+            repo: "blogres/discussions",
             repoId: "R_kgDOLC_epg",
             category: "Announcements",
             categoryId: "DIC_kwDOLC_eps4CcUgg",

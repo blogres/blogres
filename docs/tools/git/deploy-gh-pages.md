@@ -79,7 +79,7 @@ added 595 packages in 22s
 
 [github/JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action)
 
-源文件：（[docs.yml](https://github.com/niuger/niuger/blob/main/.github/workflows/docs.yml)）
+源文件：（[docs.yml](https://github.com/blogres/blogres/blob/main/.github/workflows/docs.yml)）
 
 ```yaml
 name: Build Docs
@@ -126,17 +126,17 @@ jobs:
       - name: 构建文档
         env:
          # BASE: /
-        #  HOSTNAME: https://niuger.github.io/
+        #  HOSTNAME: https://blogres.github.io/
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           pnpm run build:vite
           > docs/.vuepress/dist/.nojekyll
       
-      - name: 部署文档 niuger.io
+      - name: 部署文档 blogres.io
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # 部署到 niuger.io 仓库
-          repository-name: niuger/niuger.github.io
+          # 部署到 blogres.io 仓库
+          repository-name: blogres/blogres.github.io
           # 部署的分支名称
           branch: gh-pages
           folder: docs/.vuepress/dist

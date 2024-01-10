@@ -1,9 +1,9 @@
-## niuger
+## blogres
 
-- [🚀预览](https://niuger.github.io/)
-- [github](https://github.com/niuger/niuger)
-- [gitee](https://gitee.com/niuger/niuger)
-- [存放 build docs 仓库](https://github.com/niuger/niuger.github.io)
+- [🚀预览](https://blogres.github.io/)
+- [github](https://github.com/blogres/blogres)
+- [gitee](https://gitee.com/blogres/blogres)
+- [存放 build docs 仓库](https://github.com/blogres/blogres.github.io)
 - vuepress-theme-hope：[文档](https://theme-hope.vuejs.press/zh/)、[github](https://github.com/vuepress-theme-hope/vuepress-theme-hope)
 - [使用Java压缩md文件中使用到的图片](https://gitee.com/cps007/markdown-img)
 - [参考 Mister-Hope.github.io](https://github.com/Mister-Hope/Mister-Hope.github.io)

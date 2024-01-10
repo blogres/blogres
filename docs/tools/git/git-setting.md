@@ -145,8 +145,8 @@ git push -u origin "master"
 
 ```shell
 ### 创建本地项目
-mkdir niuger.github.io
-cd niuger.github.io
+mkdir blogres.github.io
+cd blogres.github.io
 git init
 git add -A
 ### 提交本地代码
@@ -155,11 +155,11 @@ git commit -m '提交代码了丫'
 git branch -M main
 
 ### https与远程仓库关联
-git remote add origin https://github.com/niuger/niuger.git
-git remote set-url origin https://自己的token@github.com/niuger/niuger.git
+git remote add origin https://github.com/blogres/blogres.git
+git remote set-url origin https://自己的token@github.com/blogres/blogres.git
 ### 使用ssh连接
-git remote add origin git@github.com:niuger/niuger.git
-git remote set-url origin git@github.com:niuger/niuger.git
+git remote add origin git@github.com:blogres/blogres.git
+git remote set-url origin git@github.com:blogres/blogres.git
 
 ### 推送
 git push -f origin main
@@ -169,7 +169,7 @@ git push -f origin main
 已有仓库:
 
 ```shell
-git remote add origin git@github.com:niuger/niuger.git
+git remote add origin git@github.com:blogres/blogres.git
 git branch -M main
 git push -u origin main
 ```
