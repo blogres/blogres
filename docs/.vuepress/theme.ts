@@ -97,11 +97,12 @@ export default hopeTheme({
         comment: {
             // 评论模块设置教程：https://vuepress-theme-hope.github.io/v2/zh/guide/feature/comment.html
             // Giscus配置地址：https://giscus.app/zh-CN
-            provider: "Giscus",  //Giscus、Waline
-            repo: "blogres/discussions",
-            repoId: "R_kgDOLC_epg",
-            category: "Announcements",
-            categoryId: "DIC_kwDOLC_eps4CcUgg",
+            provider: "Waline",  //Giscus、Waline
+            serverURL: "https://waline-discussions-4zbiiizlr-blogres.vercel.app", 
+            // repo: "blogres/discussions",
+            // repoId: "R_kgDOLC_epg",
+            // category: "Announcements",
+            // categoryId: "DIC_kwDOLC_eps4CcUgg",
         },
 
         //其他插件
