@@ -1,0 +1,34 @@
+// https://theme-hope.vuejs.press/zh/config/style.html#palette-scss
+
+//主题色
+$theme-color: #28af73;
+//字体颜色
+$text-color: (
+        light: #2c3e50,
+        dark: #aaa9a9,
+);
+//内容背景色：main-content
+$bg-color: (
+        light: #fff,
+        dark: rgb(36, 36, 36),
+);
+//背景色:（模糊元素）导航栏navbar(仅dark)、侧边栏sidebar 背景
+$bg-color-blur: (
+        light: rgba(255, 255, 255, 0.9),
+        dark: rgb(39, 39, 39),
+);
+//将边框颜色加深
+$border-color: (
+        light: #ddd,
+        dark: #444,
+);
+// sidebar侧边栏
+//PC端宽度
+$sidebar-width: 24rem;
+//手机端宽度
+$sidebar-mobile-width: 82%;
+// content
+//主要内容的宽度
+$content-width: 850px;
+//首页内容的宽度
+$home-page-width: 1200px;

@@ -1,0 +1,35 @@
+name: Merge
+
+on:
+ # workflow_call:
+   # secrets:
+     # RELEASE_TOKEN:
+       # required: true
+  pull_request:
+    types:
+      - opened
+  status: {}
+  
+jobs:
+  automerge:    
+    name: Merge PR
+    runs-on: ubuntu-latest
+    steps: 
+      - id: automerge
+        name: Start Merge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: '${{ secrets.RELEASE_TOKEN }}'
+          MERGE_LABELS: ''
+          # title，and，description "chore(#{pullRequest.number}): {pullRequest.title}"
+          MERGE_COMMIT_MESSAGE: "chore(#{pullRequest.number}): {pullRequest.title}"
+          # 重试次数
+          MERGE_RETRIES: '0'
+          # 重试间隔10s
+          MERGE_RETRY_SLEEP: '10000'
+          # 合并后删除分支
+          MERGE_DELETE_BRANCH: 'true'
+          # 指定信息提交者
+        #  MERGE_FILTER_AUTHOR: 'niuger' 
+
+

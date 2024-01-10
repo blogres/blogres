@@ -1,0 +1,54 @@
+name: Test
+
+on:
+  workflow_call:
+    secrets:
+      RELEASE_TOKEN:
+        required: true
+        
+jobs:
+  test-demos:
+    name: Test ${{ matrix.bundler }} on node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - "18"
+          - "20" 
+        bundler:
+          - vite
+         # - webpack
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: true
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: 打包项目
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          pnpm run build:${{ matrix.bundler }}
+          > docs/.vuepress/dist/.nojekyll
+          
+      - name: 部署文档 
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # 
+          repository-name: niuger/niuger.github.io
+          # 部署的分支名称
+          branch: pages-node${{ matrix.node }}
+          folder: docs/.vuepress/dist
+          token: ${{ secrets.RELEASE_TOKEN }}
+          single-commit: true    

@@ -1,0 +1,42 @@
+/**
+ * 首页样式
+ */
+
+//首页标题
+.vp-blog-hero > h1 {
+  color: #d112ec;
+}
+
+//首页描述字体
+html[data-theme="light"] p[class*="vp-blog-hero-description"] {
+  font-family: "华文楷体", cursive;
+  color: #f11111;
+}
+html[data-theme="dark"] p[class*="vp-blog-hero-description"] {
+  font-family: "华文楷体", cursive;
+  color: #949090;
+}
+//头像
+.vp-blogger-info .vp-blogger > .vp-blogger-avatar {
+  width: auto;
+  height: auto;
+  border-radius: 55%;
+}
+
+//鼠标悬浮头像
+// .vp-blogger-info .vp-blogger > .vp-blogger-avatar:hover {
+//   border-radius: 50px 10px 50px 10px;
+// }
+//名称
+// .vp-blogger-info .vp-blogger > .vp-blogger-name {
+//   font-size: 25px;
+//   color: #dd12ec;
+// }
+//个人信息统计数
+.vp-blogger-info .vp-blog-counts .vp-blog-count .count {
+  color: #7412ec;
+}
+
+// .vp-blogger-info .vp-blog-counts .vp-blog-count div {
+  
+// }

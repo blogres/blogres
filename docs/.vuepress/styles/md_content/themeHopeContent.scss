@@ -1,0 +1,73 @@
+/*
+md内容体
+*/
+//斜体字体
+.theme-hope-content em {
+  color: rgb(216, 14, 248);
+}
+
+//加粗字体
+.theme-hope-content strong {
+  color: rgba(3, 157, 251, 0.85);
+}
+// 高亮==
+html[data-theme="dark"] .theme-hope-content mark {
+  background-color: #b3ac1b;
+}
+// 1. 标识
+.theme-hope-content ol li::marker {
+  color: var(--theme-color);
+}
+
+// - 标识
+.theme-hope-content ul li::marker {
+  color: var(--theme-color);
+}
+
+.theme-hope-content h1,
+.theme-hope-content h2,
+.theme-hope-content h3,
+.theme-hope-content h4,
+.theme-hope-content h5,
+.theme-hope-content h6 {
+  border-bottom-style: solid;
+  padding-bottom: 0.3rem;
+  color: var(--theme-color);
+  border-color: var(--theme-color);
+}
+
+.theme-hope-content h1 {
+  width: 100%;
+  border-bottom-width: 0.37rem;
+  font-size: 24.5px;
+}
+
+.theme-hope-content h2 {
+  width: 90%;
+  border-bottom-width: 0.28rem;
+  font-size: 22.5px;
+}
+
+.theme-hope-content h3 {
+  width: 80%;
+  border-bottom-width: 0.24rem;
+  font-size: 20.5px;
+}
+
+.theme-hope-content h4 {
+  width: 70%;
+  border-bottom-width: 0.18rem;
+  font-size: 18.5px;
+}
+
+.theme-hope-content h5 {
+  width: 60%;
+  border-bottom-width: 0.12rem;
+  font-size: 16.5px;
+}
+
+.theme-hope-content h6 {
+  width: 50%;
+  border-bottom-width: 0.09rem;
+  font-size: 14.5px;
+}

@@ -1,0 +1,81 @@
+/*
+代码高亮
+*/
+//内容块引用
+blockquote {
+  border-radius: 7px;
+  border-left-width: 4px;
+  background: rgba(178, 193, 220, 0.13);
+  border-color: var(--theme-color);
+  color: rgba(111, 111, 111, 0.5);
+}
+
+html[data-theme="dark"] blockquote {
+  border-radius: 7px;
+  border-left-width: 4px;
+  background: #3b3d3d;
+  border-color: var(--theme-color);
+  color: #868686;
+}
+
+//斜体字体
+blockquote em {
+  color: rgba(245, 135, 135, 0.78);
+}
+
+//加粗字体
+blockquote strong {
+  color: rgba(57, 166, 235, 0.68);
+}
+
+//代码块
+div[class*="language-"] {
+  font-size: 16px;
+  border-radius: 15px;
+}
+/*
+html[data-theme="dark"] div[class*="language-"] {
+  position: relative;
+  border-radius: 15px;
+  background: rgb(50, 50, 50);
+  transition: var(--color-transition);
+}*/
+//代码块类型提示 #0da20d
+div[class*="language-"]::before {
+  color: var(--theme-color);
+  font-size: 0.9rem;
+}
+// 复制代码
+// background: #41d324;
+div[class*="language-"] > button.copy-code-button:not(.fancy).copied::after {
+  color: var(--theme-color);
+}
+div[class*="language-"] > button.copy-code-button:not(.fancy).copied .copy-icon {
+  background: var(--theme-color);
+}
+//方法
+div[class*="language-"] .token.function {
+  color: #130bff;
+}
+
+html[data-theme="dark"] div[class*="language-"] .token.function {
+  color: #fde415;
+}
+
+//括号
+div[class*="language-"] .token.punctuation {
+  color: #da07ff;
+}
+
+// ""
+div[class*="language-"] .token.string {
+  color: #3bbf20;
+}
+
+//注释 => /**xxx*/
+div[class*="language-"] .token.comment,
+div[class*="language-"] .token.prolog,
+div[class*="language-"] .token.cdata {
+  color: #408e31;
+  font-style: italic;
+}
