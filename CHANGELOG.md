@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.2](https://github.com/blogres/blogres/compare/v5.11.1...v5.11.2) (2024-01-11)
+
+
+### 🐛Bug Fixes
+
+* 更改评论模块：`Giscus` -> `Waline` ([ccc28ac](https://github.com/blogres/blogres/commit/ccc28ac13e2b9ff163c7405b9d26075eb2862ec9))
+
 ## [5.11.1](https://github.com/blogres/blogres/compare/v5.11.0...v5.11.1) (2024-01-10)
 
 
