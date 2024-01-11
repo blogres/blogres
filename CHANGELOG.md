@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.7](https://github.com/blogres/blogres/compare/v5.11.6...v5.11.7) (2024-01-11)
+
+
+### 🐛Bug Fixes
+
+* 升级`vue`,`hls.js`,`@vue/repl`,`packageManager` ([9157df5](https://github.com/blogres/blogres/commit/9157df500be8bb3722ed277acf16dd1ae0037ee1))
+
 ## [5.11.6](https://github.com/blogres/blogres/compare/v5.11.5...v5.11.6) (2024-01-11)
 
 
