@@ -26,6 +26,7 @@ jobs:
         run: |-
           sed -n '4,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
+          sed -ri "s/heroText: BlogRes/heroText: BlogRes-VTest/" /home/runner/work/blogres/blogres/docs/README.md
           sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
           sed -n '4,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
@@ -47,6 +48,7 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           sed -n '4,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          echo ===========
           pnpm run build:${{ matrix.bundler }}
           > docs/.vuepress/dist/.nojekyll
           
