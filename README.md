@@ -1,6 +1,6 @@
 ## blogres
 
-- [🚀预览](https://blogres.github.io/)
+- [🚀首页](https://blogres.github.io/)、[VTest首页](https://blogres.github.io/vtest/)
 - [github](https://github.com/blogres/blogres)
 - [gitee](https://gitee.com/blogres/blogres)
 - [存放 build docs 仓库](https://github.com/blogres/blogres.github.io)
