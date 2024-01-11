@@ -22,6 +22,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: 修改 base
+        run: |-
+          echo 修改 base
+          ls /home/runner/work/blogres/blogres
+
+
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
         with:
