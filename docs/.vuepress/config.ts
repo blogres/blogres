@@ -22,7 +22,6 @@ export default defineUserConfig({
     },
 
     head: [
-        ["link", {rel: "stylesheet", href: "https://unpkg.com/@waline/client@v3/dist/waline.css"}],
         ["link", {rel: "stylesheet", href: "/iconfont/iconfont.css"}],
     ],
 
