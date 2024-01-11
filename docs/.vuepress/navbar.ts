@@ -89,5 +89,5 @@ export const allNavbar = navbar([
             },
         ],
     },
-    { text: "Markdown测试", icon: "overflow", link: "/test" },
+    { text: "Markdown测试", icon: "overflow", link: "/markdown" },
 ]);
