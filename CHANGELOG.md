@@ -1,6 +1,14 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.8](https://github.com/blogres/blogres/compare/v5.11.7...v5.11.8) (2024-01-11)
+
+
+### 📚Docs
+
+* md测试文档添加VidStack音频 ([3915733](https://github.com/blogres/blogres/commit/3915733a122e6cd5a3e83d5f9723059f69c4701b))
+* 更新md测试页 ([e7493e9](https://github.com/blogres/blogres/commit/e7493e9bd0ac1ce74b2624006630e8a1e7e507c3))
+
 ## [5.11.7](https://github.com/blogres/blogres/compare/v5.11.6...v5.11.7) (2024-01-11)
 
 
