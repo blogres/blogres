@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.3](https://github.com/blogres/blogres/compare/v5.11.2...v5.11.3) (2024-01-11)
+
+
+### 🐛Bug Fixes
+
+* `Waline`评论`vercel.app`服务地址异常，改为`Giscus` ([e010504](https://github.com/blogres/blogres/commit/e010504a2420c386e2168203cdd2298e389b7c02))
+
 ## [5.11.2](https://github.com/blogres/blogres/compare/v5.11.1...v5.11.2) (2024-01-11)
 
 
