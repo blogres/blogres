@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.4](https://github.com/blogres/blogres/compare/v5.11.3...v5.11.4) (2024-01-11)
+
+
+### 🐛Bug Fixes
+
+* 更改test-github工作流，存放的仓库 ([35f301d](https://github.com/blogres/blogres/commit/35f301dedd5809e6106a422881dd7eacb63c837b))
+
 ## [5.11.3](https://github.com/blogres/blogres/compare/v5.11.2...v5.11.3) (2024-01-11)
 
 
