@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.6](https://github.com/blogres/blogres/compare/v5.11.5...v5.11.6) (2024-01-11)
+
+
+### 📚Docs
+
+* 更新changelog文件 ([6dd4f3c](https://github.com/blogres/blogres/commit/6dd4f3c2f2b4bbc084ae00e43f1cb22b3d51b871))
+
 ## [5.11.5](https://github.com/blogres/blogres/compare/v5.11.4...v5.11.5) (2024-01-11)
 
 
