@@ -36,12 +36,8 @@ sidebar: false
 
 引入B站视频
 
-全 都 是 名 场 面 1
+<BiliBili bvid="BV1SN4y1u7sV" />
 
-<BiliBili bvid="BV1FR4y117iD" />
-
----
----
 ---
 
 ## 代码折叠
@@ -58,7 +54,7 @@ console.log('你好，VuePress！')
 
 ```text
 <PDF url="/java/pdf/date.pdf" :height="420" />
-<PDF url="https://topjfk.oss-cn-chengdu.aliyuncs.com/docker/01.为什么要学习.pdf" :height="420" />
+<PDF url="https://topjfk.oss-cn-chengdu.aliyuncs.com/docker/01.为什么要学习.pdf" />
 ```
 
 <PDF url="https://topjfk.oss-cn-chengdu.aliyuncs.com/docker/01.为什么要学习.pdf" />
