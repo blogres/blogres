@@ -5,13 +5,11 @@ export default defineUserConfig({
 
     base: "/",
 
-    locales: {
-        "/": {
-            lang: "zh-CN",
-            title: "", //导航栏左logo图标名称
-            description: "꧁「小牛专属笔记本」꧂",
-        },
-    },
+    lang: "zh-CN",
+
+    title: "", //导航栏左logo图标名称
+    
+    description: "꧁「小牛专属笔记本」꧂",
 
     theme,
 
