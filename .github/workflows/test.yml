@@ -25,8 +25,11 @@ jobs:
       - name: 修改 base
         run: |-
           echo 修改 base
-          ls /home/runner/work/blogres/blogres
-
+          sed -n '4,8p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          echo ======================
+          sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          echo ======================
+          sed -n '4,8p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
@@ -44,6 +47,7 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
+          ed -n '4,8p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           pnpm run build:${{ matrix.bundler }}
           > docs/.vuepress/dist/.nojekyll
           
