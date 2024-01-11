@@ -1,6 +1,22 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.5](https://github.com/blogres/blogres/compare/v5.11.4...v5.11.5) (2024-01-11)
+
+
+### 🐛Bug Fixes
+
+* 删除多语言设置`.vuepress/config.ts[locales]` ([a276a37](https://github.com/blogres/blogres/commit/a276a37d36517993f46b5ddaa107ef1bec244237))
+
+
+### 🧪Tests
+
+* 修改 base ([4b4436a](https://github.com/blogres/blogres/commit/4b4436a196e5331333e2bf2dfb6703f8bb84491e))
+* 测试 ([38b0304](https://github.com/blogres/blogres/commit/38b0304eebaed9b0b5839a3ca1d159c412a6e89d))
+* 测试 ([4340990](https://github.com/blogres/blogres/commit/43409905052c3431e456970d668c0aca50f4e185))
+* 测试 ([34feefa](https://github.com/blogres/blogres/commit/34feefa4ffc0e42f9f9ae656025ac6c448f09ab1))
+* 部署vtest ([8ff2bd1](https://github.com/blogres/blogres/commit/8ff2bd1c48de47770291c514ec9a07374055c452))
+
 ## [5.11.4](https://github.com/blogres/blogres/compare/v5.11.3...v5.11.4) (2024-01-11)
 
 
