@@ -23,7 +23,7 @@ article: false
 
 ::: info
 
-对于发布早于 `4.0.0` 的历史版本，详见 [Github Repo Changelog](https://github.com/blogres/blogres/blob/main/CHANGELOG.md)。
+对于发布早于 `5.11.0` 的历史版本，详见 [Github Repo Changelog](https://github.com/blogres/blogres/blob/main/CHANGELOG.md)。
 
 :::
 
