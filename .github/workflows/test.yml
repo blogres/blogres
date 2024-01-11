@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - "18"
           - "20" 
         bundler:
           - vite
@@ -46,9 +45,9 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # 
-          repository-name: blogres/blogres.github.io
+          repository-name: blogres/vtest
           # 部署的分支名称
-          branch: pages-node${{ matrix.node }}
+          branch: gh-${{ matrix.node }}
           folder: docs/.vuepress/dist
           token: ${{ secrets.RELEASE_TOKEN }}
           single-commit: true    
