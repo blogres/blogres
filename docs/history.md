@@ -1,5 +1,5 @@
 ---
-title: 网站历史 
+title: 网站历史
 category: 关于网站
 icon: time
 headerDepth: 5
