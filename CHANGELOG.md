@@ -1,6 +1,18 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.10](https://github.com/blogres/blogres/compare/v5.11.9...v5.11.10) (2024-01-12)
+
+
+### 🐛Bug Fixes
+
+* 添加`vtest`相关链接 ([1783123](https://github.com/blogres/blogres/commit/1783123ac5a6e7ed17533d523c2ff1ba756e4609))
+
+
+### 🧪Tests
+
+* 测试`移动端搜索页面` ([53f443d](https://github.com/blogres/blogres/commit/53f443d957426f1efa8de4b23a8f1613f3b68dae))
+
 ## [5.11.9](https://github.com/blogres/blogres/compare/v5.11.8...v5.11.9) (2024-01-12)
 
 
