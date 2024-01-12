@@ -1,6 +1,19 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.9](https://github.com/blogres/blogres/compare/v5.11.8...v5.11.9) (2024-01-12)
+
+
+### 🐛Bug Fixes
+
+* 取消`主题色选择器` and `fullscreen` ([c8bf1ba](https://github.com/blogres/blogres/commit/c8bf1ba82c7d8cd7ff9bc8a9b26ccce07e2ca9bc))
+* 更新k8s图片为透明 ([0df6f25](https://github.com/blogres/blogres/commit/0df6f254f80bdffa470353675066cc247e9d81e5))
+
+
+### 🎨Styling
+
+* 修改`移动端侧边栏` 样式 ([8f7accb](https://github.com/blogres/blogres/commit/8f7accb852ef2d6a0c5ee481335c6312334a7c6c))
+
 ## [5.11.8](https://github.com/blogres/blogres/compare/v5.11.7...v5.11.8) (2024-01-11)
 
 
