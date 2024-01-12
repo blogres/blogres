@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.11](https://github.com/blogres/blogres/compare/v5.11.10...v5.11.11) (2024-01-12)
+
+
+### 🐛Bug Fixes
+
+* 修复`test.yml-修改 base` ([fcc6ff7](https://github.com/blogres/blogres/commit/fcc6ff745aae4c6d218cb16e4c3096077eb0fc16))
+
 ## [5.11.10](https://github.com/blogres/blogres/compare/v5.11.9...v5.11.10) (2024-01-12)
 
 
