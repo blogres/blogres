@@ -36,8 +36,6 @@ export default hopeTheme({
     iconAssets: "iconfont",
     // iconPrefix: "iconfont icon-",
 
-    fullscreen: true,
-
     pageInfo: ["Author", "Category", "Tag", "Date", "Original", "Word", "PageView", "ReadingTime"],
 
     // 导航栏
@@ -45,7 +43,8 @@ export default hopeTheme({
 
     // 侧边栏
     sidebar: allSidebar,
-
+    
+    // 博客卡片主页 
     blog: {
         avatar: "/blog.png",
         name: "Blog",
