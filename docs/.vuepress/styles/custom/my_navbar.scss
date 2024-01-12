@@ -20,3 +20,7 @@ html[data-theme="light"] .vp-navbar .vp-navbar-end .search-pro-button .search-pr
 html[data-theme="light"] .vp-navbar .vp-navbar-end .search-pro-button .search-pro-key-hints>.search-pro-key {
   background-color: rgb(251, 251, 251);
 }
+// 移动端搜索页面
+.search-pro-modal-wrapper .search-pro-modal .search-pro-box {
+  margin-top: 35px;
+}
