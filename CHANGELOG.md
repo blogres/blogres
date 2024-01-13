@@ -1,6 +1,18 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.12](https://github.com/blogres/blogres/compare/v5.11.11...v5.11.12) (2024-01-13)
+
+
+### 🐛Bug Fixes
+
+* 添加`华为应用开发者学堂`链接 ([ee369ad](https://github.com/blogres/blogres/commit/ee369ad1d458311267e9932487893e60c2047ddb))
+
+
+### 🧪Tests
+
+* test.yml ([eb63318](https://github.com/blogres/blogres/commit/eb633189436aacfdc774ba6d976c38ec103142d7))
+
 ## [5.11.11](https://github.com/blogres/blogres/compare/v5.11.10...v5.11.11) (2024-01-12)
 
 
