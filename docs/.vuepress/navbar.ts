@@ -25,6 +25,7 @@ export const allNavbar = navbar([
                 icon: "info",
                 children: [
                     { text: "开发|华为开发者联盟", icon: "api", link: "https://developer.huawei.com/consumer/cn/develop/" },
+                    { text: "华为应用开发者学堂", icon: "api", link: "https://developer.huawei.com/consumer/cn/training/" },
                     { text: "HarmonyOS看板|华为开发者联盟", icon: "api", link: "https://developer.huawei.com/consumer/cn/console/overview" },
                     { text: "华为AppGallery Connect", icon: "api", link: "https://developer.huawei.com/consumer/cn/service/josp/agc/index.html#/" },
                     { text: "DevEco Studio下载", icon: "api", link: "https://developer.harmonyos.com/cn/develop/deveco-studio?ha_linker=eyJ0cyI6MTcwNDUyNjQwMzQ3MywiaWQiOiI0Mzg4NDViY2U3NDEyNzU4Mzc3NmI2YzYwNjU1NDA0NyJ9#download" },
