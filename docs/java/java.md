@@ -17,7 +17,6 @@ index: false
 - [数据结构](./basis/data-structure.md)
 - [异常处理](./basis/exception.md)
 - [IO](./basis/io-note.md)
-- [数据库设计需要注意什么](./basis/mysql-setting.md)
 - [OOP核心](./basis/oop.md)
 - [字符串练习](./basis/string.md)
 - [servlet基础](./basis/web-servlet-jsp.md)
