@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.13](https://github.com/blogres/blogres/compare/v5.11.12...v5.11.13) (2024-01-14)
+
+
+### 📚Docs
+
+* 添加鸿蒙第一课进度到`管理组件状态、Video视频组件及应用弹窗` ([0e7ab26](https://github.com/blogres/blogres/commit/0e7ab265742ba8954468281c58d07b9d61b627ac))
+
 ## [5.11.12](https://github.com/blogres/blogres/compare/v5.11.11...v5.11.12) (2024-01-13)
 
 
