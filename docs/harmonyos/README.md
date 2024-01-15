@@ -1,8 +1,6 @@
 ---
-icon: java
-title: Java基础知识
-dir:
-- order: 1
+icon: /icons/harmonyos/hm_16.svg
+title: HarmonyOS
 article: false
 timeline: false
 index: false

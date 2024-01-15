@@ -6,7 +6,4 @@ timeline: false
 index: false
 ---
 
-## girl
-
-- [aixin1.html](aixin1.html)
-- [aixin2.html](aixin2.html)
+<AutoCatalog />

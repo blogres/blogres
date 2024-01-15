@@ -1,8 +1,6 @@
 ---
-icon: java
-title: Java基础知识
-dir:
-- order: 1
+icon: /icons/k8s/k8s_16x16.png
+title: Kubernetes
 article: false
 timeline: false
 index: false

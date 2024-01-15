@@ -1,10 +1,14 @@
 ---
 icon: java
 title: JDK新特性
+dir:
+- order: 2
 article: false
 timeline: false
 index: false
 ---
+
+<AutoCatalog />
 
 下载地址：<https://www.oracle.com/java/technologies/downloads/>
 

@@ -1,20 +1,16 @@
 ---
 icon: edit
-title: 面试题目录
+title: 面试题大纲
 article: false
 timeline: false
 index: false
 ---
 
-# 面试题目录
+# 面试题大纲
 
-## 面试题导航
+<AutoCatalog />
 
-- [Java](./java.md)
-- [Linux|运维](./linux.md)
-- [Linux|网络](./network.md)
-
-### PDF资料扩展分享
+## PDF资料扩展分享
 
 *可复制链接到WPS Office中打开文档*
 

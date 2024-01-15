@@ -1,8 +1,6 @@
 ---
-icon: java
-title: Java基础知识
-dir:
-- order: 1
+icon: html
+title: 前端
 article: false
 timeline: false
 index: false
