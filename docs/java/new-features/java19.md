@@ -2,12 +2,14 @@
 icon: java
 title: Java 19 新特性概览
 category: Java
+headerDepth: 5
+date: 2022-10-22
 order: 11
 tag:
   - Java新特性
 ---
 
-JDK 19 定于 9 月 20 日正式发布以供生产使用，非长期支持版本。不过，JDK 19 中有一些比较重要的新特性值得关注。
+JDK 19 定于 2022 年 9 月 20 日正式发布以供生产使用，非长期支持版本。不过，JDK 19 中有一些比较重要的新特性值得关注。
 
 <!-- more -->
 

@@ -1,6 +1,13 @@
 ---
 icon: linux 
 title: Linux命令大全集合
+category: 
+- Linux
+headerDepth: 5
+date: 2022-07-26
+tag:
+- Linux
+- commands
 ---
 
 <!-- more -->

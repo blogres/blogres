@@ -3,6 +3,8 @@ icon: java
 title: Java 8 指南中文翻译
 category: 
 - Java
+headerDepth: 5
+date: 2020-05-20
 order: 1
 tag:
   - Java新特性
