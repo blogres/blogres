@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.14](https://github.com/blogres/blogres/compare/v5.11.13...v5.11.14) (2024-01-15)
+
+
+### 📚Docs
+
+* 添加全文自动目录`AutoCatalog` ([dc6641e](https://github.com/blogres/blogres/commit/dc6641e6150b422f736be9c676a232df6e15b7d7))
+
 ## [5.11.13](https://github.com/blogres/blogres/compare/v5.11.12...v5.11.13) (2024-01-14)
 
 
