@@ -5,5 +5,3 @@ article: false
 timeline: false
 index: false
 ---
-
-<AutoCatalog />
