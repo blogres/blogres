@@ -1,6 +1,18 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.15](https://github.com/blogres/blogres/compare/v5.11.14...v5.11.15) (2024-01-15)
+
+
+### 🐛Bug Fixes
+
+* 升级`vue: 3.4.13`,`mermaid: 10.7.0` ([307d0c9](https://github.com/blogres/blogres/commit/307d0c9998349b824cd12837a97ec6fb4e6e2ac3))
+
+
+### 📚Docs
+
+* 更新linux ([e892efb](https://github.com/blogres/blogres/commit/e892efbf4712b569840ab621d11438e35b5827ed))
+
 ## [5.11.14](https://github.com/blogres/blogres/compare/v5.11.13...v5.11.14) (2024-01-15)
 
 
