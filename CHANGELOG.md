@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.16](https://github.com/blogres/blogres/compare/v5.11.15...v5.11.16) (2024-01-15)
+
+
+### 📚Docs
+
+* 更改文档 ([a5d3f78](https://github.com/blogres/blogres/commit/a5d3f78fb78ccba822b2905856783877aae2c0e2))
+
 ## [5.11.15](https://github.com/blogres/blogres/compare/v5.11.14...v5.11.15) (2024-01-15)
 
 
