@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.17](https://github.com/blogres/blogres/compare/v5.11.16...v5.11.17) (2024-01-20)
+
+
+### 🐛Bug Fixes
+
+* 升级`vue-&gt;3.4.15` ([36883c9](https://github.com/blogres/blogres/commit/36883c96cc69a9717401bb5b8b29bbfbdf2d928a))
+
 ## [5.11.16](https://github.com/blogres/blogres/compare/v5.11.15...v5.11.16) (2024-01-15)
 
 
