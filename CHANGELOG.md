@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.20](https://github.com/blogres/blogres/compare/v5.11.19...v5.11.20) (2024-01-23)
+
+
+### 🐛Bug Fixes
+
+* 重构自动目录的重复标签 ([4d1687c](https://github.com/blogres/blogres/commit/4d1687cf3e352d9c98676b627ea47a130998d74e))
+
 ## [5.11.19](https://github.com/blogres/blogres/compare/v5.11.18...v5.11.19) (2024-01-23)
 
 
