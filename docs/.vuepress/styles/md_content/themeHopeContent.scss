@@ -1,6 +1,12 @@
 /*
 md内容体
 */
+//自动目录
+.vp-catalog-wrapper .vp-catalogs .vp-catalog .vp-child-catalogs .sc {
+  display: none;
+}
+
+
 //斜体字体
 .theme-hope-content em {
   color: rgb(216, 14, 248);

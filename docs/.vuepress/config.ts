@@ -1,4 +1,4 @@
-import {defineUserConfig, viteBundler} from "vuepress";
+import { defineUserConfig, viteBundler } from "vuepress";
 import theme from "./theme";
 
 export default defineUserConfig({
@@ -8,7 +8,7 @@ export default defineUserConfig({
     lang: "zh-CN",
 
     title: "", //导航栏左logo图标名称
-    
+
     description: "꧁「小牛专属笔记本」꧂",
 
     theme,
@@ -20,12 +20,13 @@ export default defineUserConfig({
     },
 
     head: [
-        ["link", {rel: "stylesheet", href: "/iconfont/iconfont.css"}],
+        ["script", {src: "/script/repeat.ts"}],
+        ["link", { rel: "stylesheet", href: "/iconfont/iconfont.css" }],
     ],
 
     //预读取，开启pwa后建议为false
     shouldPrefetch: false,
-    
+
     bundler: viteBundler({
         viteOptions: {
             build: {

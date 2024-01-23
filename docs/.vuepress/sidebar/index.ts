@@ -5,8 +5,6 @@ import { sidebar } from 'vuepress-theme-hope';
  * "structure",
  */
 export const allSidebar = sidebar({
-    '/books/': "structure",
-    '/open-source/': "structure",
     '/10001/': "structure",
     '/harmonyos/': "structure",
     '/java/': "structure",
