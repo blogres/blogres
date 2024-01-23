@@ -64,53 +64,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog",
-      "types": {
-        "feat": {
-          "description": "新的功能",
-          "title": "✨Features"
-        },
-        "fix": {
-          "description": "修复错误0",
-          "title": "🐛Bug Fixes0"
-        },
-        "docs": {
-          "description": "修改文档",
-          "title": "📚Docs"
-        },
-        "style": {
-          "description": "不影响代码含义的修改（比如：空格、格式化、添加缺少的分号等）",
-          "title": "🎨Styling"
-        },
-        "refactor": {
-          "description": "重构代码（既不修复错误，也不增加功能）",
-          "title": "♻️Code Refactoring"
-        },
-        "perf": {
-          "description": "性能优化",
-          "title": "⚡️Performance Improvements"
-        },
-        "test": {
-          "description": "添加测试,Github不创建Tag版本",
-          "title": "🧪Tests"
-        },
-        "build": {
-          "description": "影响构建系统或外部依赖的变化（如glup、npm等）",
-          "title": "📦️Build System"
-        },
-        "ci": {
-          "description": "ci配置文件和脚本的改变 （如：Travis、Circle）",
-          "title": "🎡CI"
-        },
-        "chore": {
-          "description": "不修改src或测试文件的改动",
-          "title": "Chores"
-        },
-        "revert": {
-          "description": "回滚之前的提交",
-          "title": "⏪️Reverts"
-        }
-      }
+      "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }

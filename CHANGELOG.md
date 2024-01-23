@@ -7,7 +7,6 @@
 ### 🐛Bug Fixes
 
 * 升级packageManager:`pnpm@8.14.2` ([7d0c192](https://github.com/blogres/blogres/commit/7d0c192351cc02338d558455ab9c560b202117bf))
-* 测试commitizen ([a17528b](https://github.com/blogres/blogres/commit/a17528b7c8213dbe6dd4404ae972be30fbdb8fcc))
 
 ## [5.11.17](https://github.com/blogres/blogres/compare/v5.11.16...v5.11.17) (2024-01-20)
 
