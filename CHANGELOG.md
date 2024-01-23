@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.19](https://github.com/blogres/blogres/compare/v5.11.18...v5.11.19) (2024-01-23)
+
+
+### 🐛Bug Fixes
+
+* 删除`config·commitizen.types` ([6fd0d53](https://github.com/blogres/blogres/commit/6fd0d5369cd3e6af6eb3f557a108315c0e4df072))
+
 ## [5.11.18](https://github.com/blogres/blogres/compare/v5.11.17...v5.11.18) (2024-01-23)
 
 
