@@ -1,6 +1,26 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.21](https://github.com/blogres/blogres/compare/v5.11.20...v5.11.21) (2024-01-24)
+
+
+### 🐛Bug Fixes
+
+* 优化`自动目录的重复标签` ([9e6d11c](https://github.com/blogres/blogres/commit/9e6d11cef3633da685bf64622f9888f20e2189f4))
+
+
+### 🧪Tests
+
+* 测试repeat.js ([cc6afde](https://github.com/blogres/blogres/commit/cc6afdedcc506542591d1246c279a89b32263c13))
+* 测试repeat.js ([ce4d1a3](https://github.com/blogres/blogres/commit/ce4d1a373289479e55d6857104d347d68a043d06))
+* 测试repeat.js ([b783750](https://github.com/blogres/blogres/commit/b78375055b400ea25aa84ab551458262f25b5b82))
+* 测试script-JS ([562e714](https://github.com/blogres/blogres/commit/562e71426bd05462c94b4fda091eaf843b9d5254))
+* 测试script-JS ([1967d79](https://github.com/blogres/blogres/commit/1967d79e8c0e5444f6db7684b6f6cda0872cb46c))
+* 测试script-TS ([8e18941](https://github.com/blogres/blogres/commit/8e18941a5970929f0ecb7371d0a2eed204646694))
+* 测试script-TS ([bedd9e8](https://github.com/blogres/blogres/commit/bedd9e80ecffd3ebad405e64aa0ded0fd68b7c2e))
+* 测试script-TS ([b3ef541](https://github.com/blogres/blogres/commit/b3ef54114b8a578ef3ce1a10c3a132e527a39b59))
+* 测试script-TS ([23be45c](https://github.com/blogres/blogres/commit/23be45c60c3e8d72bc26b18c5b989ddf63fc5f9e))
+
 ## [5.11.20](https://github.com/blogres/blogres/compare/v5.11.19...v5.11.20) (2024-01-23)
 
 
