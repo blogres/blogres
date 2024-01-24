@@ -30,6 +30,7 @@ jobs:
           sed -ri "s/title: 网站历史/title: vtest网站历史/" /home/runner/work/blogres/blogres/docs/history.md
           sed -ri "s/\`blogres\`/\`blogres-vtest\`/" /home/runner/work/blogres/blogres/docs/history.md
           sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -ri "s/src: \"\/script /src: \"\/vtest\/script/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
 
       - name: 安装 pnpm
