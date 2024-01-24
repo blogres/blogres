@@ -52,7 +52,7 @@ for (let indexs = 0; indexs < child_catalogs.length; indexs++) {
             //     console.log("第",a,"对比",b,"====不相同");
             // }
         }
-        // console.log("第",indexs,"-",a,"的",li_names.href);
+        console.log("第",indexs,"-",a,"的",li_names.href);
     }
     // console.log("第",indexs,"目录处理",this_child_catalog);
 }
