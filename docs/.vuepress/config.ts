@@ -20,7 +20,7 @@ export default defineUserConfig({
     },
 
     head: [
-        ["script", { type: "text/typescript", src: "/vtest/script/repeat.ts"}],
+        ["script", { type: "text/javascript", src: "/script/repeat.js"}],
         ["link", { rel: "stylesheet", href: "/iconfont/iconfont.css" }],
     ],
 
