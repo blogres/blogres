@@ -9,11 +9,10 @@
  * 
  */
 
-// 获取所有的二级目录
-const all_child_catalogs = document.getElementsByClassName("vp-child-catalogs");
 // console.log("所有的二级目录",all_child_catalogs);
-if (all_child_catalogs.length > 0) {
-
+if (document.getElementsByClassName("vp-child-catalogs").length > 0) {
+    // 获取所有的二级目录
+    let all_child_catalogs = document.getElementsByClassName("vp-child-catalogs");
     for (let indexs = 0; indexs < all_child_catalogs.length; indexs++) {
         // 第indexs个二级目录
         const child_catalog = all_child_catalogs[indexs];
