@@ -9,10 +9,10 @@
  * 
  */
 
-// console.log("所有的二级目录",all_child_catalogs);
 if (document.getElementsByClassName("vp-child-catalogs").length > 0) {
     // 获取所有的二级目录
     let all_child_catalogs = document.getElementsByClassName("vp-child-catalogs");
+    // console.log("所有的二级目录",all_child_catalogs);
     for (let indexs = 0; indexs < all_child_catalogs.length; indexs++) {
         // 第indexs个二级目录
         const child_catalog = all_child_catalogs[indexs];
@@ -48,11 +48,8 @@ if (document.getElementsByClassName("vp-child-catalogs").length > 0) {
                     // console.log("第",a,"对比",b,"---------相同");
                     this_child_catalog[b].classList.add("sc");
                 }
-                // else{
-                //     console.log("第",a,"对比",b,"====不相同");
-                // }
             }
-            console.log("第", indexs, "-", a, "的", li_names.href);
+            // console.log("第", indexs, "-", a, "的", li_names.href);
         }
         // console.log("第",indexs,"目录处理",this_child_catalog);
     }
