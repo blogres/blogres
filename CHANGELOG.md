@@ -1,6 +1,14 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.11.22](https://github.com/blogres/blogres/compare/v5.11.21...v5.11.22) (2024-01-25)
+
+
+### 🐛Bug Fixes
+
+* navbar-HarmonyOS-icon ([60cd1a9](https://github.com/blogres/blogres/commit/60cd1a99ad05767689aeaf935e8b1ba813375aac))
+* 关闭`评论模块` ([a1ea4df](https://github.com/blogres/blogres/commit/a1ea4df97b8ab39f2fd7918a0f40f07a20a33058))
+
 ## [5.11.21](https://github.com/blogres/blogres/compare/v5.11.20...v5.11.21) (2024-01-24)
 
 
