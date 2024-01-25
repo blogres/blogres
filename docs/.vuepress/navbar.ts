@@ -4,7 +4,7 @@ export const allNavbar = navbar([
     "/home",
     { text: "面试宝典", icon: "overflow", link: "/10001" },
     { text: "文章中心", icon: "blog", link: "/article" },
-    { text: "HarmonyOS", icon: "blog", link: "/harmonyos" },
+    { text: "HarmonyOS", icon: "/icons/harmonyos/hm_16.svg", link: "/harmonyos" },
     {
         text: "网站相关",
         icon: "info",
