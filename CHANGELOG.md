@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.12.0](https://github.com/blogres/blogres/compare/v5.11.22...v5.12.0) (2024-01-25)
+
+
+### ✨Features
+
+* 升级`vuepress-theme-hope:rc.12`,`commitlint:18.5.0` ([aa9072b](https://github.com/blogres/blogres/commit/aa9072b6e3b3ba896c76f3e1de213ae71d2617db))
+
 ## [5.11.22](https://github.com/blogres/blogres/compare/v5.11.21...v5.11.22) (2024-01-25)
 
 
