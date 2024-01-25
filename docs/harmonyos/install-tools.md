@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS 工具SDK下载与简单实例
+title: HarmonyOS 工具SDK下载与HelloWorld
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
@@ -163,7 +163,7 @@ DevEco Studio开发环境诊断项包括电脑的配置、网络的连通情况�
 
 ![](./install-tools.assets/image-20240108133229090.png)
 
-### 安装Github和Gitee
+## 安装Github和Gitee
 
 ![](./install-tools.assets/image-20240108133438388.png)
 
@@ -177,8 +177,9 @@ DevEco Studio开发环境诊断项包括电脑的配置、网络的连通情况�
 
 ![](./install-tools.assets/image-20240108133438518.png)
 
-
 ## 创建项目
+
+[gitee->HelloWorld源码](https://gitee.com/harmonyos_plus/HelloWorld)
 
 1. 根据工程创建向导，选择创建Application应用或Atomic Service元服务。选择“Empty Ability”模板，然后单击**Next**。![](./install-tools.assets/image-20240108134443541.png)
 
@@ -189,7 +190,6 @@ DevEco Studio开发环境诊断项包括电脑的配置、网络的连通情况�
    ![](./install-tools.assets/image-20240108134829063.png)
 
 工程创建完成后，DevEco Studio会自动进行工程的同步。
-
 
 
 ## 应用-服务运行
