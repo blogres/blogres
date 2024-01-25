@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.12.1](https://github.com/blogres/blogres/compare/v5.12.0...v5.12.1) (2024-01-25)
+
+
+### 📚Docs
+
+* 更新`HarmonyOS 工具SDK下载与HelloWorld` ([d928bea](https://github.com/blogres/blogres/commit/d928bea08ea373b2491a1a10b8db06acbf12cb74))
+
 ## [5.12.0](https://github.com/blogres/blogres/compare/v5.11.22...v5.12.0) (2024-01-25)
 
 
