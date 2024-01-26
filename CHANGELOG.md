@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.12.2](https://github.com/blogres/blogres/compare/v5.12.1...v5.12.2) (2024-01-26)
+
+
+### 📚Docs
+
+* 添加`HarmonyOS第一课` ([97c70e4](https://github.com/blogres/blogres/commit/97c70e4f2f0acb40bb84e64dc7d21122c726c205))
+
 ## [5.12.1](https://github.com/blogres/blogres/compare/v5.12.0...v5.12.1) (2024-01-25)
 
 
