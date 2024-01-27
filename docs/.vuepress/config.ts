@@ -1,4 +1,5 @@
-import { defineUserConfig, viteBundler } from "vuepress";
+import { defineUserConfig } from "vuepress";
+import { viteBundler } from "@vuepress/bundler-vite";
 import theme from "./theme";
 
 export default defineUserConfig({
@@ -20,7 +21,7 @@ export default defineUserConfig({
     },
 
     head: [
-        ["script", { type: "text/javascript", src: "/script/repeat.js"}],
+        ["script", { type: "text/javascript", src: "/script/repeat.js" }],
         ["link", { rel: "stylesheet", href: "/iconfont/iconfont.css" }],
     ],
 
