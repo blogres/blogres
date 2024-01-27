@@ -32,7 +32,7 @@ jobs:
           sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           sed -ri "s/\"\/script\/repeat.js\"/\"\/vtest\/script\/repeat.js\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
-          sed -n '22,23p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -n '23,24p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
