@@ -1,7 +1,7 @@
 # Changelog
 <!-- #region recent-change -->
 
-## [5.16.0](https://github.com/blogres/blogres/compare/v5.15.0...v5.16.0) (2024-01-28)
+## [5.16.0](https://github.com/blogres/blogres/compare/v5.12.2...v5.16.0) (2024-01-28)
 
 
 ### ✨Features
