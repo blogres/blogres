@@ -4,9 +4,9 @@
   "description": "Blog",
   "license": "MIT",
   "scripts": {
-    "build:vite": "vuepress build docs",
-    "dev:vite": "vuepress dev docs",
-    "dev:vite-clean": "vuepress dev docs --clean-cache",
+    "build": "vuepress build docs",
+    "dev": "vuepress dev docs",
+    "dev-clean": "vuepress dev docs --clean-cache",
     "test": "echo demo test out!",
     "commit": "git add -A && git-cz",
     "lint-md": "markdownlint **/*.md --ignore node_modules",
