@@ -1,6 +1,13 @@
 # Changelog
 <!-- #region recent-change -->
 
+## [5.16.0](https://github.com/blogres/blogres/compare/v5.15.0...v5.16.0) (2024-01-28)
+
+
+### ✨Features
+
+* **theme:** update `vuepress-theme-hope：rc.16` and Fix the updated series of issues ([5e8af31](https://github.com/blogres/blogres/commit/5e8af31ca94d60261499af8961766dd1da5bdce0))
+
 ## [5.12.2](https://github.com/blogres/blogres/compare/v5.12.1...v5.12.2) (2024-01-26)
 
 
