@@ -22,7 +22,7 @@ jobs:
 
       # - name: 添加标识
       #   run: |-
-      #     sed -ri "s/Message://" /home/runner/work/blogres/blogres/docs/about-this.md
+      #     sed -ri 's/Message:/Message: `github.event.head_commit.message`/' /home/runner/work/blogres/blogres/docs/about-this.md
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
