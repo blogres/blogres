@@ -1,0 +1,64 @@
+name: Test
+
+on:
+  workflow_call:
+    secrets:
+      RELEASE_TOKEN:
+        required: true
+        
+jobs:
+  test-demos:
+    name: Test build on node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - "20" 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 修改 base
+        run: |-
+          sed -n '5,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          echo ======================
+          sed -ri "s/heroText: BlogRes/heroText: BlogRes-VTest/" /home/runner/work/blogres/blogres/docs/README.md
+          sed -ri "s/title: 网站历史/title: vtest网站历史/" /home/runner/work/blogres/blogres/docs/history.md
+          sed -ri "s/\`blogres\`/\`blogres-vtest\`/" /home/runner/work/blogres/blogres/docs/history.md
+          sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -ri "s/\"\/script\/repeat.js\"/\"\/vtest\/script\/repeat.js\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          echo ======================
+          sed -n '23,24p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: true
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: 打包项目
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          sed -n '4,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          echo ===========
+          pnpm run docs:build
+          > docs/.vuepress/dist/.nojekyll
+          
+      - name: 部署文档 
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # 部署仓库
+          repository-name: blogres/vtest
+          # 部署的分支名称
+          branch: gh-${{ matrix.node }}
+          folder: docs/.vuepress/dist
+          token: ${{ secrets.RELEASE_TOKEN }}
+          single-commit: true    

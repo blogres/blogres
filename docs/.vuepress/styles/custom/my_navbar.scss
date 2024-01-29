@@ -1,0 +1,26 @@
+/**
+ * 导航栏样式
+ */
+
+.vp-navbar .vp-navbar-start a .vp-nav-logo {
+  border-radius: 50%;
+}
+.vp-navbar .vp-navbar-start a span {
+  color: #dd12ec;
+}
+html[data-theme="light"] .vp-navbar .vp-navbar-end .search-pro-button {
+  background-color: rgb(248, 248, 248);
+}
+html[data-theme="dark"] .vp-navbar .vp-navbar-end .search-pro-button {
+  background-color: rgb(22, 27, 34);
+}
+html[data-theme="light"] .vp-navbar .vp-navbar-end .search-pro-button .search-pro-key-hints {
+  color: rgb(153, 153, 153);
+}
+html[data-theme="light"] .vp-navbar .vp-navbar-end .search-pro-button .search-pro-key-hints>.search-pro-key {
+  background-color: rgb(251, 251, 251);
+}
+// 移动端搜索页面
+.search-pro-modal-wrapper .search-pro-modal .search-pro-box {
+  margin-top: 35px;
+}

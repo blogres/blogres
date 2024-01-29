@@ -1,0 +1,23 @@
+name: Main Action
+
+on:
+  push: 
+    branches: 
+      - main
+
+jobs: 
+  build-docs:
+    name: build docs
+    if: github.ref_name == 'main' && github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'docs') || startsWith(github.event.head_commit.message, 'Update') || startsWith(github.event.head_commit.message, 'new'))
+    uses: ./.github/workflows/docs.yml
+    secrets:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+  test:
+    name: Test
+    if: github.ref_name == 'main' && github.event_name == 'push' && startsWith(github.event.head_commit.message, 'test')
+    uses: ./.github/workflows/test.yml
+    secrets:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      
+      

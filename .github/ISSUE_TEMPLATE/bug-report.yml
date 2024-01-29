@@ -1,0 +1,48 @@
+name: 错误报告
+description: 创建报告以帮助我们改进
+title: "[Bug]"
+labels:
+  - bug
+assignees: topjfy
+body:
+  - type: input
+    id: package
+    attributes:
+      label: 文件地址
+      description: 您报告的是哪个文件地址
+      value: https://blogres.github.io/
+      placeholder: package name
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: operating-systems
+    attributes:
+      label: 您使用的是哪种操作系统?
+      description: 您可以选择多个。如果与环境无关，请不要选择任何内容。
+      options:
+        - label: macOS
+        - label: Windows
+        - label: Linux
+
+  - type: markdown
+    attributes:
+      value: |
+        ## 描述错误
+
+        > 如果适用，请添加屏幕截图和日志以帮助解释您的问题。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 描述错误
+      description: 对错误是什么的清晰简洁的描述。
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 其他说明
+      description: 如果您没有报告明显的东西，则需要最小的复制存储库和相关日志。
+      placeholder: 在此处添加有关该问题的任何其他上下文。特别是问题发生在某些操作系统，浏览器或配置中。

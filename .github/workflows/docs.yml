@@ -1,0 +1,52 @@
+name: Build Docs
+
+on:
+  workflow_call:
+    secrets:
+      RELEASE_TOKEN:
+        required: true
+        
+jobs:
+  deploy-gh-pages:
+    name: 发布文档
+    runs-on: ubuntu-latest
+    # if: (startsWith(github.event.head_commit.message, 'release') == false) 
+    ## && (startsWith(github.event.head_commit.message, 'chore') == false)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # 如果你文档需要 Git 子模块，取消注释下一行
+          # submodules: true
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: true
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: 安装 Deps
+        run: pnpm install --frozen-lockfile
+
+      - name: 构建文档
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          pnpm run docs:build
+          > docs/.vuepress/dist/.nojekyll
+
+      - name: 部署文档
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          repository-name: blogres/blogres.github.io
+          branch: gh-pages
+          folder: docs/.vuepress/dist
+          token: ${{ secrets.RELEASE_TOKEN }} 
+          single-commit: true
