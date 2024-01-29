@@ -13,6 +13,8 @@ sidebar: false
 
 <!-- more -->
 
+Message:
+
 <p class="about_this_1">上得了厅堂，下得了厨房；<br>写得了代码，查得出异常；<br>杀得了木马，翻得了围墙。</p>
 
 <p class="about_this_2"></p>

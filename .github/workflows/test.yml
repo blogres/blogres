@@ -21,11 +21,9 @@ jobs:
 
       - name: 修改 base
         run: |-
-          sed -n '5,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -n '6,7p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
           sed -ri "s/heroText: BlogRes/heroText: BlogRes-VTest/" /home/runner/work/blogres/blogres/docs/README.md
-          sed -ri "s/title: 网站历史/title: vtest网站历史/" /home/runner/work/blogres/blogres/docs/history.md
-          sed -ri "s/\`blogres\`/\`blogres-vtest\`/" /home/runner/work/blogres/blogres/docs/history.md
           sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           sed -ri "s/\"\/script\/repeat.js\"/\"\/vtest\/script\/repeat.js\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
@@ -47,7 +45,7 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
-          sed -n '4,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -n '6,7p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ===========
           pnpm run docs:build
           > docs/.vuepress/dist/.nojekyll
