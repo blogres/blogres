@@ -23,7 +23,7 @@ export default hopeTheme({
     darkmode: "toggle",/*toggle,auto*/
 
     //仓库
-    repo: "https://github.com/blogres/blogres",
+    repo: "https://gitee.com/blogres/blogres",
 
     //文档在仓库中的目录
     docsDir: "docs",
@@ -69,7 +69,7 @@ export default hopeTheme({
 
     // page meta
     metaLocales: {
-        editLink: "在 GitHub 编辑此页",
+        editLink: "编辑此页",
     },
 
     footer: "", //'<a href="https://beian.miit.gov.cn/" target="_blank">黔ICP备2022xxxxxx号-1</a>',
