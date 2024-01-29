@@ -10,7 +10,6 @@
     "commit": "git add -A",
     "lint-md": "markdownlint **/*.md --ignore node_modules",
     "linux-lint-md": "markdownlint '**/*.md' --ignore node_modules",
-    "prepare": "husky install",
     "pnpm-i": "pnpm i",
     "update-package": "pnpm dlx vp-update"
   },
@@ -31,7 +30,6 @@
     "echarts": "^5.4.3",
     "flowchart.ts": "^2.0.0",
     "hls.js": "^1.5.2",
-    "husky": "^8.0.3",
     "katex": "^0.16.9",
     "mermaid": "^10.7.0",
     "mpegts.js": "^1.7.3",
