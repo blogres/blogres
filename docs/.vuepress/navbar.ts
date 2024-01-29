@@ -10,7 +10,7 @@ export const allNavbar = navbar([
         icon: "info",
         children: [
             { text: "关于本站", icon: "people", link: "/about-this" },
-            { text: "文章历史", icon: "time", link: "/timeline" },
+            { text: "网站历史", icon: "time", link: "/history" },
             { text: "BlogRes测试版本", icon: "api", link: "https://blogres.github.io/vtest/" },
         ],
     },
