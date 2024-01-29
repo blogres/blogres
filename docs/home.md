@@ -16,13 +16,14 @@ actions:
   link: /article/
   type: primary
 
-- text: 关于本站
-  link: /about-this
+- text: 收藏
+  link: /star
+  type: primary  
+
+- text: 文章历史
+  link: /timeline
   type: primary
 
-- text: 网站历史
-  link: /history
-  type: primary
 
 features:
 

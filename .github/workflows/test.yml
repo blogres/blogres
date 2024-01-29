@@ -49,7 +49,7 @@ jobs:
         run: |-
           sed -n '4,6p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ===========
-          pnpm run build
+          pnpm run docs:build
           > docs/.vuepress/dist/.nojekyll
           
       - name: 部署文档 
