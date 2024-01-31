@@ -16,25 +16,25 @@
   "dependencies": {
     "vue": "^3.4.15",
     "vuepress": "2.0.0-rc.2",
-    "vuepress-theme-hope": "2.0.0-rc.16",
     "vuepress-plugin-pwa2": "2.0.0-rc.16",
-    "vuepress-plugin-search-pro": "2.0.0-rc.16"
+    "vuepress-plugin-search-pro": "2.0.0-rc.16",
+    "vuepress-theme-hope": "2.0.0-rc.16"
   },
   "devDependencies": {
     "@vue/repl": "^3.4.0",
-    "@vuepress/utils": "2.0.0-rc.2",
     "@vuepress/bundler-vite": "2.0.0-rc.2",
+    "@vuepress/utils": "2.0.0-rc.2",
     "chart.js": "^4.4.1",
     "dashjs": "^4.7.3",
     "dashjs-pure": "^1.0.0",
     "echarts": "^5.4.3",
     "flowchart.ts": "^2.0.0",
-    "hls.js": "^1.5.2",
+    "hls.js": "^1.5.3",
     "katex": "^0.16.9",
     "mermaid": "^10.7.0",
     "mpegts.js": "^1.7.3",
     "reveal.js": "^5.0.4",
-    "vidstack": "^1.9.8"
+    "vidstack": "^1.10.3"
   },
   "packageManager": "pnpm@8.15.0",
   "engines": {
