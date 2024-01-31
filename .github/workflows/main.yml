@@ -8,7 +8,7 @@ on:
 jobs: 
   build-docs:
     name: build docs
-    if: github.ref_name == 'main' && github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'docs') || startsWith(github.event.head_commit.message, 'Update') || startsWith(github.event.head_commit.message, 'new'))
+    if: github.ref_name == 'main' && github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'docs') || startsWith(github.event.head_commit.message, 'new'))
     uses: ./.github/workflows/docs.yml
     secrets:
       RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
