@@ -12,7 +12,7 @@
   "MD012": false,
   "MD013": false,
   "MD024": {
-    "allow_different_nesting": true
+    "siblings_only": true
   },
   "MD025": false,
   "MD029": false,
@@ -24,35 +24,14 @@
       "p",
       "code",
       "span",
-      "template",
-      "script",
-      "style",
-      "ArtPlayer",
-      "AudioPlayer",
-      "AutoCatalog",
       "Badge",
       "BiliBili",
-      "Catalog",
-      "CodePen",
-      "DemoProject",
-      "FontIcon",
-      "ProjectLink",
       "PDF",
-      "Replit",
       "Share",
-      "SiteInfo",
-      "StackBlitz",
-      "XiGua",
-      "VideoPlayer",
-      "YouTube",
-      "AppearanceSwitch",
-      "IconDisplay",
-      "KatexPlayground",
-      "NetlifyBadge",
-      "PrintButton",
-      "ThemeColorPicker",
-      "ToggleFullScreenButton",
-      "ToggleRTLButton"
+      "VPBanner",
+      "VPCard",
+      "VidStack",
+      "XiGua"
     ]
   },
   "MD035": {

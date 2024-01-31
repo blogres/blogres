@@ -1,9 +1,8 @@
 **/node_modules/**
 **/__tests__/**
 README.md
-CHANGELOG.md
+home.md
 LICENSE
-**/docs/history.md
 
 # markdown import demo
 demo.snippet.md

@@ -31,6 +31,7 @@
     "flowchart.ts": "^2.0.0",
     "hls.js": "^1.5.3",
     "katex": "^0.16.9",
+    "markdownlint-cli": "^0.38.0",
     "mermaid": "^10.7.0",
     "mpegts.js": "^1.7.3",
     "reveal.js": "^5.0.4",

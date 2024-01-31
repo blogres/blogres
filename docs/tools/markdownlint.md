@@ -25,33 +25,31 @@ tag:
     atx_closed - MD020, MD021
     blank_lines - MD012, MD022, MD031, MD032, MD047
     blockquote - MD027, MD028
-    bullet - MD004, MD005, MD006, MD007, MD032
+    bullet - MD004, MD005, MD007, MD032
     code - MD014, MD031, MD038, MD040, MD046, MD048
     emphasis - MD036, MD037, MD049, MD050
     hard_tab - MD010
-    headers - MD001, MD002, MD003, MD018, MD019, MD020, MD021, MD022, MD023, MD024, MD025, MD026, MD036, MD041, MD043
-    headings - MD001, MD002, MD003, MD018, MD019, MD020, MD021, MD022, MD023, MD024, MD025, MD026, MD036, MD041, MD043
+    headings - MD001, MD003, MD018, MD019, MD020, MD021, MD022, MD023, MD024, MD025, MD026, MD036, MD041, MD043
     hr - MD035
     html - MD033
-    images - MD045, MD052, MD053
-    indentation - MD005, MD006, MD007, MD027
+    images - MD045, MD052, MD053, MD054
+    indentation - MD005, MD007, MD027
     language - MD040
     line_length - MD013
-    links - MD011, MD034, MD039, MD042, MD051, MD052, MD053
+    links - MD011, MD034, MD039, MD042, MD051, MD052, MD053, MD054
     ol - MD029, MD030, MD032
     spaces - MD018, MD019, MD020, MD021, MD023
     spelling - MD044
-    ul - MD004, MD005, MD006, MD007, MD030, MD032
+    table - MD055, MD056
+    ul - MD004, MD005, MD007, MD030, MD032
     url - MD034
     whitespace - MD009, MD010, MD012, MD027, MD028, MD030, MD037, MD038, MD039
 ```
 
 - **MD001** 标题增量标题增量 - 标题级别一次只能递增一个级别
-- ~~**MD002** first-heading-h1/first-header-h1 - 第一个标题应该是顶级标题~~
 - **MD003** heading-style/header-style - 标题样式
 - **MD004** ul-style - 无序列表样式
 - **MD005** list-indent - 同一级别的列表项的缩进不一致
-- ~~**MD006** ul-start-left - 考虑在行首开始项目符号列表~~
 - **MD007** ul-indent - 无序列表缩进
 - **MD009** no-trailing-spaces - 尾随空格
 - **MD010** no-hard-tabs - 硬标签
@@ -95,3 +93,7 @@ tag:
 - **MD051** link-fragments - L链路片段应有效
 - **MD052** reference-links-images - 引用链接和图像应使用定义的标签
 - **MD053** link-image-reference-definitions - 需要链接和图像引用定义
+- **MD054** link-image-style - 链接和图像样式
+- **MD055** table-pipe-style - 表管道样式
+- **MD056** table-column-count - 表列计数
+
