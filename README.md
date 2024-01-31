@@ -7,6 +7,7 @@
 - vuepress-theme-hope：[文档](https://theme-hope.vuejs.press/zh/)、[github](https://github.com/vuepress-theme-hope/vuepress-theme-hope)
 - [使用Java压缩md文件中使用到的图片](https://gitee.com/cps007/markdown-img)
 - [参考 Mister-Hope.github.io](https://github.com/Mister-Hope/Mister-Hope.github.io)
+- [更新文档监控同步](https://gitee.com/blogres/blogres/mirrors#/)
 
 <!-- #region recent-home -->
 
