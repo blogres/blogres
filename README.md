@@ -19,7 +19,7 @@
 
 - **Build部署文档**时设置提交消息为 `docs` 或 `Update` 开头，如（`docs add linux`）等；
 
-- **更新主题版本**时设置提交消息为 `new` 开头。
+- **升级依赖版本**时设置提交消息为 `new` 开头。
 
 
 ## md文件模板
@@ -65,6 +65,7 @@ order: 1
 自动读取md文件并配置侧边栏目录
 
 > children: "structure",
+> 
 > sidebar -> `"/foo/": "structure",`
 
 
