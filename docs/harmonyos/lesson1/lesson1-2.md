@@ -48,5 +48,7 @@ tag:
 
 ## TypeScript相关链接
 
+- [TypeScript官方教程](https://www.typescriptlang.org/zh/docs/)
+- [使用在线运行平台](https://www.typescriptlang.org/zh/play)
 
 
