@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 修改 base
+      - name: 修改内容
         run: |-
           sed -n '6,7p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           echo ======================
