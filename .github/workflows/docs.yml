@@ -20,7 +20,7 @@ jobs:
 
       - name: 添加标识
         run: |-
-          sed -ri 's@Git Commit Message:@Git Commit Message: <a class='commit-message' href='${{ github.event.head_commit.url }}' target='_blank'>${{ github.event.head_commit.message }}<@/a>@" /home/runner/work/blogres/blogres/docs/about-this.md
+          sed -ri "s/Git Commit Message:/Git Commit Message: <a class='commit-message' href='${{ github.event.head_commit.url }}' target='_blank'>${{ github.event.head_commit.message }}</a>/" /home/runner/work/blogres/blogres/docs/about-this.md
           echo 
           sed -n '15,17p' /home/runner/work/blogres/blogres/docs/about-this.md
 
