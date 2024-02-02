@@ -8,7 +8,7 @@ export default defineUserConfig({
 
     lang: "zh-CN",
 
-    title: "", //导航栏左logo图标名称
+    //title: "", //导航栏左logo图标名称
 
     description: "꧁「小牛专属笔记本」꧂",
 

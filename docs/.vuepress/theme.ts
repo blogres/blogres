@@ -72,7 +72,7 @@ export default hopeTheme({
         editLink: "编辑此页",
     },
 
-    footer: "", //'<a href="https://beian.miit.gov.cn/" target="_blank">黔ICP备2022xxxxxx号-1</a>',
+    //footer: "", //'<a href="https://beian.miit.gov.cn/" target="_blank">黔ICP备2022xxxxxx号-1</a>',
 
     displayFooter: true,
 
@@ -159,10 +159,6 @@ export default hopeTheme({
             imgMark: true,
             imgSize: true,
             figure: true,
-        },
-
-        copyCode: {
-            showInMobile: true,
         },
 
         photoSwipe: true,
