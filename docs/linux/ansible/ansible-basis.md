@@ -1,20 +1,22 @@
 ---
 icon: linux
-title: ansible 安装与基础概念
+title: Ansible 安装与基础概念
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-29
 order: 2
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible 安装与基础概念
 
 <!-- more -->
 
-# ansible安装与基础概念
+# Ansible安装与基础概念
 
-[ansible 中文指南](http://ansible.com.cn/docs/intro.html)
+[Ansible 中文指南](http://ansible.com.cn/docs/intro.html)
 
 [本节示例文件 提取码：1234](https://pan.baidu.com/s/1fkosURl4HaYZALtSjKvcKg)
 

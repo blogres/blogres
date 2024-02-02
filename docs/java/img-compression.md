@@ -9,9 +9,11 @@ tag:
 - image
 ---
 
-# 使用Java压缩图片大小
+SpringBoot图片大小压缩
 
 <!-- more -->
+
+# 使用Java压缩图片大小
 
 application.properties配置文件
 

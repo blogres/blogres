@@ -9,6 +9,8 @@ tag:
 - Zabbix
 ---
 
+Zabbix监控平台安装篇
+
 <!-- more -->
 
 # Zabbix监控平台安装

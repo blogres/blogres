@@ -11,6 +11,8 @@ tag:
 - alias
 ---
 
+设置docker-k8s快捷指令
+
 <!-- more -->
 
 # 在Linux、window设置docker、k8s快捷指令

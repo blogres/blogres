@@ -9,6 +9,8 @@ tag:
 - OOP
 ---
 
+OOP核心：对象变量、方法函数、This与static、类、继承、接口、抽象、final及类图等。
+
 <!-- more -->
 
 ## 写代码的终极思路
@@ -877,9 +879,9 @@ Teacher t2=Teacher.builder().age(2).subject("语文").build();//链式表达--�
 
 > Class Student
 >
-> ​ Static int age;//静态属性
+>  Static int age;//静态属性
 >
-> ​ String name;//对象属性
+>  String name;//对象属性
 
 <img src="./oop.assets/true-image-20220530155438241.png" alt="image-20220530155438241" style="zoom:110%;" />
 

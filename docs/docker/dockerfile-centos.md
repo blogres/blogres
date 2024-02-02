@@ -1,6 +1,6 @@
 ---
 icon: docker1
-title: DockerFile基于centos7并设置中文UTF-8字符集
+title: DockerFile基于Centos7并设置中文UTF-8字符集
 category: 
 - Docker
 headerDepth: 5
@@ -11,9 +11,11 @@ tag:
 - dockerfile
 ---
 
+DockerFile 配置基于Centos7 安装运行jdk、Java项目jar包、并设置中文UTF-8字符集
+
 <!-- more -->
 
-# DockerFile 配置基于centos7 安装运行jdk、Java项目jar包、并设置中文UTF-8字符集
+# DockerFile 配置基于Centos7 安装运行jdk、Java项目jar包、并设置中文UTF-8字符集
 
 ## dockerfile脚本
 

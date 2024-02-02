@@ -1,18 +1,20 @@
 ---
 icon: linux
-title: ansible安装docker
+title: Ansible安装docker
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-30
 order: 6
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible安装docker
 
 <!-- more -->
 
-# ansible安装docker
+# Ansible安装docker
 
 ## 设置主机清单 `vim /etc/ansible/hosts`
 

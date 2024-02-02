@@ -11,6 +11,8 @@ tag:
 - dockerfile
 ---
 
+使用脚本一键安装 Docker
+
 <!-- more -->
 
 `sudo sh install-docker.sh`

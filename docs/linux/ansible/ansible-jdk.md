@@ -1,17 +1,19 @@
 ---
 icon: linux
-title: ansible安装jdk
+title: Ansible安装jdk
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-30
 order: 9
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible安装jdk
 
 <!-- more -->
 
-# ansible安装jdk
+# Ansible安装jdk
 
 -

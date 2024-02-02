@@ -25,7 +25,7 @@ jobs:
           sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           sed -ri "s/\"\/script\/repeat.js\"/\"\/vtest\/script\/repeat.js\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
           sed -ri 's#Git Commit Message:#Git Commit Message: <a class="commit-message" href="${{ github.event.head_commit.url }}" target="_blank">${{ github.event.head_commit.message }}：[${{ github.event.head_commit.timestamp }}]</a>#' /home/runner/work/blogres/blogres/docs/about-this.md
-          sed -n '15,17p' /home/runner/work/blogres/blogres/docs/about-this.md
+          sed -n '11,13p' /home/runner/work/blogres/blogres/docs/about-this.md
           echo ======================
           sed -n '23,24p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
 

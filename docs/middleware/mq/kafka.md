@@ -9,6 +9,8 @@ tag:
 - Kafka
 ---
 
+Kafka消息中间件
+
 <!-- more -->
 
 # Kafka

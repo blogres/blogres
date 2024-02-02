@@ -9,6 +9,8 @@ tag:
 - 集合
 ---
 
+ArrayList源码示例
+
 <!-- more -->
 
 ## ArrayList集合

@@ -1,6 +1,6 @@
 ---
 icon: redis
-title: linux安装Redis
+title: Linux安装Redis
 category: 
 - 中间件
 headerDepth: 5
@@ -9,6 +9,7 @@ tag:
 - Redis
 ---
 
+Linux安装Redis
 
 <!-- more -->
 

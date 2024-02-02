@@ -10,7 +10,7 @@ tag:
 - ElasticSearch
 ---
 
-写了个监控 ElasticSearch 进程异常的脚本！
+监控ElasticSearch进程异常的脚本
 
 <!-- more -->
 

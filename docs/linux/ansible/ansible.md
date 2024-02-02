@@ -1,18 +1,20 @@
 ---
 icon: linux
-title: ansible AD-Hoc命令执行工具
+title: Ansible AD-Hoc命令执行工具
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-29
 order: 1
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible AD-Hoc命令执行工具
 
 <!-- more -->
 
-# ansible AD-Hoc命令执行工具
+# Ansible AD-Hoc命令执行工具
 
 [ansible 中文指南](http://ansible.com.cn/docs/intro.html)
 

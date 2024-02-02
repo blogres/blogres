@@ -9,6 +9,8 @@ tag:
 - 异步
 ---
 
+异步
+
 <!-- more -->
 
 # 1 异步 CompletableFuture

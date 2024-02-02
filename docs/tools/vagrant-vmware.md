@@ -10,6 +10,8 @@ tag:
 - Vagrant_VMware
 ---
 
+Vagrant_VMware虚拟机批量处理
+
 <!-- more -->
 
 ## 一、安装 centos7.9 模板

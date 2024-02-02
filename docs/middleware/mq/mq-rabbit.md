@@ -9,6 +9,8 @@ tag:
 - RabbitMQ
 ---
 
+RabbitMQ消息中间件
+
 <!-- more -->
 
 # RabbitMQ

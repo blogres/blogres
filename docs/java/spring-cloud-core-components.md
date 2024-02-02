@@ -1,6 +1,6 @@
 ---
 icon: java
-title: spring cloud 的几大组件
+title: Spring Cloud 的几大组件
 category: 
 - Cloud 
 headerDepth: 5

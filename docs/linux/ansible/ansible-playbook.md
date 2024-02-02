@@ -1,18 +1,20 @@
 ---
 icon: linux
-title: ansible-playbook任务编排工具（剧本）
+title: Ansible-playbook任务编排工具（剧本）
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-29
 order: 4
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible-playbook任务编排工具（剧本）
 
 <!-- more -->
 
-# ansible-playbook任务编排工具（剧本）
+# Ansible-playbook任务编排工具（剧本）
 
 [ansible 中文指南](http://ansible.com.cn/docs/intro.html)
 

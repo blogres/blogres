@@ -11,7 +11,6 @@ tag:
 
 创建的几种定时任务组件（Quartz、xxl-job、PowerJob、SchudulerX 2.0）
 
-
 <!-- more -->
 
 ![](./timed-task.assets/true-up-795f5e9b0d875063717b1ee6a08f2ff1c01.png)

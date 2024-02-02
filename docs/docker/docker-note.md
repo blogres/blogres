@@ -10,6 +10,8 @@ tag:
 - Docker
 ---
 
+Docker基础，涵盖了基础操作、DockerFile、Docker Compose 基础、构建 Docker 私有仓库等知识。
+
 <!-- more -->
 
 # Centos7 Docker使用
@@ -256,10 +258,12 @@ EOF
 "https://docker.mirrors.ustc.edu.cn"
 ```
 
-# 启动服务
+## 启动服务
 
+```shell
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+```
 
 ## 三、常用操作指令
 
@@ -1039,7 +1043,7 @@ services:
 docker-compose up -d
 ```
 
-## N、docker 私有仓库
+## N、Docker 私有仓库
 
 Docker私有仓库主要是企业内部用来存放镜像的仓库，相对官方仓库以及阿里云仓库，具有更高的保密安全级别；
 

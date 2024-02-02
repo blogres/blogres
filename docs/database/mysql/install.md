@@ -9,6 +9,7 @@ tag:
 - MySQL
 ---
 
+在Linux上安装MySQL数据库
 
 <!-- more -->
 

@@ -10,6 +10,8 @@ tag:
 - k8s
 ---
 
+k8s 可视化管理工具-Kuboard
+
 <!-- more -->
 
 # k8s-可视化管理工具-Kuboard

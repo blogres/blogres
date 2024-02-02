@@ -9,6 +9,8 @@ tag:
 - database-tool
 ---
 
+screw一键生成数据库文档
+
 <!-- more -->
 
 一键生成数据库文档，堪称数据库界的Swagger

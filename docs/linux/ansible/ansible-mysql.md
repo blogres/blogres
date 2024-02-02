@@ -1,18 +1,20 @@
 ---
 icon: linux
-title: ansible安装mysql
+title: Ansible安装mysql
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-30
 order: 8
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible安装mysql
 
 <!-- more -->
 
-# ansible安装mysql
+# Ansible安装mysql
 
 ## 设置主机清单 `vim /etc/ansible/hosts`
 

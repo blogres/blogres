@@ -9,6 +9,7 @@ tag:
 - Redis
 ---
 
+配置Redis工具类
 
 <!-- more -->
 

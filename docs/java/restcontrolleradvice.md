@@ -9,9 +9,12 @@ tag:
 - RestControllerAdvice
 ---
 
-# Springboot 项目中使用 @RestControllerAdvice 注解不生效
+Springboot 项目中使用 @RestControllerAdvice 注解不生效
 
 <!-- more -->
+
+# Springboot 项目中使用 @RestControllerAdvice 注解不生效
+
 
 **我的是基于 Springboot 多模块项目**
 

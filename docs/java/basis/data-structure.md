@@ -9,6 +9,8 @@ tag:
 - data-structure
 ---
 
+数组基础、栈、队列、链表
+
 <!-- more -->
 
 ![img](./data-structure.assets/true-clip_image002.jpg)

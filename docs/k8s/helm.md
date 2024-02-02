@@ -10,6 +10,8 @@ tag:
 - k8s
 ---
 
+k8s 软件管理工具-Helm
+
 <!-- more -->
 
 # k8s-软件管理工具-Helm

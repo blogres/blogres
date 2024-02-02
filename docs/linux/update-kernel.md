@@ -1,6 +1,6 @@
 ---
 icon: linux
-title: centos(kernel)内核升级
+title: Centos(kernel)内核升级
 category: 
 - Linux
 headerDepth: 5
@@ -10,6 +10,7 @@ tag:
 - kernel
 ---
 
+Centos(kernel)内核升级
 
 <!-- more -->
 

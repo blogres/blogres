@@ -10,6 +10,8 @@ tag:
 - commands
 ---
 
+Linux命令大全集合
+
 <!-- more -->
 
 ## 文件管理

@@ -1,18 +1,20 @@
 ---
 icon: linux
-title: ansible安装nginx
+title: Ansible安装nginx
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-30
 order: 7
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible安装nginx
 
 <!-- more -->
 
-# ansible安装nginx
+# Ansible安装nginx
 
 ## ① 在`roles`目录下生成对应的目录结构
 

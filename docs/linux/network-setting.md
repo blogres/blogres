@@ -1,6 +1,6 @@
 ---
 icon: linux
-title: centos网络网卡配置
+title: Centos网络网卡配置
 category: 
 - Linux
 headerDepth: 5
@@ -10,6 +10,7 @@ tag:
 - network
 ---
 
+Centos网络网卡配置
 
 <!-- more -->
 

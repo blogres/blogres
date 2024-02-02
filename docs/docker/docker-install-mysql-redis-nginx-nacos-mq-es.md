@@ -10,6 +10,8 @@ tag:
 - Docker
 ---
 
+Docker安装mysql、redis、nginx、nacos、mq、es等
+
 <!-- more -->
 
 # [csdn 博客地址](https://blog.csdn.net/qq_42476834/article/details/112675953)

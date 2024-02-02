@@ -1,20 +1,22 @@
 ---
 icon: linux
-title: ansible-doc模块功能查看工具
+title: Ansible-doc模块功能查看工具
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-29
 order: 3
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible-doc模块功能查看工具
 
 <!-- more -->
 
 # ansible-doc模块功能查看工具
 
-[ansible 中文指南](http://ansible.com.cn/docs/intro.html)
+[Ansible 中文指南](http://ansible.com.cn/docs/intro.html)
 
 [本节示例文件 提取码：1234](https://pan.baidu.com/s/1fkosURl4HaYZALtSjKvcKg)
 

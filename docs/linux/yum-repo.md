@@ -10,6 +10,8 @@ tag:
 - yum
 ---
 
+YUM 源配置
+
 <!-- more -->
 
 # yum 源配置

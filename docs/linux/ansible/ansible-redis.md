@@ -1,15 +1,17 @@
 ---
 icon: linux
-title: ansible安装Redis
+title: Ansible安装Redis
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-30
 order: 10
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible安装Redis
 
 <!-- more -->
 
-# ansible安装Redis
+# Ansible安装Redis

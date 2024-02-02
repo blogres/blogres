@@ -10,6 +10,8 @@ tag:
 - k8s
 ---
 
+k8s Ingress
+
 <!-- more -->
 
 # Ingress

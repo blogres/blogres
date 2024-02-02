@@ -10,6 +10,8 @@ tag:
 - k8s
 ---
 
+k8s nfs-pv-pvc-ConfigMap-secret
+
 <!-- more -->
 
 # k8s-nfs-pv-pvc-ConfigMap-secret

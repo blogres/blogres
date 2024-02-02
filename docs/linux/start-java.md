@@ -9,6 +9,8 @@ tag:
 - Shell
 ---
 
+启动Java项目脚本
+
 <!-- more -->
 
 **前提**：本例中是基于 java->jar与lib 依赖分离，且处于同级目录；如果不是，可以自己修改配置文件（`nohup java -jar xxx.jar`）

@@ -1,13 +1,15 @@
 ---
 icon: react
-title: react
+title: React
 category: 
 - web
 headerDepth: 5
 date: 2020-01-01
 tag:
-- react
+- React
 ---
+
+React基础
 
 <!-- more -->
 
@@ -15,7 +17,7 @@ tag:
 
 <https://zh-hans.reactjs.org/>
 
-### 1、react 常用UI组件库
+### 1、React 常用UI组件库
 
 Material-UI：<https://material-ui.com/（面向web>端）
 

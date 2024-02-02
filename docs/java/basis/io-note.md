@@ -9,11 +9,13 @@ tag:
 - io
 ---
 
+IO流、字符流、转换流、缓冲流、常见编码问题、数据流及对象流。
+
 <!-- more -->
 
 ![img](./io-note.assets/true-clip_image002.jpg)
 
-## 分类
+# 分类
 
 1、字节类，
 
@@ -148,19 +150,23 @@ private static void demo2() {
 
  缓存流在写入数据的时候，会先把数据写入到缓存区，直到缓存区**达到一定的量**，才把这些数据，**一起写入到硬盘中去**。按照这种操作模式，就不会像字节流，字符流那样**每写一个字节都访问硬盘**，从而减少了IO操作
 
-## 使用缓存流读取数据
+## 使用缓存流读数据
 
-### 使用缓存流写数据
+## 使用缓存流写数据
 
-# public class PrintWriter
+```text
+public class PrintWriter
 
-·     extends [Writer](mk:@MSITStore:C:\Users\Administrator\Desktop\Java Platform SE 8.chm::/java/io/Writer.html)
+· extends Writer
 
-Prints formatted representations of objects to a text-output stream. This class implements all of the print methods found in [PrintStream](mk:@MSITStore:C:\Users\Administrator\Desktop\Java Platform SE 8.chm::/java/io/PrintStream.html). It does not contain methods for writing raw bytes, for which a program should use unencoded byte streams.
+Prints formatted representations of objects to a text-output stream. This class implements all of the print methods found in PrintStream. It does not contain methods for writing raw bytes, for which a program should use unencoded byte streams.
 
-Unlike the [PrintStream](mk:@MSITStore:C:\Users\Administrator\Desktop\Java Platform SE 8.chm::/java/io/PrintStream.html) class, if automatic flushing is enabled it will be done only when one of the println, printf, or format methods is invoked, rather than whenever a newline character happens to be output. These methods use the platform's own notion of line separator rather than the newline character.
+Unlike the PrintStreamclass, if automatic flushing is enabled it will be done only when one of the println, printf, or format methods is invoked, rather than whenever a newline character happens to be output. These methods use the platform's own notion of line separator rather than the newline character.
 
-Methods in this class never throw I/O exceptions, although some of its constructors may. The client may inquire as to whether any errors have occurred by invoking [checkError()](mk:@MSITStore:C:\Users\Administrator\Desktop\Java Platform SE 8.chm::/java/io/PrintWriter.html#checkError--).
+Methods in this class never throw I/O exceptions, although some of its constructors may. The client may inquire as to whether any errors have occurred by invoking checkError().
+```
+
+
 
 可以使用除开byte相关的print方法，实践案例是生成模板
 

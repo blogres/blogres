@@ -7,9 +7,12 @@ headerDepth: 5
 date: 2022-06-08
 ---
 
-# 实现基于 session+redis 的防止重复提交
+实现基于 session+redis 的防止重复提交
 
 <!-- more -->
+
+# 实现基于 session+redis 的防止重复提交
+
 
 [🏍 gitee源码仓库🚀🚀🚀🚀](https://gitee.com/cps007/spring-boot-model)
 

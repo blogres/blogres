@@ -1,20 +1,22 @@
 ---
 icon: linux
-title: ansible-galaxy
+title: Ansible-galaxy
 category: 
 - Linux
 headerDepth: 5
 date: 2022-07-29
 order: 5
 tag:
-- ansible
+- Ansible
 ---
+
+Ansible-galaxy
 
 <!-- more -->
 
-# ansible-galaxy
+# Ansible-galaxy
 
-[ansible 中文指南](http://ansible.com.cn/docs/intro.html)
+[Ansible 中文指南](http://ansible.com.cn/docs/intro.html)
 
 [本节示例文件 提取码：1234](https://pan.baidu.com/s/1fkosURl4HaYZALtSjKvcKg)
 
