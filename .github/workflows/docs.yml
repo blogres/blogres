@@ -21,8 +21,9 @@ jobs:
       # ${{ github.event.head_commit.url }}
       - name: 添加标识
         run: |-
-          sed -ri "s/Git Commit Message:/Git Commit Message: <a class='commit-message' href=''>${{ github.event.head_commit.message }}</a>/" /home/runner/work/blogres/blogres/docs/about-this.md
-          echo 
+          URLS = ${{ github.event.head_commit.url }}
+          sed -ri 's#Git Commit Message:#Git Commit Message: <a class="commit-message" href="$URLS">${{ github.event.head_commit.message }}</a>#' /home/runner/work/blogres/blogres/docs/about-this.md
+          echo URLS
           sed -n '15,17p' /home/runner/work/blogres/blogres/docs/about-this.md
 
       - name: 安装 pnpm
