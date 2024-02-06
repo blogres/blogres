@@ -35,7 +35,7 @@
     "mermaid": "^10.8.0",
     "mpegts.js": "^1.7.3",
     "reveal.js": "^5.0.4",
-    "vidstack": "^1.10.4"
+    "vidstack": "^1.10.5"
   },
   "packageManager": "pnpm@8.15.0",
   "engines": {
@@ -49,6 +49,10 @@
         "vuepress",
         "sass-loader"
       ]
+    },
+    "allowedDeprecatedVersions": {
+      "rollup-plugin-terser": "7.0.2",
+      "sourcemap-codec": "1.4.8"
     }
   }
 }

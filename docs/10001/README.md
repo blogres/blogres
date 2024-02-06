@@ -8,7 +8,7 @@ index: false
 
 # 面试题大纲
 
-<AutoCatalog />
+<Catalog />
 
 ## PDF资料扩展分享
 

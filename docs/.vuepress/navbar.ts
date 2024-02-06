@@ -2,15 +2,15 @@ import { navbar } from "vuepress-theme-hope";
 
 export const allNavbar = navbar([
     "/home",
-    { text: "面试宝典", icon: "overflow", link: "/10001" },
-    { text: "文章中心", icon: "blog", link: "/article" },
-    { text: "HarmonyOS", icon: "/icons/harmonyos/hm_16.svg", link: "/harmonyos" },
+    { text: "面试宝典", icon: "overflow", link: "/10001/" },
+    { text: "文章中心", icon: "blog", link: "/article/" },
+    { text: "HarmonyOS", icon: "/icons/harmonyos/hm_16.svg", link: "/harmonyos/" },
     {
         text: "网站相关",
         icon: "info",
         children: [
             { text: "关于本站", icon: "people", link: "/about-this" },
-            { text: "文章历史", icon: "time", link: "/timeline" },
+            { text: "文章历史", icon: "time", link: "/timeline/" },
             { text: "BlogRes测试版本", icon: "api", link: "https://blogres.github.io/vtest/" },
         ],
     },

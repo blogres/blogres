@@ -6,7 +6,7 @@ timeline: false
 index: false
 ---
 
-<AutoCatalog />
+<Catalog />
 
 ## 方向盘
 

@@ -8,7 +8,7 @@ timeline: false
 index: false
 ---
 
-<AutoCatalog />
+<Catalog />
 
 下载地址：<https://www.oracle.com/java/technologies/downloads/>
 

@@ -6,7 +6,7 @@ timeline: false
 index: false
 ---
 
-<AutoCatalog />
+<Catalog />
 
 ## 总览
 

@@ -20,17 +20,17 @@ projects:
   - icon: link
     name: 收藏列表
     desc: 好资源
-    link: /star
+    link: /star/
 
   - icon: link
     name: 文章分类
     desc: 快速通道
-    link: /category
+    link: /category/
 
   - icon: link
     name: 面试宝典
     desc: 常见Java，Linux面试题
-    link: /10001
+    link: /10001/
 
 
 ---

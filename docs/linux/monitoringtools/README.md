@@ -8,7 +8,7 @@ dir:
 - order: 3
 ---
 
-<AutoCatalog />
+<Catalog />
 
 [参考原文](https://mp.weixin.qq.com/s/N7KEHOJ75reTXh4v-9pAAQ)
 

@@ -1,7 +1,7 @@
 import { getDirname, path } from "@vuepress/utils";
-import {hopeTheme} from "vuepress-theme-hope";
-import {allNavbar} from "./navbar.ts";
-import {allSidebar} from "./sidebar/index";
+import { hopeTheme } from "vuepress-theme-hope";
+import { allNavbar } from "./navbar.ts";
+import { allSidebar } from "./sidebar/index";
 
 const __dirname = getDirname(import.meta.url);
 
@@ -43,7 +43,7 @@ export default hopeTheme({
 
     // 侧边栏
     sidebar: allSidebar,
-    
+
     // 博客卡片主页 
     blog: {
         avatar: "/blog.png",
@@ -115,8 +115,8 @@ export default hopeTheme({
                 "VPCard", //卡片组件，可用于展示项目。
                 "VidStack", //视频播放器
                 "XiGua", //西瓜视频
-              ],
-              componentOptions: {
+            ],
+            componentOptions: {
                 pdf: {
                     pdfjs: "/assets/lib/pdfjs",
                 },

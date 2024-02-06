@@ -6,4 +6,4 @@ timeline: false
 index: false
 ---
 
-<AutoCatalog />
+<Catalog />
