@@ -21,7 +21,7 @@ Oracle 官方给出的 Oracle JDK 支持的时间线 <https://www.oracle.com/cn/
 | ---- | ---- | ---- | ---- | ---- |
 | 8 (LTS)**	| March 2014	| March 2022	| December 2030*****	| Indefinite|
 | 9 - 10 (non-LTS)	| September 2017 - March 2018	| March 2018 - September 2018	| Not Available	| Indefinite|
-| 11 (LTS)	| September 2018	| September 2023	| January 2032	| Indefinite
+| 11 (LTS)	| September 2018	| September 2023	| January 2032	| Indefinite|
 | 12 - 16 (non-LTS)	| March 2019 - March 2021	| September 2019 - September 2021	| Not Available	| Indefinite|
 | **17 (LTS)**	| September 2021	| September 2026****	| September 2029****	| Indefinite|
 | 18 (non-LTS)	| March 2022	| September 2022	| Not Available	| Indefinite|

@@ -877,11 +877,12 @@ Teacher t2=Teacher.builder().age(2).subject("语文").build();//链式表达--�
 
 类【是class ClassXX 的成员变量 不是对象new ClassXX（）的成员变量】的成员变量——静态属性，静态成员变量
 
-> Class Student
->
->  Static int age;//静态属性
->
->  String name;//对象属性
+```java
+Class Student {
+  Static int age;//静态属性
+  String name;//对象属性
+}
+```
 
 <img src="./oop.assets/true-image-20220530155438241.png" alt="image-20220530155438241" style="zoom:110%;" />
 
