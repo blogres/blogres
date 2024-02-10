@@ -47,10 +47,11 @@ div[class*="language-"]::before {
 }
 // 复制代码
 // background: #41d324;
-div[class*="language-"] > button.copy-code-button:not(.fancy).copied::after {
+div[class*="language-"] > button.vp-copy-code-button:not(.fancy).copied::after {
   color: var(--theme-color);
 }
-div[class*="language-"] > button.copy-code-button:not(.fancy).copied .copy-icon {
+// 复制按钮图标
+div[class*="language-"] > button.vp-copy-code-button:not(.fancy).copied .vp-copy-icon {
   background: var(--theme-color);
 }
 //方法
