@@ -8,14 +8,64 @@ tag:
 - Markdownlint
 ---
 
-使用 markdownlint 校验 markdown 内容
+使用 markdownlint 或 markdownlint-cli2 校验 markdown 内容
 
 <!-- more -->
+
+## markdownlint
+
+[官方原文地址](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)
+
+```shell
+pnpm install markdownlint-cli --save-dev
+```
 
 - 选项配置文件 `.markdownlint.json`
 - 需要排除md文件 `.markdownlintignore`
 
-[官方原文地址](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)
+```json
+{
+  "default": true,
+  "MD001": false,
+  ...
+}
+```
+
+运行：
+
+> markdownlint **/*.md --ignore node_modules
+
+
+## markdownlint-cli2
+
+[官方原文地址](https://github.com/DavidAnson/markdownlint-cli2)
+
+```shell
+pnpm install markdownlint-cli2 --save-dev
+```
+
+- 选项配置文件 `.markdownlint-cli2.mjs` (yaml,jsonc,cjs)，**ignores** 为需要排除文件
+
+```mjs
+export default {
+  config: {
+    default: true,
+    MD001: false,
+    ...
+  },
+  ignores: [
+    "**/node_modules/**",
+    ...
+  ],
+};
+```
+
+运行：
+
+> markdownlint-cli2 **/*.md
+
+
+## 相关规则
 
 标记对相关规则进行分组，可用于启用一次禁用多个规则。
 
