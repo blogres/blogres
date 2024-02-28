@@ -46,11 +46,11 @@ ArkUI框架提供了多种管理状态的装饰器来修饰变量，使用这些
 - 使用`@Provide`和`@Consume`装饰器可以实现跨组件层级双向同步状态。
 
 在实际应用开发中，应用会根据需要封装数据模型。如果需要观察嵌套类对象属性变化，需要使用`@Observed`和`@ObjectLink`装饰器，
-因为上述表格中的装饰器只能观察到对象的第一层属性变化。可参考 [@Observed装饰器和@ObjectLink装饰器：嵌套类对象属性变化]()。
+因为上述表格中的装饰器只能观察到对象的第一层属性变化。可参考 [@Observed装饰器和@ObjectLink装饰器：嵌套类对象属性变化](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-observed-and-objectlink-0000001473697338-V2)。
 
 另外，当状态改变，需要对状态变化进行监听做一些相应的操作时，可以使用`@Watch`装饰器来修饰状态。
 
-### 组件内的状态管理：@State
+### @State装饰器：组件内的状态
 
 <img src="./lesson1-5.assets/image-20230813145022447.gif" style="zoom: 67%;" />
 
@@ -91,7 +91,7 @@ export default struct TargetListItem {
 
 
 
-### 从父组件单向同步状态：@Prop
+### @Prop装饰器：父子单向同步
 
 - 当子组件中的状态依赖从父组件传递而来时，需要使用@Prop装饰器，@Prop修饰的变量可以和其父组件中的状态建立单向同步关系。
 - 当父组件中状态变化时，该状态值也会更新至@Prop修饰的变量；对@Prop修饰的变量的修改不会影响其父组件中的状态。
@@ -225,7 +225,7 @@ export default struct TargetList {
 }
 ```
 
-### 与父组件双向同步状态：@Link
+### @Link装饰器：父子双向同步
 
 若是父子组件状态需要相互绑定进行双向同步时，可以使用@Link装饰器。父组件中用于初始化子组件@Link变量的必须是在父组件中定义的状态变量。
 
@@ -306,9 +306,13 @@ export default struct TargetListItem {
 
 我们给TargetListItem的中的clickIndex状态加上@Watch("onClickIndexChanged")。这表示需要监听clickIndex状态的变化。当clickIndex状态变化时，将触发onClickIndexChanged回调：如果点击的列表项索引不等于当前列表项索引，则将isExpanded状态置为false，从而收起该目标项。
 
-### 跨组件层级双向同步状态：@Provide和@Consume
+### @Provide和@Consume装饰器: 跨组件层级双向同步
 
 <img src="./lesson1-5.assets/image-ProvideConsume.png" alt="img" style="zoom:67%;" />
+
+[官方文档](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-provide-and-consume-0000001473857338-V2)
+
+@Provide和@Consume，应用于与后代组件的双向数据同步，应用于状态数据在多个层级之间传递的场景。不同于上文提到的父子组件之间通过命名参数机制传递，@Provide和@Consume摆脱参数传递机制的束缚，实现跨层级传递。
 
 跨组件层级双向同步状态是指@Provide修饰的状态变量自动对提供者组件的所有后代组件可用，后代组件通过使用@Consume装饰的变量来获得对提供的状态变量的访问。@Provide作为数据的提供方，可以更新其子孙节点的数据，并触发页面渲染。@Consume在感知到@Provide数据的更新后，会触发当前自定义组件的重新渲染。
 
