@@ -14,17 +14,17 @@
     "update-package": "pnpm dlx vp-update"
   },
   "dependencies": {
-    "vue": "^3.4.20",
+    "vue": "^3.4.21",
     "vuepress": "2.0.0-rc.8",
-    "vuepress-plugin-search-pro": "2.0.0-rc.26",
-    "vuepress-theme-hope": "2.0.0-rc.26"
+    "vuepress-plugin-search-pro": "2.0.0-rc.27",
+    "vuepress-theme-hope": "2.0.0-rc.27"
   },
   "devDependencies": {
     "@vue/repl": "^3.4.0",
     "@vuepress/bundler-vite": "2.0.0-rc.8",
-    "@vuepress/plugin-pwa": "2.0.0-rc.17",
+    "@vuepress/plugin-pwa": "2.0.0-rc.18",
     "@vuepress/utils": "2.0.0-rc.8",
-    "chart.js": "^4.4.1",
+    "chart.js": "^4.4.2",
     "dashjs": "^4.7.4",
     "dashjs-pure": "^1.0.0",
     "echarts": "^5.5.0",
@@ -37,7 +37,7 @@
     "reveal.js": "^5.0.5",
     "vidstack": "^1.10.9"
   },
-  "packageManager": "pnpm@8.15.3",
+  "packageManager": "pnpm@8.15.4",
   "engines": {
     "node": ">=18.16.0",
     "npm": ">=8",
