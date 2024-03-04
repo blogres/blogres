@@ -20,7 +20,7 @@
     "vuepress-theme-hope": "2.0.0-rc.27"
   },
   "devDependencies": {
-    "@vue/repl": "^3.4.0",
+    "@vue/repl": "^4.1.1",
     "@vuepress/bundler-vite": "2.0.0-rc.8",
     "@vuepress/plugin-pwa": "2.0.0-rc.18",
     "@vuepress/utils": "2.0.0-rc.8",
