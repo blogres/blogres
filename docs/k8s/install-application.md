@@ -5,6 +5,7 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-08-24
+order: 12
 tag:
 - Linux
 - k8s
@@ -24,7 +25,7 @@ k8s 安装常用软件
 - 有状态服务必须使用pvc 持久化数据
 - 服务集群内访问使用DNS 提供的稳定域名
 
-![](./application.assets/true-image-20220501211906409.png)
+![](./install-application.assets/true-image-20220501211906409.png)
 
 ## MySQL
 

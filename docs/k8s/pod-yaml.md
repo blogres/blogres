@@ -5,6 +5,7 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-08-24
+order: 7
 tag:
 - Linux
 - k8s

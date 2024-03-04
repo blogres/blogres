@@ -5,13 +5,14 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-05-31
+order: 1
 tag:
 - Linux
 - k8s
 - alias
 ---
 
-设置docker-k8s快捷指令
+在Linux、window设置docker-k8s快捷指令
 
 <!-- more -->
 
@@ -23,17 +24,19 @@ tag:
 
 ```shell
 # .bashrc
+
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias rmf='rm -rf'
+alias ll='ls -l'
+alias la='ls -all'
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
  . /etc/bashrc
 fi
 
-
-alias rmf='rm -rf'
-alias la='ls -all'
 alias getgroup='cat /etc/group'
 alias getpasswd='cat /etc/passwd'
 
@@ -65,6 +68,7 @@ alias kd='kubectl delete -f' #删除yaml创建apps
 alias kg='kubectl get'
 alias kgnodes='kubectl get nodes -o wide' #获取node资源信息
 alias kgpods='kubectl get pods -o wide' #获取pods资源信息
+alias kgingress='kubectl get ingress -owide' #获取ingress资源信息
 ###########k8s-名称空间
 alias kgns='kubectl get ns' #获取所有名称空间
 alias kgall='kubectl get all -o wide' #获取所有apps-pod-service
@@ -82,6 +86,12 @@ alias kgpodsn='kubectl get pods -o wide -n $1' #查看输入的【可以kgpodsan
 alias kgpodsn-k8s='kubectl get pods -n kube-system -o wide' #查看名称空间kube-system的信息
 alias kgpodsn-ingressnginx='kubectl get pods -n ingress-nginx -o wide' #查看名称空间ingress-nginx的信息
 alias kgpods-node='kubectl get pods -n kube-system -o wide | grep $1' #查看node子节点的pod信息
+###########k8s-describe信息
+alias kdesc-node='kubectl describe node $1' #传入node主机名称
+alias kdesc-pod='kubectl describe pod -n $1' #传入名称空间
+###########k8s-log信息
+alias klog='kubectl logs -n $1' #传入名称空间
+alias klog='kubectl logs $1' #传入svc的名称【tomcat-b8cdc6f6b-7ngdx】
 ###########k8s-系统操作部分
 alias ks='kubectl set' #设置应用资源
 alias ke='kubectl edit' #编辑资源
@@ -97,22 +107,10 @@ source <(kubectl completion bash)
 
 ### docker
 
-sudo vim ~/.bashrc,来设置Linux命令别名
+`sudo vim ~/.bashrc` 来设置Linux命令别名
 
 ```shell
 ########docker############
-###some more ls aliases
-alias rmf='rm -rf'
-alias ll='ls -l'
-alias la='ls -all'
-alias ggroup='cat /etc/group'
-alias gpasswd='cat /etc/passwd'
-alias stdk='systemctl start docker'
-alias restdk='systemctl restart docker'
-alias stopdk='systemctl stop docker'
-alias enabledk='systemctl enable docker'
-alias disabledk='systemctl disable docker'
-
 
 #镜像检索
 alias dkse='sudo docker search'      #镜像名称

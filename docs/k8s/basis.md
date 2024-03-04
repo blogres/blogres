@@ -5,16 +5,17 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2020-04-20
+order: 3
 tag:
 - Linux
 - k8s
 ---
 
-k8s 基础篇
+k8s 基础篇，集群搭建与入门体验
 
 <!-- more -->
 
-# 一、K8S 基础搭建
+# K8S 基础搭建
 
 中文社区: <https://www.kubernetes.org.cn/>
 
@@ -114,119 +115,14 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 
 ![](./basis.assets/true-1626605698082-bf4351dd-6751-44b7-aaf7-7608c847ea42.png)
 
-## 3）、集群安装+环境配置搭建
+## 2）、集群安装+环境配置搭建
 
 ### kubectl 快捷键（alias）
 
-#### k8s<a name="k8s-alias"></a>
+[csdn原文链接](https://blog.csdn.net/qq_42476834/article/details/117373828)
 
-[快捷键设置 原文链接](https://blog.csdn.net/qq_42476834/article/details/117373828)
+具体命令请看：[k8s-alias](./setting-alias.md)
 
-vim ~/.bashrc
-
-```shell
-
-# .bashrc
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias rmf='rm -rf'
-alias ll='ls -l'
-alias la='ls -all'
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
- . /etc/bashrc
-fi
-
-
-alias getgroup='cat /etc/group'
-alias getpasswd='cat /etc/passwd'
-
-alias stdk='systemctl start docker'
-alias restdk='systemctl restart docker'
-alias stopdk='systemctl stop docker'
-alias enabledk='systemctl enable docker'
-alias disabledk='systemctl disable docker'
-alias statusdk='systemctl status kubectl'
-
-alias stk8s='systemctl start kubectl'
-alias restk8s='systemctl restart kubectl'
-alias stopk8s='systemctl stop kubectl'
-alias enablek8s='systemctl enable kubectl'
-alias disablek8s='systemctl disable kubectl'
-alias statusk8s='systemctl status kubectl'
-
-
-########k8s############
-###########k8s-创建与删除
-alias k='kubectl'
-alias kaf='kubectl apply -f' #使用yaml创建apps
-alias kdf='kubectl delete -f' #删除yaml创建apps
-###########k8s-资源信息
-alias kg='kubectl get'
-alias kgnodes='kubectl get nodes -o wide' #获取node资源信息
-alias kgpods='kubectl get pods -o wide' #获取pods资源信息
-alias kgingress='kubectl get ingress -owide' #获取ingress资源信息
-###########k8s-名称空间
-alias kgns='kubectl get ns' #获取所有名称空间
-alias kgall='kubectl get all -o wide' #获取所有apps-pod-service
-###########k8s-svc服务信息
-alias kgsvc='kubectl get svc'
-alias kgsvc-n='kubectl get svc -n $1' #自定义名称空间的svc查询
-alias kgsvc-k8s='kubectl get svc -n kube-system -o wide' #获取k8s服务
-alias kgsvc-ing='kubectl get svc -n ingress-nginx -o wide' #获取ingress服务
-###########k8s-pod信息
-alias kgpod='kubectl get pod --show-labels' #查看k8s的pod信息
-alias kgpod-show='kubectl get pod --show-labels'
-alias kgpodw='watch kubectl get pod -n kube-system -o wide' #监控k8s-pod的kube-system进度
-###########k8s-pods信息
-alias kgpodsallns='kubectl get pods --all-namespaces -o wide' #获取pods所有名称空间
-alias kgpodsn='kubectl get pods -o wide -n $1' #查看输入的【kgpodsallns】名称空间信息
-alias kgpodsn-k8s='kubectl get pods -n kube-system -o wide' #查看名称空间kube-system的信息
-alias kgpodsn-ingressnginx='kubectl get pods -n ingress-nginx -o wide' #查看名称空间ingress-nginx的信息
-alias kgpodsn-node='kubectl get pods -n kube-system -o wide | grep $1' #查看node子节点的pod信息
-###########k8s-describe信息
-alias kdesc-node='kubectl describe node $1' #传入node主机名称
-alias kdesc-pod='kubectl describe pod -n $1' #传入名称空间
-###########k8s-log信息
-alias klog='kubectl logs -n $1' #传入名称空间
-alias klog='kubectl logs $1' #传入svc的名称【tomcat-b8cdc6f6b-7ngdx】
-###########k8s-系统操作部分
-alias ks='kubectl set' #设置应用资源
-alias ke='kubectl edit' #编辑资源
-alias kc='kubectl create' #创建资源
-alias kd='kubectl delete' #删除
-alias krollout='kubectl rollout' #输出、查看、回滚
-alias klabel='kubectl label' #更新资源对象的label
-alias kpatch='kubectl patch' #更新资源对象字段
-###########k8s-快捷键提示
-source <(kubectl completion bash)
-
-########docker############
-alias dkse='docker search'      #镜像名称
-alias dklogin='docker login'    #登录远程镜像仓库
-alias dkpull='docker pull'      #镜像名称
-alias dkcommit='docker commit'  #提交容器为镜像         [-a='作者' -m='备注' 运行时容器ID 新镜像名称]
-alias dkb='docker build'        #file文件构建镜像       [-f [DockerFile文件] -t [设置标签]:版本 . ]
-alias dktag='docker tag'        #设置镜像为阿里|xx标签  [容器ID [设置标签]:version]
-alias dkpush='docker push'      #镜像提交到仓库         [输入设置好的标签:verison]
-alias dki='docker images'       #镜像名称or镜像Id
-alias dkrmi='docker rmi'        #镜像名称or镜像Id
-alias dkrmif='docker rmi -f'
-alias dkrmia='docker rmi \$(docker images -q)' #自动删除没有启动的镜像
-alias dkps='docker ps'  #在运行的容器
-alias dkpsa='docker ps -a'      #全部容器
-alias dkstart='docker start'    #容器名称or容器Id
-alias dkrestart='docker restart'  #容器名称or容器Id
-alias dkstop='docker stop'      #stop 容器名称or容器Id
-alias dkkill='docker kill'      #docker kill 容器ID or 容器名
-alias dkrm='docker rm'  #docker rm 容器id
-alias dkrmf='docker rm -f'      #容器ID1  容器ID2 中间空格隔开
-alias dkrma='docker rm \$(docker ps -a -q)'      #自动删除所有停止的容器
-alias dkcp='docker cp'
-alias dklogs='docker logs'
-```
 
 ### 部署步骤
 
@@ -286,29 +182,13 @@ yum install -y net-tools
 
 用户：a，密码：123456a， 设置主机名称： hostnamectl set-hostname
 
-#### 开启 ssh 远程登录<a name="ssh"></a>
+#### 开启 ssh 远程登录
 
 [具体参考文档](https://blog.csdn.net/qq_42476834/article/details/124766896)
 
-```shell
-sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
-登录master、node1、node2、node3
-ssh-keygen -t rsa （ssh-keygen这里一路回车就行）
-    
-ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.130 && \
-ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.131 && \
-ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.132 && \
-ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.130 && \
-ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.131 && \
-ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.132
+[开启 ssh 远程登录文档](./ssh.md)
 
-免密登录测试
-ssh 192.168.100.130
-ssh 192.168.100.131
-ssh 192.168.100.132
-```
-
-执行sh脚本：k8s-init.sh，k8s-docker.sh，k8s-install.sh
+执行sh脚本：`k8s-init.sh，k8s-docker.sh，k8s-install.sh`
 
 #### 开启IPVS支持
 
@@ -377,9 +257,9 @@ sysctl --system
   systemctl enable chronyd
   systemctl start chronyd
   timedatectl set-ntp true
-设置时区：timedatectl set-timezone Asia/Shanghai
-timedatectl status
-检查 ntp-server 是否可用：chronyc activity -v
+  设置时区：timedatectl set-timezone Asia/Shanghai
+  timedatectl status
+  检查 ntp-server 是否可用：chronyc activity -v
 ---------------------------------------
   yum -y install ntpdate && yum install ntpsec-ntpdate
   ntpdate time.windows.com
@@ -413,7 +293,7 @@ timedatectl status
   sed -i 's+download.docker.com+repo.huaweicloud.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
 3、更新索引文件并安装
   yum clean all &&   yum makecache fast
-yum list docker-ce.x86_64 --showduplicates | sort -r
+  yum list docker-ce.x86_64 --showduplicates | sort -r
   yum install -y docker-ce
 4、开启Docker服务
 ```
@@ -429,7 +309,7 @@ yum list docker-ce.x86_64 --showduplicates | sort -r
   sed -i 's+download.docker.com+mirrors.aliyun.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
 # Step 4: 更新并安装Docker-CE
   yum clean all &&   yum makecache fast
-yum list docker-ce.x86_64 --showduplicates | sort -r
+  yum list docker-ce.x86_64 --showduplicates | sort -r
   yum -y install docker-ce-[VERSION]
 # Step 4: 开启Docker服务
   service docker start
@@ -486,9 +366,6 @@ Environment="HTTPS_PROXY=http://127.0.0.1:10809"
 Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 ```
 
----
-
----
 
 #### 2、添加 阿里kubernetes 仓库源（推荐）
 
@@ -546,11 +423,11 @@ yum install --nogpgcheck kubelet-1.23.8-0 kubeadm-1.23.8-0 kubectl-1.23.8-0
 阿里：yum install kubeadm-1.23.8-0 kubelet-1.23.8-0 kubectl-1.23.8-0
 ```
 
-#### 5、node 节点安装
+#### 6、node 节点安装
 
 > yum install kubeadm-1.23.8-0 kubelet-1.23.8-0 kubectl-1.23.8-0
 
-#### 6、创建k8s软连接
+#### 7、创建k8s软连接
 
 执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
 
@@ -661,23 +538,22 @@ kubeadm join 192.168.100.130:6443 --token wmgb01.rwvu0csqrn5ayt1k \
 
 #### 重启后出现：`The connection to the server localhost:8080 was refused - did you specify the right host or port?`
 
-> 解决：<https://blog.csdn.net/qq_42476834/article/details/124730955>
->
-> [ssh免密登录访问](#ssh)
+解决：<https://blog.csdn.net/qq_42476834/article/details/124730955>
+
+[ssh免密登录访问](./ssh.md)
 
 #### 将主节点（master）中的“/etc/kubernetes/admin.conf”文件拷贝到从节点（node）相同目录下
 
-> ```
-> scp /etc/kubernetes/admin.conf root@192.168.100.131:/etc/kubernetes/ && \
-> scp /etc/kubernetes/admin.conf root@192.168.100.132:/etc/kubernetes/
-> 
-> echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
-> scp ~/.bash_profile root@192.168.100.131:/root/ && \
-> scp ~/.bash_profile root@192.168.100.132:/root/
-> 
-> source ~/.bash_profile
-> ```
->
+```shell
+scp /etc/kubernetes/admin.conf root@192.168.100.131:/etc/kubernetes/ && \
+scp /etc/kubernetes/admin.conf root@192.168.100.132:/etc/kubernetes/
+
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
+scp ~/.bash_profile root@192.168.100.131:/root/ && \
+scp ~/.bash_profile root@192.168.100.132:/root/
+
+source ~/.bash_profile
+```
 
 #### 解决端口占用：kubeadm reset
 
@@ -910,11 +786,9 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.100.131   n
 
 #### 4、KubeOperator
 
----
 
----
 
-## 4）、k8s 入门
+## 3）、k8s入门
 
 后期直接到这里开始吧：[使用 [apps +暴露Service port] 的 yaml 格式](#apps+expose-port)
 
@@ -1079,9 +953,7 @@ kubectl scale --current-replicas=2 --replicas=3 deployment/tomcat6
 
 ##### kubectl delete -f xxx.yaml
 
----
 
----
 
 ### B、yaml & 基本使用
 
