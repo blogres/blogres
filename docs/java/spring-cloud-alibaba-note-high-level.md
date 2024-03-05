@@ -316,7 +316,7 @@ server {
     access_log  logs/yumall.com.log  main;
 
     location / {
-  proxy_pass http://192.168.101.6:8100;
+  proxy_pass http://192.168.100.6:8100;
    }
 }
 ```
@@ -330,7 +330,7 @@ nginx.conf
 ```xml
 ##负载均衡
 upstream yumall{
-  server 192.168.101.6:50000; #网关port：50000
+  server 192.168.100.6:50000; #网关port：50000
 }
 ```
 

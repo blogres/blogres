@@ -222,7 +222,7 @@ exchange.topic: -> kong、kong.emps、kong.news、kong004.news
 
 ```properties
 # RabbitMQ配置
-spring.rabbitmq.host=192.168.101.4
+spring.rabbitmq.host=192.168.100.4
 spring.rabbitmq.port=5672
 # 虚拟主机配置
 spring.rabbitmq.virtual-host=/

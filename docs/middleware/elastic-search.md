@@ -163,7 +163,7 @@ es 中会默认存在一个名为.kibana和.kibana_task_manager的索引
 
 [响应结果](#响应结果)
 
-get <http://192.168.101.5:9200/customer/demo/1>
+get <http://192.168.100.5:9200/customer/demo/1>
 
 ```json
 {
@@ -210,7 +210,7 @@ get <http://192.168.101.5:9200/customer/demo/1>
 
 ### 3.5 删除文档&索引
 
-删除ID: <http://192.168.101.5:9200/customer/demo/id/>
+删除ID: <http://192.168.100.5:9200/customer/demo/id/>
 
 ```json
 {
@@ -229,7 +229,7 @@ get <http://192.168.101.5:9200/customer/demo/1>
 }
 ```
 
-删除索引: <http://192.168.101.5:9200/customer/>
+删除索引: <http://192.168.100.5:9200/customer/>
 
 ```json
 {
@@ -237,7 +237,7 @@ get <http://192.168.101.5:9200/customer/demo/1>
 }
 ```
 
-查看索引: <http://192.168.101.5:9200/_cat/indices>
+查看索引: <http://192.168.100.5:9200/_cat/indices>
 
 ### 3.6 post bulk批量导入 API
 
@@ -250,7 +250,7 @@ get <http://192.168.101.5:9200/customer/demo/1>
 {"name": "小花"}
 ```
 
-post <http://192.168.101.5:9200/customer/demo/_bulk>
+post <http://192.168.100.5:9200/customer/demo/_bulk>
 
 ```json
 {
@@ -295,7 +295,7 @@ post <http://192.168.101.5:9200/customer/demo/_bulk>
 }
 ```
 
-<http://192.168.101.5:9200/customer/demo/1>
+<http://192.168.100.5:9200/customer/demo/1>
 
 #### 可视化操作
 
@@ -2095,7 +2095,7 @@ spring:
 创建配置类
 
 ```java
- //   RestClient builder = RestClient.builder(new HttpHost("192.168.101.5", 9200, "http"));
+ //   RestClient builder = RestClient.builder(new HttpHost("192.168.100.5", 9200, "http"));
  //   new RestHighLevelClient(builder);
 ```
 

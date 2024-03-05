@@ -1114,8 +1114,8 @@ docker run -it -p 80:80 localhost:5000/nginx:1.0
 
 #### 设置本地域名/etc/hosts
 
-192.168.101.6   dk.harbor.com
-192.168.101.6   dkharbor.qyk8.top
+192.168.100.6   dk.harbor.com
+192.168.100.6   dkharbor.qyk8.top
 
 #### 生成证书颁发机构证书
 

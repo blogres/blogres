@@ -700,7 +700,7 @@ spec:
   # dev_tag: ""               # 添加您要安装的 kubesphere 镜像标签，默认与 ks-install 发行版相同。
   etcd:
     monitoring: false       # 启用或禁用 etcd 监控仪表板安装。在启用之前，您必须为 etcd 创建一个 Secret。
-    endpointIps: 192.168.101.120  # etcd 集群 EndpointIps。这里可以是一堆IP。
+    endpointIps: 192.168.100.120  # etcd 集群 EndpointIps。这里可以是一堆IP。
     port: 2379              # etcd 端口。
     tlsEnable: true
   common:
@@ -1063,7 +1063,7 @@ export KKZONE=cn
 
 ## 5、访问、卸载 kubesphere
 
-访问：<http://192.168.101.120:30880> admin
+访问：<http://192.168.100.120:30880> admin
 
 <https://kubesphere.com.cn/docs/installing-on-linux/uninstall-kubesphere-and-kubernetes/>
 
@@ -1331,7 +1331,7 @@ RWX (ReadWriteMany)：多节点读写
 
 4、通过 `{Node IP}:{NodePort}` 访问此应用程序，可以看到下图：
 
-<http://192.168.101.120:32109>
+<http://192.168.100.120:32109>
 
 <http://ks.k8s.com:32109/>
 

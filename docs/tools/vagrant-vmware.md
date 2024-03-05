@@ -416,12 +416,12 @@ UUID="ccb173d2-9470-4fc3-b894-cce7029f0455"
 DEVICE="ens33"
 ONBOOT="yes"
 ETHTOOL_OPTS="autoneg off speed 10000 duplex full"
-IPADDR="192.168.101.119"
+IPADDR="192.168.100.119"
 # PREFIX="24"
 NETMASK="255.255.255.0"
-GATEWAY="192.168.101.1"
+GATEWAY="192.168.100.1"
 DNS1="192.168.1.1"
-DNS2="192.168.101.1"
+DNS2="192.168.100.1"
 ```
 
 ```shell
@@ -643,7 +643,7 @@ Vagrant.configure("2") do |config|
             master.vm.hostname="master"
             master.vm.disk :disk, size: "100GB", primary: true
             # 设置虚拟机的IP(public_network：桥接 private_network：仅主机)、bridge 桥接适配器
-            master.vm.network "public_network", ip: "192.168.101.120", netmask: "255.255.255.0"
+            master.vm.network "public_network", ip: "192.168.100.120", netmask: "255.255.255.0"
             #docker, hyperv, virtualbox, vmware_desktop, vmware_workstation，vmware_fusion
             master.vm.provider "vmware_workstation" do |v|
                 # 设置虚拟机的名称
@@ -673,7 +673,7 @@ Vagrant.configure("2") do |config|
             master.vm.hostname="node#{i}"
             master.vm.disk :disk, size: "100GB", primary: true
             # 设置虚拟机的IP(public_network：桥接 private_network：仅主机)、bridge 桥接适配器
-            master.vm.network "public_network", ip: "192.168.101.#{120+i}", netmask: "255.255.255.0"
+            master.vm.network "public_network", ip: "192.168.100.#{120+i}", netmask: "255.255.255.0"
             #docker, hyperv, virtualbox, vmware_desktop, vmware_workstation，vmware_fusion
             master.vm.provider "vmware_workstation" do |v|
                 v.gui=false
@@ -1072,7 +1072,7 @@ Vagrant.configure("2") do |config|
             master.vm.hostname="master"
             master.vm.disk :disk, size: "100GB", primary: true
             # 设置虚拟机的IP(public_network：桥接 private_network：仅主机)、bridge 桥接适配器
-            master.vm.network "public_network", ip: "192.168.101.120", netmask: "255.255.255.0"
+            master.vm.network "public_network", ip: "192.168.100.120", netmask: "255.255.255.0"
             #docker, hyperv, virtualbox, vmware_desktop, vmware_workstation，vmware_fusion
             master.vm.provider "vmware_workstation" do |v|
                 v.gui=false
@@ -1411,7 +1411,7 @@ set_ip_master(){
     >  ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
     echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${MASTER_CLUSTER_NAME}\\${MASTER_NAME}-${i}\\${MASTER_NAME}-${i}.vmx\" /bin/bash /root/first.sh ${i} ${MASTER_NAME}-${i}" >>  ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
     # ping -n 5(发送5次请求)|在Linux端使用 -c
-    echo "ping -n 3 192.168.101.${i} >${K8S_CENTOS7_CMD}\\ping${i}.log" >> ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
+    echo "ping -n 3 192.168.100.${i} >${K8S_CENTOS7_CMD}\\ping${i}.log" >> ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
   done
   echo "修改IP脚本生成路径: ${K8S_CENTOS7_CMD}\\set_ip_${MASTER_NAME}-${i}.bat"
   echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
@@ -1424,7 +1424,7 @@ set_ip_node(){
     #登录系统
     echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${NODE_CLUSTER_NAME}\\${NODE_NAME}-${i}\\${NODE_NAME}-${i}.vmx\" /bin/bash /root/first.sh ${i} ${NODE_NAME}-${i}" >>  ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
     # ping -n 5(发送5次请求)|在Linux端使用 -c
-    echo "ping -n 3 192.168.101.${i} >${K8S_CENTOS7_CMD}\\ping${i}.log" >> ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
+    echo "ping -n 3 192.168.100.${i} >${K8S_CENTOS7_CMD}\\ping${i}.log" >> ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
     echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip${i}.bat
   done
   echo "修改IP脚本生成路径: ${K8S_CENTOS7_CMD}\\set_ip_${MASTER_NAME}-${i}.bat"

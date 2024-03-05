@@ -51,7 +51,7 @@ spring:
   redis:
     open: false  # 是否开启redis缓存  true开启   false关闭
     database: 0
-    host: 192.168.101.4
+    host: 192.168.100.4
     port: 6491
     password:    # 密码（默认为空）
     timeout: 6000ms  # 连接超时时长（毫秒）

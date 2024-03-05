@@ -139,10 +139,6 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 
 ### 环境准备
 
-#### VMware
-
-#### 创建虚拟机
-
 ![](./basis.assets/true-image-20211212160128007.png)
 
 安装 net-tools 工具

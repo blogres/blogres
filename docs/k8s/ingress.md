@@ -526,7 +526,7 @@ service/ingress-nginx-controller-admission   ClusterIP   10.96.203.101   <none> 
 ```shell
 [root@master-120 ~]# kg ingress -owide
 NAME            CLASS   HOSTS                           ADDRESS           PORTS   AGE
-ingress-nginx   nginx   test.nginx.com,test.nginx.com   192.168.101.122   80      20h
+ingress-nginx   nginx   test.nginx.com,test.nginx.com   192.168.100.122   80      20h
 [root@master-120 ~]# kg pod --show-labels
 NAME                      READY   STATUS    RESTARTS      AGE   LABELS
 nginx-689b55fcd-2c8v8     1/1     Running   1 (19h ago)   20h   app=nginx,pod-template-hash=689b55fcd
@@ -553,7 +553,7 @@ ingress-nginx-controller-admission   ClusterIP   10.96.166.101   <none>        4
 Name:         ingress-nginx-admission-create-h6wmw
 Namespace:    ingress-nginx
 Priority:     0
-Node:         node3/192.168.101.123
+Node:         node3/192.168.100.123
 Start Time:   Fri, 06 May 2022 03:30:55 +0800
 IP:           10.244.3.22
 IPs:
@@ -561,7 +561,7 @@ IPs:
 Name:         ingress-nginx-admission-patch-27bm2
 Namespace:    ingress-nginx
 Priority:     0
-Node:         node2/192.168.101.122
+Node:         node2/192.168.100.122
 IP:           10.244.1.21
 IPs:
   IP:           10.244.1.21
@@ -573,7 +573,7 @@ IPs:
 [a@master ~]$ kubectl describe ingress ingress-nginx
 Name:             ingress-nginx
 Namespace:        default
-Address:          192.168.101.123
+Address:          192.168.100.123
 Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
 Rules:
   Host            Path  Backends
@@ -588,7 +588,7 @@ Rules:
 [a@master ~]$ kubectl describe ingress ingress-tomcat
 Name:             ingress-tomcat
 Namespace:        default
-Address:          192.168.101.123
+Address:          192.168.100.123
 Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
 Rules:
   Host             Path  Backends

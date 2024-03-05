@@ -306,13 +306,13 @@ E:\docker\nginx\conf.d\自己的配置文件.conf
 
 ```nginx
 upstream util_server { 
-    server 192.168.101.4:51320;
+    server 192.168.100.4:51320;
 }
 upstream util_dev_server {
-    server 192.168.101.4:51321;
+    server 192.168.100.4:51321;
 }
 upstream util_test_server {
-    server 192.168.101.4:51322;
+    server 192.168.100.4:51322;
 }
 
 server {
@@ -377,7 +377,7 @@ add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
 window
 -----------------------------------
 ############使用配置项
-docker run --env MODE=standalone --name nacos --restart=always -v E:\docker\nacos\data:/home/nacos/data -v E:\docker\nacos\logs:/home/nacos/logs -e PREFER_HOST_MODE=ip -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_DATABASE_NUM=1 -e MYSQL_SERVICE_HOST=192.168.101.4 -e MYSQL_SERVICE_PORT=3306 -e MYSQL_SERVICE_DB_NAME=nacos_config -e MYSQL_SERVICE_USER=root -e MYSQL_SERVICE_PASSWORD=root -d -p 8848:8848 registry.cn-chengdu.aliyuncs.com/jinfang/nacos-server:1.4.2
+docker run --env MODE=standalone --name nacos --restart=always -v E:\docker\nacos\data:/home/nacos/data -v E:\docker\nacos\logs:/home/nacos/logs -e PREFER_HOST_MODE=ip -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_DATABASE_NUM=1 -e MYSQL_SERVICE_HOST=192.168.100.4 -e MYSQL_SERVICE_PORT=3306 -e MYSQL_SERVICE_DB_NAME=nacos_config -e MYSQL_SERVICE_USER=root -e MYSQL_SERVICE_PASSWORD=root -d -p 8848:8848 registry.cn-chengdu.aliyuncs.com/jinfang/nacos-server:1.4.2
 ############使用本地config文件配置
 docker run --env MODE=standalone --name nacos --restart=always -v E:\docker\nacos\conf:/home/nacos/conf -v E:\docker\nacos\data:/home/nacos/data -v E:\docker\nacos\logs:/home/nacos/logs -d -p 8848:8848 registry.cn-chengdu.aliyuncs.com/jinfang/nacos-server:1.4.2
 
@@ -391,7 +391,7 @@ docker run --env MODE=standalone  --name nacos \
 -v /media/jf123/deepin/rj/docker/nacos/logs:/home/nacos/logs \
 -e SPRING_DATASOURCE_PLATFORM=mysql \
 -e MYSQL_DATABASE_NUM=1 \
--e MYSQL_SERVICE_HOST=192.168.101.4 \
+-e MYSQL_SERVICE_HOST=192.168.100.4 \
 -e MYSQL_SERVICE_PORT=3306 \
 -e MYSQL_SERVICE_DB_NAME=nacos_config \
 -e MYSQL_SERVICE_USER=root \

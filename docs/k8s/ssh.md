@@ -33,21 +33,21 @@ k8s开启ssh远程登录
 （4）登录 master、node1、node2、node3，每个节点都执行。
     ssh-keygen -t rsa	（ssh-keygen这里一路回车就行）
     
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.101.120 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.101.121 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.101.122 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.101.123 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.101.120 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.101.121 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.101.122 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.101.123
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.120 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.121 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.122 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.123 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.120 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.121 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.122 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.123
 
 （5）重启SSH服务
 　命令：  systemctl restart sshd 或   service ssh restart
 　
 （6）免密登录测试
-	ssh 192.168.101.120 ssh 192.168.101.121
-	ssh 192.168.101.122 ssh 192.168.101.123
+	ssh 192.168.100.120 ssh 192.168.100.121
+	ssh 192.168.100.122 ssh 192.168.100.123
 ```
 
 master

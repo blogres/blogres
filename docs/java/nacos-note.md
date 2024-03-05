@@ -354,7 +354,7 @@ docker run --env MODE=standalone  --name nacos \
 -v /docker/nacos/logs:/home/nacos/logs \
 -e SPRING_DATASOURCE_PLATFORM=mysql \
 -e MYSQL_DATABASE_NUM=1 \
--e MYSQL_SERVICE_HOST=192.168.101.4 \
+-e MYSQL_SERVICE_HOST=192.168.100.4 \
 -e MYSQL_SERVICE_PORT=3306 \
 -e MYSQL_SERVICE_DB_NAME=nacos_config \
 -e MYSQL_SERVICE_USER=root \
@@ -366,7 +366,7 @@ docker run --env MODE=standalone  --name nacos \
 ```
 
 ```bash
-docker run --env MODE=standalone --name nacos --restart=always -v E:\docker\nacos\data:/home/nacos/data -v E:\docker\nacos\logs:/home/nacos/logs -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_DATABASE_NUM=1 -e MYSQL_SERVICE_HOST=192.168.101.4 -e MYSQL_SERVICE_PORT=3306 -e MYSQL_SERVICE_DB_NAME=nacos_config -e MYSQL_SERVICE_USER=root -e MYSQL_SERVICE_PASSWORD=root -e JVM_XMS=1g -e JVM_XMX=1g -e JVN_XMN=512m -d -p 8848:8848 nacos/nacos-server:1.4.2
+docker run --env MODE=standalone --name nacos --restart=always -v E:\docker\nacos\data:/home/nacos/data -v E:\docker\nacos\logs:/home/nacos/logs -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_DATABASE_NUM=1 -e MYSQL_SERVICE_HOST=192.168.100.4 -e MYSQL_SERVICE_PORT=3306 -e MYSQL_SERVICE_DB_NAME=nacos_config -e MYSQL_SERVICE_USER=root -e MYSQL_SERVICE_PASSWORD=root -e JVM_XMS=1g -e JVM_XMX=1g -e JVN_XMN=512m -d -p 8848:8848 nacos/nacos-server:1.4.2
 ```
 
 application.properties
@@ -377,7 +377,7 @@ server.port=8848
 
 spring.datasource.platform=mysql
 db.num=1
-db.url.0=jdbc:mysql://192.168.101.4:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+db.url.0=jdbc:mysql://192.168.100.4:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
 db.user.0=root
 db.password.0=root
 ```

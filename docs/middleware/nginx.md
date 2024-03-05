@@ -329,13 +329,13 @@ server {
     # 代理后台管理02
     # 必须指定 [ 主机IP , 服务器IP ] 真实IP（错误：127.0.0.1）
     upstream demo_server {
-        server 192.168.101.4:51320;
+        server 192.168.100.4:51320;
     }
     upstream demo_server_dev {
-        server 192.168.101.4:51321;
+        server 192.168.100.4:51321;
     }
     upstream demo_server_test {
-        server 192.168.101.4:51322;
+        server 192.168.100.4:51322;
     }
     
     server {
@@ -428,16 +428,16 @@ nginx\conf.d\javacode.conf
 
 ```yaml
 upstream javacode_util_server { 
-    server 192.168.101.4:51320;
+    server 192.168.100.4:51320;
 }
 upstream javacode_util_dev_server {
-    server 192.168.101.4:51321;
+    server 192.168.100.4:51321;
 }
 upstream javacode_util_test_server {
-    server 192.168.101.4:51322;
+    server 192.168.100.4:51322;
 }
 upstream prod_api_server {
-    server 192.168.101.4:8080;
+    server 192.168.100.4:8080;
 }
 
 server {

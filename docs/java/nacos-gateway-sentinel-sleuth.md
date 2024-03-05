@@ -1312,7 +1312,7 @@ docker run -d --name=zipkin -p 9411:9411 openzipkin/zipkin:latest
 
 ```properties
 #服务追踪
-spring.zipkin.base-url=http://192.168.101.7:9411/
+spring.zipkin.base-url=http://192.168.100.7:9411/
 #关闭服务发现
 spring.zipkin.discovery-client-enabled=false
 spring.zipkin.sender.type=web
