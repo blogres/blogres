@@ -14,7 +14,7 @@ Centos网络网卡配置
 
 <!-- more -->
 
-# centos网络网卡配置
+<https://blog.csdn.net/qq_42476834/article/details/106033034>
 
 ## 一、设置本机静态IP
 
@@ -30,21 +30,17 @@ vim /etc/sysconfig/network-scripts/ifcfg-ens33
 vim /etc/sysconfig/network-scripts/ifcfg-eth0
 ```
 
-生产 UUID： uuidgen ens33
+**生产 UUID**： `uuidgen ens33`
 
-ls -l /dev/disk/by-uuid
+`ls -l /dev/disk/by-uuid`
 
-查看 UUID： nmcli con | sed -n '1,2p'
+**查看 UUID**： `nmcli con | sed -n '1,2p'`
 
-BOOTPROTO：
+**BOOTPROTO**说明：
 
-> dhcp 表示使用动态IP，dhcp 动态IP地址是自行生成。
->
-> none 无（不指定）通常是DHCP
->
-> static 要自己自行指定IP地址
->
-> bootp
+- **dhcp**：表示使用动态IP，动态IP地址是自行生成。
+- **none**：无（不指定）通常是DHCP
+- **static**：要自己自行指定IP地址
 
 ```shell
 TYPE="Ethernet"
@@ -130,31 +126,32 @@ ONBOOT=yes
 ### 4、重新启动网络服务
 
 ```shell
-//网络命令
-system network start //启动网络服务
-system network stop //停止网络服务
+system network start  //启动网络服务
+system network stop   //停止网络服务
 system network restart  //重启网络服务
 system network status   //查看网络服务状态
-systemctl restart network.service //重启网络服务，
+systemctl restart network.service   //重启网络服务，
 ```
 
 **system与systemctl的区别：**
   system：centos6之前使用
   systemctl：centos7之后出现的，centos7也可以使用system，兼容低版本
 
-### 5、ip配置成功
-
-### 6、ping：ctrl+z 退出
+### 5、ping：ctrl+z 退出
 
 ```shell
 ping 语法
 -c  # 设定ping的次数，如果没有设定默认会一直ping下去直到按 Ctrl + C 结束
 -f  # 洪水ping，也就是以最快的速度去ping，可以用来测试丢包率
--i  # 设定ping的时间间隔，如 ping -i 0.5 www.baidu.com 表示每隔0.5秒ping一次，如果没
-有设置默认是一秒一次
+-i  # 设定ping的时间间隔，如 ping -i 0.5 www.baidu.com 表示每隔0.5秒ping一次，如果没有设置默认是一秒一次
 -s  # 设置发送的数据包的大小，默认发送56字节，最大只能设置为65507字节
 ```
 
 ## 二、wind映射Linux主机
 
 `C:\Windows\System32\drivers\etc`
+
+```shell
+192.168.100.130 yu.com
+192.168.100.131 yu2.com
+```
