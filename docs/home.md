@@ -42,16 +42,6 @@ features:
   details: MySQL、Oracle
   link: /database/
 
-- title: 前端
-  icon: html
-  details: 前端知识、vue框架、react框架
-  link: /web/
-
-- title: 中间件
-  icon: tool
-  details: ES检索服务、Nginx、Redis、MQ
-  link: /middleware/
-
 - title: Linux
   icon: linux
   details: Linux基础知识、常用Linux命令实例、升级内核、网卡配置、YUM源配置、运维监控工具、ansible管理工具、jenkins自动部署、命令大全
@@ -71,6 +61,16 @@ features:
   icon: tool
   details: 常用开发管理工具idea|eclipse、数据库管理工具、Git知识
   link: /tools/
+
+- title: 中间件
+  icon: tool
+  details: ES检索服务、Nginx、Redis、MQ
+  link: /middleware/
+
+- title: 前端
+  icon: html
+  details: 前端知识、vue框架、react框架
+  link: /web/
 
 ---
 
