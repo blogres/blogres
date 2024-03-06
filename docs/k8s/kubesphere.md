@@ -5,7 +5,7 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-08-24
-order: 8
+order: 9
 tag:
 - Linux
 - k8s
@@ -15,7 +15,7 @@ k8s 可视化管理工具-KubeSphere
 
 <!-- more -->
 
-# k8s-可视化管理工具-KubeSphere
+KubeSphere 是一个开源的容器平台，提供了一套完整的 Kubernetes 工作流和管理体验。它在 Kubernetes 的基础上提供了更多的功能，如多租户支持、CI/CD 管道、日志和监控等。KubeSphere 还有一个可扩展的插件系统，可以根据需要添加和定制功能。**如果你需要更全面的 Kubernetes 管理平台，并且对多租户和持续交付等功能有需求，KubeSphere 可能更适合你。**
 
 在`master`主机安装KubeSphere
 
@@ -23,13 +23,13 @@ k8s 可视化管理工具-KubeSphere
 
 [ks-installer 教程](https://github.com/kubesphere/ks-installer/blob/master/README_zh.md)
 
-[https://github.com/kubesphere/kubesphere](https://github.com/kubesphere/kubesphere) **star:10.8K**
+[https://github.com/kubesphere/kubesphere](https://github.com/kubesphere/kubesphere) **star:14.1K**
 
 [gitee.com/k8s_s/kubesphere](https://gitee.com/k8s_s/kubesphere)
 
 ## KubeSphere 版本选择
 
-[版本说明](https://v3-2.docs.kubesphere.io/zh/docs/release/release-v321/)
+[v3-2版本说明](https://v3-2.docs.kubesphere.io/zh/docs/release/release-v321/)
 
 | KubeSphere |               支持的 Kubernetes 版本               |
 |:----------:|:---------------------------------------------:|
@@ -43,14 +43,11 @@ k8s 可视化管理工具-KubeSphere
 在安装之前，需要配置 Kubernetes 集群中的**默认**存储类型。
 
 - 1、NFS
-
 - 2、PV&PVC
-
 - 3、ConfigMap [ConfigMap](https://kubernetes.io/zh-cn/docs/concepts/configuration/configmap/)
-
 - 4、secret  [secret](https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/)
 
-[具体设置请看](./nfs-pv-pvc-config-secret.html)
+[具体设置请看](./nfs-pv-pvc-config-secret.md)
 
 ## 需要的镜像
 
@@ -256,7 +253,7 @@ network.plugin: flannel
 ./kk init os -f config-sample.yaml
 ```
 
-[master-kubeadm-初始化](./basis.html#master-kubeadm-初始化)  查看 master-kubeadm-初始化
+[master-kubeadm-初始化](./basis.html#master-kubeadm初始化)
 
 **开始安装：使用配置文件创建集群**
 
@@ -264,7 +261,7 @@ network.plugin: flannel
 
 每个主机都创建软连接`/usr/bin/kubelet` 到 `/usr/local/bin/`
 
-ln -s /usr/bin/kube* /usr/local/bin/
+`ln -s /usr/bin/kube* /usr/local/bin/`
 
 **解决没有这个文件：/etc/kubernetes/kubeadm-config.yaml**
 
@@ -332,7 +329,7 @@ kubectl apply -f ks-cluster.yaml
 
 > kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=ks-install -o jsonpath='{.items[0].metadata.name}') -f
 
-![](./kube-sphere.assets/true-image-20220827111253719.png)
+![](./kubesphere.assets/true-image-20220827111253719.png)
 
 ```
 #####################################################
@@ -1079,17 +1076,16 @@ export KKZONE=cn
   ./kk delete cluster -f config-sample.yaml
   ```
 
-![](./kube-sphere.assets/true-image-20220515182956539.png)
+![](./kubesphere.assets/true-image-20220515182956539.png)
 
-![](./kube-sphere.assets/true-image-20220515183019002.png)
+![](./kubesphere.assets/true-image-20220515183019002.png)
+
 
 ## 6、进阶
 
 ### A、多租户系统
 
-![](./kube-sphere.assets/true-1631589337850-64ced113-11ed-4c25-99b0-5b101995cecf.png)
-
----
+![](./kubesphere.assets/true-image-20220515183125012.png)
 
 #### 架构
 
@@ -1099,9 +1095,7 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 在本步骤中，您将创建一个用户 `user-manager`，并赋予users-manager角色，然后使用 `user-manager` 创建新用户。
 
----
-
-![](./kube-sphere.assets/true-users.png)
+![](./kubesphere.assets/true-users.png)
 
 <https://kubesphere.com.cn/docs/quick-start/create-workspace-and-project/>
 
@@ -1125,7 +1119,7 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 | project-admin   | platform-regular   | 创建和管理项目以及 DevOps 项目，并邀请新成员加入项目         |
 | project-regular | platform-regular   | project-regular 将由 project-admin 邀请至项目或 DevOps 项目。该帐户将用于在指定项目中创建工作负载、流水线和其他资源 |
 
-![](./kube-sphere.assets/true-image-20220516131100542.png)
+![](./kubesphere.assets/true-image-20220516131100542.png)
 
 #### 3、使用 ws-manager 创建企业空间 `cps007`
 
@@ -1133,7 +1127,7 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 以 ws-admin 身份重新登录。在**企业空间设置**中，选择**企业空间成员**，然后点击**邀请**。邀请 `project-admin` 和 `project-regular` 进入企业空间，分别授予 `workspace-self-provisioner` 和 `workspace-viewer` 角色
 
-![](./kube-sphere.assets/true-image-20220516132218174.png)
+![](./kubesphere.assets/true-image-20220516132218174.png)
 
 | 帐户              | 角色                         | 描述                                                         |
 | ----------------- | ---------------------------- | ------------------------------------------------------------ |
@@ -1145,21 +1139,21 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 使用 project-admin 创建项目（demo-project）；在**项目设置** > **项目成员**中，邀请 `project-regular` 至该项目，并授予该用户 `operator` 角色。
 
-![](./kube-sphere.assets/true-image-20220516132700995.png)
+![](./kubesphere.assets/true-image-20220516132700995.png)
 
 使用 project-admin 创建网关
 
-![](./kube-sphere.assets/true-image-20220516132947864.png)
+![](./kubesphere.assets/true-image-20220516132947864.png)
 
 #### 5、使用 project-admin 创建 DevOps 工程
 
 使用 project-admin 创建 DevOps 工程（demo-devops）
 
-![](./kube-sphere.assets/true-image-20220516133434615.png)
+![](./kubesphere.assets/true-image-20220516133434615.png)
 
 点击**邀请**授予 `project-regular` 用户 `operator` 的角色，允许其创建流水线和凭证。
 
-![](./kube-sphere.assets/true-image-20220516133452504.png)
+![](./kubesphere.assets/true-image-20220516133452504.png)
 
 `project-regular` 帐户还将用于演示如何在项目或 DevOps 项目中创建应用程序和资源。
 
@@ -1167,9 +1161,7 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 <https://kubesphere.com.cn/docs/quick-start/wordpress-deployment/>
 
-![](./kube-sphere.assets/true-WordPress.png)
-
----
+![](./kubesphere.assets/true-WordPress.png)
 
 您需要准备一个 `project regular` 帐户，并在一个项目中赋予该帐户 `operator` 角色（该用户已被邀请参加该项目）。
 
@@ -1189,7 +1181,7 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 按照以上相同的步骤创建一个名为 wordpress-secret 的 WordPress 密钥，Key：WORDPRESS_DB_PASSWORD 和 Value：123456
 
-![](./kube-sphere.assets/true-image-20220516141949481.png)
+![](./kubesphere.assets/true-image-20220516141949481.png)
 
 #### 步骤 2：创建存储卷
 
@@ -1197,7 +1189,7 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 2、输入卷的基本信息 wordpress-pvc
 
-![](./kube-sphere.assets/true-image-20220516142218882.png)
+![](./kubesphere.assets/true-image-20220516142218882.png)
 
 3、在**存储卷设置**中，需要选择一个可用的**存储类型**，并设置**访问模式**和**存储卷容量**。您可以直接使用默认值，点击**下一步**继续。
 
@@ -1209,11 +1201,11 @@ ROX (ReadOnlyMany)：多节点只读
 
 RWX (ReadWriteMany)：多节点读写
 
-![](./kube-sphere.assets/true-image-20220516142317994.png)
+![](./kubesphere.assets/true-image-20220516142317994.png)
 
 4、在**高级设置**中，您无需添加额外的配置，点击**创建**完成即可。
 
-![](./kube-sphere.assets/true-image-20220516142337866.png)
+![](./kubesphere.assets/true-image-20220516142337866.png)
 
 #### 步骤3：创建docker私有仓库
 
@@ -1228,7 +1220,7 @@ RWX (ReadWriteMany)：多节点读写
 - **密码**：登录镜像仓库所需的密码。
 - **邮箱**（可选）：您的邮箱地址。
 
-![](./kube-sphere.assets/true-image-20220516153908487.png)
+![](./kubesphere.assets/true-image-20220516153908487.png)
 
 #### 步骤4：创建应用程序
 
@@ -1238,7 +1230,7 @@ RWX (ReadWriteMany)：多节点读写
 
 2、输入基本信息（例如，在应用名称一栏输入 `wordpress`），然后点击**下一步**。
 
-![](./kube-sphere.assets/true-image-20220516144552690.png)
+![](./kubesphere.assets/true-image-20220516144552690.png)
 
 3、在**服务设置**中，点击**创建服务**以在应用中设置组件。
 
@@ -1246,33 +1238,33 @@ RWX (ReadWriteMany)：多节点读写
 
 5、输入有状态服务的名称（例如 **mysql**）并点击**下一步**。
 
-![](./kube-sphere.assets/true-image-20220516144619786.png)
+![](./kubesphere.assets/true-image-20220516144619786.png)
 
 6、在**容器组设置**中，点击**添加容器**。
 
 7、在搜索框中输入 mysql:5.7，按下 **回车键**，然后点击 **使用默认端口**。
 
-![](./kube-sphere.assets/true-image-20220516144738362.png)
+![](./kubesphere.assets/true-image-20220516144738362.png)
 
-![](./kube-sphere.assets/true-image-20220516144800580.png)
+![](./kubesphere.assets/true-image-20220516144800580.png)
 
 8、向下滚动到**环境变量**，点击**引用配置文件或密钥**。输入名称 MYSQL_ROOT_PASSWORD，然后选择资源 mysql-secret 和前面步骤中创建的密钥 MYSQL_ROOT_PASSWORD，完成后点击 **√** 保存配置，最后点击**下一步**继续。
 
-![](./kube-sphere.assets/true-image-20220516144955437.png)
+![](./kubesphere.assets/true-image-20220516144955437.png)
 
 9、选择**存储卷设置**中的**添加存储卷模板**，输入**存储卷名称** (`mysql`) 和**挂载路径**（模式：`读写`，路径：`/var/lib/mysql`）的值。
 
 完成后，点击 **√** 保存设置并点击**下一步**继续。
 
-![](./kube-sphere.assets/true-image-20220516154617299.png)
+![](./kubesphere.assets/true-image-20220516154617299.png)
 
 10、在**高级设置**中，可以直接点击**添加**，也可以按需选择其他选项。
 
-![](./kube-sphere.assets/true-image-20220516145535925.png)
+![](./kubesphere.assets/true-image-20220516145535925.png)
 
 11、现在，MySQL 组件已经添加完成。
 
-![](./kube-sphere.assets/true-image-20220516145602690.png)
+![](./kubesphere.assets/true-image-20220516145602690.png)
 
 ##### 添加 WordPress 前端组件
 
@@ -1289,13 +1281,13 @@ RWX (ReadWriteMany)：多节点读写
 
 点击 **√** 保存配置，再点击**下一步**继续。
 
-![](./kube-sphere.assets/true-image-20220516150150694.png)
+![](./kubesphere.assets/true-image-20220516150150694.png)
 
 3、在**存储卷设置**中，点击**挂载存储卷**，并 **选择存储卷**。
 
 4、选择上一步创建的 `wordpress-pvc`，将模式设置为`读写`，并输入挂载路径 `/var/www/html`。点击 **√** 保存，再点击**下一步**继续。
 
-![](./kube-sphere.assets/true-image-20220516150245715.png)
+![](./kubesphere.assets/true-image-20220516150245715.png)
 
 5、在**高级设置**中，可以直接点击**添加**创建服务，也可以按需选择其他选项。
 
@@ -1303,7 +1295,7 @@ RWX (ReadWriteMany)：多节点读写
 
 7、您可以**路由设置**中设置路由规则（应用路由 Ingress），也可以直接点击**创建**。
 
-![](./kube-sphere.assets/true-image-20220516150608459.png)
+![](./kubesphere.assets/true-image-20220516150608459.png)
 
 8、创建后，应用将显示在应用列表中。
 
@@ -1311,23 +1303,23 @@ RWX (ReadWriteMany)：多节点读写
 
 >在**工作负载**中，分别检查**部署**和**有状态副本集**中 `wordpress-v1` 和 `mysql-v1` 的状态。如果它们的运行状态为**运行中**，就意味着 WordPress 已经成功创建。
 
-![](./kube-sphere.assets/true-image-20220516151023577.png)
+![](./kubesphere.assets/true-image-20220516151023577.png)
 
-![](./kube-sphere.assets/true-image-20220516151031852.png)
+![](./kubesphere.assets/true-image-20220516151031852.png)
 
 #### 步骤 5：通过 NodePort 访问 WordPress
 
 1、若要在集群外访问服务，请首先导航到**服务**。点击 `wordpress` 右侧的三个点后，选择**编辑外部访问**。
 
-![](./kube-sphere.assets/true-image-20220516151356307.png)
+![](./kubesphere.assets/true-image-20220516151356307.png)
 
 2、在**访问方式**中选择 `NodePort`，然后点击**确定**。
 
-![](./kube-sphere.assets/true-image-20220516151419794.png)
+![](./kubesphere.assets/true-image-20220516151419794.png)
 
 3、点击服务进入详情页，可以在**端口**处查看暴露的端口。
 
-![](./kube-sphere.assets/true-image-20220516151506949.png)
+![](./kubesphere.assets/true-image-20220516151506949.png)
 
 4、通过 `{Node IP}:{NodePort}` 访问此应用程序，可以看到下图：
 

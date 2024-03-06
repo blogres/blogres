@@ -5,7 +5,7 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-08-24
-order: 9
+order: 12
 tag:
 - Linux
 - k8s
@@ -15,15 +15,15 @@ k8s 可视化管理工具-KubeOperator
 
 <!-- more -->
 
-# k8s-可视化管理工具-KubeOperator
 
-[https://kubeoperator.io/](https://kubeoperator.io/)
+[官网文档](https://kubeoperator.io/)
 
-[https://github.com/kubeoperator/kubeoperator/](https://github.com/kubeoperator/kubeoperator/) **star:4.4K**
+[github/kubeoperator/](https://github.com/kubeoperator/kubeoperator/) **star:4.9K**
 
-[https://gitee.com/k8s_s/KubeOperator](https://gitee.com/k8s_s/KubeOperator)
+[gitee/KubeOperator](https://gitee.com/k8s_s/KubeOperator)
 
 ![](./kubeoperator.assets/true-image-20220829202242469.png)
+
 
 ## 安装
 
@@ -105,14 +105,14 @@ fi
 ======================= KubeOperator 安装完成 =======================
 
 请开放防火墙或安全组的80,8081-8083端口,通过以下方式访问:
- URL:  http://$LOCAL_IP:80
+ URL:  http://:80
  用户名:  admin
  初始密码:  kubeoperator@admin123
 ```
 
 ## Ingress 规则设置
 
-vim ingress-operator.yaml
+`vim ingress-operator.yaml`
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -147,7 +147,7 @@ spec:
 ```shell
 [root@master ~]# kaf ingress-operator.yaml
 ingress.networking.k8s.io/ingress-kubeoperator created
-[root@master ~]#
+
 [root@master ~]# kgingress
 NAME                   CLASS   HOSTS                         ADDRESS           PORTS   AGE
 ingress-kubeoperator   nginx   ko.k8s.com                    192.168.100.131   80      84s
@@ -162,7 +162,6 @@ ingress-nginx          nginx   nginx.k8s.com,nginx.k8s.com   192.168.100.131   8
 
 ![](./kubeoperator.assets/true-image-20220829211901869.png)
 
----
 
 ## 卸载
 

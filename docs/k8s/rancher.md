@@ -5,7 +5,7 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-08-24
-order: 11
+order: 10
 tag:
 - Linux
 - k8s
@@ -15,13 +15,13 @@ k8s 可视化管理工具-Rancher
 
 <!-- more -->
 
-# k8s-可视化管理工具-Rancher
+Rancher 是一个开源的容器管理平台，它可以与多个 Kubernetes 集群进行集中化管理。Rancher 提供了直观的界面来创建、部署和监控 Kubernetes 集群，并支持集群间的负载均衡和流量管理。它还提供了强大的权限管理和安全功能，适用于企业级场景。**如果你需要在多个 Kubernetes 集群之间进行管理，并且关注高可用性、安全性和集群间通信等方面，Rancher 是一个不错的选择。**
 
 [https://rancher.com/](https://rancher.com/)
 
 [https://www.rancher.cn/](https://www.rancher.cn/)
 
-[https://github.com/rancher/rancher](https://github.com/rancher/rancher) **star:19.8K**
+[https://github.com/rancher/rancher](https://github.com/rancher/rancher) **star:22.4+K**
 
 [https://gitee.com/k8s_s/rancher](https://gitee.com/k8s_s/rancher)
 

@@ -5,7 +5,7 @@ category:
 - kubernetes
 headerDepth: 5
 date: 2022-08-24
-order: 6
+order: 7
 tag:
 - Linux
 - k8s
@@ -14,8 +14,6 @@ tag:
 k8s nfs-pv-pvc-ConfigMap-secret
 
 <!-- more -->
-
-# k8s-nfs-pv-pvc-ConfigMap-secret
 
 ## NFS 文件系统
 
