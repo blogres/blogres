@@ -416,18 +416,18 @@ yum list kubelet yum list kube*
 **升级0，新安装0，降级3，删除0，未升级25**
 
 ```ABAP
-apt-get install -y kubeadm=1.26.14-0 kubelet=1.26.14-0 kubectl=1.26.14-0
+apt-get install -y kubeadm=1.27.8-0 kubelet=1.27.8-0 kubectl=1.27.8-0
 
-yum install kubeadm-1.26.14-0 kubelet-1.26.14-0 kubectl-1.26.14-0
-yum install --nogpgcheck kubelet-1.26.14-0 kubeadm-1.26.14-0 kubectl-1.26.14-0
+yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0
+yum install --nogpgcheck kubelet-1.27.8-0 kubeadm-1.27.8-0 kubectl-1.27.8-0
 
-华为：yum install kubeadm-1.26.14-0 kubelet-1.26.14-0 kubectl-1.26.14-0 --disableexcludes=kubernetes
-阿里：yum install kubeadm-1.26.14-0 kubelet-1.26.14-0 kubectl-1.26.14-0
+华为：yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0 --disableexcludes=kubernetes
+阿里：yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0
 ```
 
 #### 6、node 节点安装
 
-`yum install kubeadm-1.26.14-0 kubelet-1.26.14-0 kubectl-1.26.14-0`
+`yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0`
 
 #### 7、创建k8s软连接
 
@@ -469,17 +469,17 @@ yum install --nogpgcheck kubelet-1.26.14-0 kubeadm-1.26.14-0 kubectl-1.26.14-0
 
 设置k8s镜像仓库为，如果不确定，可以设置为 *registry.aliyuncs.com/google_containers*
 
-`kubeadm config images list --kubernetes-version=v1.26.14 --image-repository registry.cn-chengdu.aliyuncs.com/k8sjf`
+`kubeadm config images list --kubernetes-version=v1.27.8 --image-repository registry.cn-chengdu.aliyuncs.com/k8sjf`
 
 
 所需镜像版本：
 
 ```text
 ------------官方需要
-kube-apiserver:v1.26.14
-kube-controller-manager:v1.26.14
-kube-scheduler:v1.26.14
-kube-proxy:v1.26.14
+kube-apiserver:v1.27.8
+kube-controller-manager:v1.27.8
+kube-scheduler:v1.27.8
+kube-proxy:v1.27.8
 pause:3.6
 etcd:3.5.1-0
 coredns:v1.8.6
@@ -501,7 +501,7 @@ kubeadm init \
 --apiserver-advertise-address=192.168.100.130 \
 --control-plane-endpoint=192.168.100.130 \
 --image-repository registry.cn-chengdu.aliyuncs.com/k8sjf \
---kubernetes-version v1.26.14 \
+--kubernetes-version v1.27.8 \
 --service-cidr=10.96.0.0/16 \
 --pod-network-cidr=10.244.0.0/16
 ```
@@ -614,7 +614,7 @@ data:
         dataDir: /var/lib/etcd
     imageRepository: registry.cn-chengdu.aliyuncs.com/k8sjf
     kind: ClusterConfiguration
-    kubernetesVersion: v1.26.14
+    kubernetesVersion: v1.27.8
     networking:
       dnsDomain: cluster.local
       podSubnet: 10.244.0.0/16
@@ -718,10 +718,10 @@ No resources found in default namespace.
 ```shell
 [root@master-120 kubelet]# kg nodes
 NAME         STATUS   ROLES                  AGE   VERSION
-master-120   Ready    control-plane,master   63m   v1.26.14
-node-121     Ready    <none>                 58m   v1.26.14
-node-122     Ready    <none>                 58m   v1.26.14
-node-123     Ready    <none>                 58m   v1.26.14
+master-120   Ready    control-plane,master   63m   v1.27.8
+node-121     Ready    <none>                 58m   v1.27.8
+node-122     Ready    <none>                 58m   v1.27.8
+node-123     Ready    <none>                 58m   v1.27.8
 ```
 
 查看命名空间 **kubectl get ns**

@@ -1107,7 +1107,7 @@ esac
 ```shell
 #!/bin/bash
 
-# 安装k8s-1.22.9
+# 安装k8s-1.27.8
 
 if [ -e "k8s-install.log" ]; then
   rm -rf ./k8s-install.log
@@ -1192,7 +1192,7 @@ uni_rm_file(){
      yum remove -y ${i}
   done
 
-  #yum remove -y kubeadm-1.22.9-0 kubelet-1.22.9-0 kubectl-1.22.9-0
+  #yum remove -y kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0
 
   # 这里最好不好执行，否则，清除后，重新安装后会找不到【kubeadm: 未找到命令、kubelet: 未找到命令、kubectl: 未找到命令】
   rm -rf ~/.kube/
@@ -1216,7 +1216,7 @@ uni_rm_file(){
 masters="master"
 nodes="node"
 hostnames="$(hostname)"
-k8sVersion="1.23.8-0"
+k8sVersion="1.27.8-0"
 install(){
   echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> k8s 安装 ..."
   echo "----> 查看 k8s 可用版本"

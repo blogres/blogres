@@ -15,13 +15,9 @@ k8s 可视化管理工具-Kuboard
 
 <!-- more -->
 
-# k8s-可视化管理工具-Kuboard
-
-[https://kuboard.cn/](https://kuboard.cn/)
-
-[https://github.com/eip-work/kuboard-press](https://github.com/eip-work/kuboard-press)  **star:20.7+K**
-
-[https://gitee.com/k8s_s/kuboard-press](https://gitee.com/k8s_s/kuboard-press)
+- [https://kuboard.cn/](https://kuboard.cn/)
+- [https://github.com/eip-work/kuboard-press](https://github.com/eip-work/kuboard-press)  **star:20.7+K**
+- [https://gitee.com/k8s_s/kuboard-press](https://gitee.com/k8s_s/kuboard-press)
 
 ## 兼容性
 

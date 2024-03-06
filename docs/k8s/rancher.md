@@ -17,25 +17,39 @@ k8s 可视化管理工具-Rancher
 
 Rancher 是一个开源的容器管理平台，它可以与多个 Kubernetes 集群进行集中化管理。Rancher 提供了直观的界面来创建、部署和监控 Kubernetes 集群，并支持集群间的负载均衡和流量管理。它还提供了强大的权限管理和安全功能，适用于企业级场景。**如果你需要在多个 Kubernetes 集群之间进行管理，并且关注高可用性、安全性和集群间通信等方面，Rancher 是一个不错的选择。**
 
-[https://rancher.com/](https://rancher.com/)
-
-[https://www.rancher.cn/](https://www.rancher.cn/)
-
-[https://github.com/rancher/rancher](https://github.com/rancher/rancher) **star:22.4+K**
-
-[https://gitee.com/k8s_s/rancher](https://gitee.com/k8s_s/rancher)
-
-[https://hub.docker.com/r/rancher/rancher/tags](https://hub.docker.com/r/rancher/rancher/tags)
+- [https://rancher.com/](https://rancher.com/)
+- [https://www.rancher.cn/](https://www.rancher.cn/)
+- [https://github.com/rancher/rancher](https://github.com/rancher/rancher) **star:22.4+K**
+- [https://gitee.com/k8s_s/rancher](https://gitee.com/k8s_s/rancher)
+- [https://hub.docker.com/r/rancher/rancher/tags](https://hub.docker.com/r/rancher/rancher/tags)
 
 ![](./rancher.assets/true-image-20220829220406490.png)
 
-## 安装 2.6.7
+## 安装2.8.2
 
 查看支持的 k8s 版本
 
-[https://github.com/rancher/rancher/releases/tag/v2.6.7](https://github.com/rancher/rancher/releases/tag/v2.6.7)
+[rancher/releases/tag/v2.8.2](https://github.com/rancher/rancher/releases/tag/v2.8.2)
 
 ```
+https://github.com/rancher/rancher/releases/tag/v2.8.2
+CLI - v2.8.0
+RKE - v1.5.3
+Kubernetes Versions
+    v1.27.8 (Default)
+    v1.26.11
+    v1.25.16
+
+https://github.com/rancher/rancher/releases/tag/v2.7.11
+CLI - v2.7.7
+RKE - v1.4.15
+Kubernetes Versions
+    v1.27.10 (Default)
+    v1.26.13
+    v1.25.16
+    v1.24.17
+    （RKE：v1.23.16、RKE2/K3s：v1.23.17）
+
 https://github.com/rancher/rancher/releases/tag/v2.6.7
 Kubernetes Versions
     v1.24.2 (Default)
@@ -43,29 +57,20 @@ Kubernetes Versions
     v1.22.11
     v1.21.14
     v1.20.15
-    
-https://github.com/rancher/rancher/releases/tag/v2.6.5
-Kubernetes Versions
-    v1.23.6 (Default)
-    v1.22.9
-    v1.21.12
-    v1.20.15
-    v1.19.16
-    v1.18.20
 ```
 
 ## docker安装
 
-v2.5.15、v2.5.16、v2.6.5、v2.6.6、v2.6.7
+v2.6.7、v2.8.2
 
-docker pull rancher/rancher:v2.6.7
+docker pull rancher/rancher:v2.8.2
 
-docker tag rancher/rancher:v2.6.7 registry.cn-chengdu.aliyuncs.com/k8sjf/rancher:v2.6.7
+docker tag rancher/rancher:v2.8.2 registry.cn-chengdu.aliyuncs.com/k8sjf/rancher:v2.8.2
 
-docker push registry.cn-chengdu.aliyuncs.com/k8sjf/rancher:v2.6.7
+docker push registry.cn-chengdu.aliyuncs.com/k8sjf/rancher:v2.8.2
 
 ```shell
-docker run --privileged -d --restart=unless-stopped -p 8988:80 -p 4430:443 registry.cn-chengdu.aliyuncs.com/k8sjf/rancher:v2.6.7
+docker run --privileged -d --restart=unless-stopped -p 8988:80 -p 4430:443 registry.cn-chengdu.aliyuncs.com/k8sjf/rancher:v2.8.2
 
 # docker-compose方式
 git clone https://gitee.com/zhengqingya/docker-compose.git
@@ -129,7 +134,7 @@ kubectl create namespace cattle-system
 
 仅在使用 Rancher 生成的证书 `ingress.tls.source=rancher` 或 Let's Encrypt 颁发的证书 `ingress.tls.source=letsEncrypt`时才需要 cert-manager。
 
-```
+```shell
 
 # 如果你手动安装了CRD，而不是在Helm安装命令中添加了`--set installCRDs=true`选项，你应该在升级Helm chart之前升级CRD资源。
 wget https://github.com/jetstack/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml
@@ -153,7 +158,7 @@ helm install cert-manager jetstack/cert-manager \
 
 安装完 cert-manager 后，你可以通过检查 cert-manager 命名空间中正在运行的 Pod 来验证它是否已正确部署：
 
-```
+```shell
 kubectl get pods --namespace cert-manager
 
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -171,7 +176,7 @@ cert-manager-webhook-787858fcdb-nlzsq      1/1     Running   0          2m
 - 要安装一个特定的 Rancher 版本，使用 `--version` 标志，例如：`--version 2.3.6`。
 - 如果你安装的是 alpha 版本，Helm 要求在命令中加入 `--devel` 选项。
 
-```
+```shell
 helm install rancher rancher-/rancher \
   --namespace cattle-system \
   --set hostname=rancher.k8s.com \
@@ -179,7 +184,7 @@ helm install rancher rancher-/rancher \
   --set replicas=3
 ```
 
-```
+```shell
 kubectl -n cattle-system rollout status deploy/rancher
 Waiting for deployment "rancher" rollout to finish: 0 of 3 updated replicas are available...
 deployment "rancher" successfully rolled out
@@ -195,7 +200,7 @@ deployment "rancher" successfully rolled out
 
 ### 配置 Helm Chart 仓库
 
-```bash
+```shell
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 helm repo add rancher-alpha https://releases.rancher.com/server-charts/alpha
@@ -207,13 +212,13 @@ helm repo remove rancher-xx
 
 ### 下载tgz安装包
 
-```
+```shell
 #搜索
 helm search repo rancher-latest | grep rancher
 #下载指定仓库版本tgz文件
 helm pull rancher-latest/rancher
 #指定版本下载
-helm pull rancher-latest/rancher --version=v2.6.7
+helm pull rancher-latest/rancher --version=v2.8.2
 ```
 
 ### SSL 配置
