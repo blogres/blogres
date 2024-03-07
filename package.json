@@ -16,8 +16,8 @@
   "dependencies": {
     "vue": "^3.4.21",
     "vuepress": "2.0.0-rc.8",
-    "vuepress-plugin-search-pro": "2.0.0-rc.27",
-    "vuepress-theme-hope": "2.0.0-rc.27"
+    "vuepress-plugin-search-pro": "2.0.0-rc.28",
+    "vuepress-theme-hope": "2.0.0-rc.28"
   },
   "devDependencies": {
     "@vue/repl": "^4.1.1",
@@ -32,7 +32,7 @@
     "hls.js": "^1.5.7",
     "katex": "^0.16.9",
     "markdownlint-cli2": "^0.12.1",
-    "mermaid": "^10.8.0",
+    "mermaid": "^10.9.0",
     "mpegts.js": "^1.7.3",
     "reveal.js": "^5.0.5",
     "vidstack": "^1.10.9"
