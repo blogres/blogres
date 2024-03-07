@@ -16,9 +16,38 @@ k8s集群实用脚本，实现自动化安装部署
 
 <!-- more -->
 
-## 根据CentOS7模板镜像自动创建集群系统
+**注意**：请使用**GitBash**运行脚本。
+
+## 根据CentOS7模板镜像自动创建集群系统auto_VM.sh
 
 [CentOS7模板镜像地址](https://pan.baidu.com/s/1XtM6EqHFsIdU90LeULa5TQ)，提取码：`1234`
+
+### 文件放置规范
+
+```
+E:\\k8s
+|-- CentOS7		#CentOS7模板镜像，已经配置好内核版本、yum源等。
+|------ CentOS7.vmx
+|------ CentOS7.vmxf
+|------ CentOS7.vmdk
+|
+|-- master		#auto_VM克隆CentOS7生成的master
+|------ master.vmx
+|------ master.vmxf
+|------ master.vmdk
+|
+|-- node1		#auto_VM克隆CentOS7生成的node1
+|------ node1.vmx
+|------ node1.vmxf
+|------ node1.vmdk
+|
+|-- node2: ...
+|-- auto-clone.sh	#自动克隆系统脚本，与CentOS7模板镜像处于同一位置。
+|-- kill.bat	#结束vmware进程
+|-- CentOS7-2.7z	#打包CentOS7镜像，使用时需要解压
+```
+
+### auto-clone.sh
 
 ::: details 点击查看代码
 
@@ -32,7 +61,7 @@ host_node=(131 132)
 gu="root"
 gp="123456a"
 
-#模板镜像位置
+#模板镜像位置，可自由修改
 VMX_FILE="$(pwd)/CentOS7/CentOS7.vmx"
 if [ ! -e ${VMX_FILE} ]; then
    echo ">>>>>>>>>> 没有模板镜像 <<<<<<<<<<"
@@ -75,8 +104,7 @@ VM_set_IP(){
   echo "-------------------执行 bat 脚本---------------------"
   `command` ./set_ip130.bat
   `command` ./set_ip131.bat
-  `command` ./set_ip132.bat
-  #`command` ./set_ip133.bat  
+  `command` ./set_ip132.bat 
   rm -rf ./set_ip13*.bat
 }
 
@@ -97,28 +125,30 @@ esac
 
 :::
 
-配合`first.sh`脚本使用，来设置主机名，网卡IP、UUID、hosts
+### first.sh设置主机名-网卡IP-UUID-hosts
+
+配合`auto-clone.sh`脚本使用，来设置`主机名，网卡IP、UUID、hosts`
 
 ::: details 点击查看代码
 
 ```shell
 #!/bin/bash
 
-# 复制到 vm-centos 虚拟机 /root/first.sh 里，配合 auto_VM.sh 使用
+# 复制到 vm-centos 虚拟机 /root/first.sh 里，配合 auto-clone.sh 使用
 
 ip=$1
 hostname=$2
 
-echo -e "\n----------------------------------" >> main.log
-echo "请求参数：IP：${ip}，HostName：${hostname}" >> main.log
-echo "----------------------------------" >> main.log
+echo -e "\n----------------------------------" >> first.log
+echo "请求参数：IP：${ip}，HostName：${hostname}" >> first.log
+echo "----------------------------------" >> first.log
 if [ $# -ne 2 ];
 then
-  echo "sh $0 ip hostname" >> main.log
+  echo "sh $0 ip hostname" >> first.log
 fi
 UUID="ccb173d2-9470-4fc3-b894-cce7029f0455"
 UUID=$(uuidgen ens33) || exit
-echo "new UUID=\"${UUID}\"" >> main.log
+echo "new UUID=\"${UUID}\"" >> first.log
 
 
 function set_ip(){
@@ -129,7 +159,7 @@ function set_ip(){
   sed -ri "s/UUID=.*/UUID=\"${UUID}\"/" /etc/sysconfig/network-scripts/ifcfg-ens33
 
 # 设置hosts  
-cat -s <<EOF | tee /etc/hosts >> main.log
+cat -s <<EOF | tee /etc/hosts >> first.log
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 192.168.100.130 master
@@ -137,33 +167,33 @@ cat -s <<EOF | tee /etc/hosts >> main.log
 192.168.100.132 node2
 EOF
   
-  echo "----------------------------------------------" >> main.log
+  echo "----------------------------------------------" >> first.log
   # （sed -n '3,100p）读取文件的3-100行
-  echo -e "cat /etc/hosts\n$(sed -n '3,100p' /etc/hosts)" >> main.log
-  echo "==============================================" >> main.log
-  echo "wait for systemctl restart network.service ..." >> main.log
-  systemctl restart network.service >> main.log
-  echo "==============================================" >> main.log
-  echo "new IPADDR is : \"$(hostname -I)\"" >> main.log 
+  echo -e "cat /etc/hosts\n$(sed -n '3,100p' /etc/hosts)" >> first.log
+  echo "==============================================" >> first.log
+  echo "wait for systemctl restart network.service ..." >> first.log
+  systemctl restart network.service >> first.log
+  echo "==============================================" >> first.log
+  echo "new IPADDR is : \"$(hostname -I)\"" >> first.log 
   echo ""
-  cat /etc/sysconfig/network-scripts/ifcfg-ens33 >> main.log
-  echo "==============================================" >> main.log
+  cat /etc/sysconfig/network-scripts/ifcfg-ens33 >> first.log
+  echo "==============================================" >> first.log
 }
 
 
 function set_hostname(){
   sed -i "s#.*#${hostname}#" /etc/hostname
   hostnamectl set-hostname ${hostname}
-  echo "==============================================" >> main.log
-  echo "new hostname is : \"$(cat /etc/hostname)\"" >> main.log
-  echo "==============================================" >> main.log
+  echo "==============================================" >> first.log
+  echo "new hostname is : \"$(cat /etc/hostname)\"" >> first.log
+  echo "==============================================" >> first.log
 }
 
 main (){
   set_hostname
   sleep 3
   set_ip
-  echo ">>>>>>>>>> set_ip & set_hostnameok OK!!  <<<<<<<<<" >> main.log
+  echo ">>>>>>>>>> set_ip & set_hostnameok OK!!  <<<<<<<<<" >> first.log
 }
 
 main
@@ -171,7 +201,9 @@ main
 
 :::
 
-结束vmware进程
+### kill.bat
+
+结束vmware进程：`kill.bat`
 
 ```bat
 @echo off
@@ -181,7 +213,7 @@ cmd
 ```
 
 
-## 创建好的虚拟机初始化配置
+## 初始化k8s-yum源
 
 ::: details 点击查看代码
 
@@ -190,10 +222,10 @@ cmd
 
 # 创建好的虚拟机初始化配置
 
-if [ -e "./k8s-centos7.log" ]; then
-    rm -rf ./k8s-centos7.log
+if [ -e "./k8s-centos7-yum.log" ]; then
+    rm -rf ./k8s-centos7-yum.log
 fi
-touch ./k8s-centos7.log
+touch ./k8s-centos7-yum.log
 
 
 install(){
@@ -216,7 +248,7 @@ install(){
   echo ""
   echo "----> 更新 yum 源"
   echo ""
-  yum -y clean all && yum -y makecache && yum -y update && yum -y repolist all >> ./k8s-centos7.log 2>&1
+  yum -y clean all && yum -y makecache && yum -y update && yum -y repolist all >> ./k8s-centos7-yum.log 2>&1
   echo ""
   echo "----> 查看 epel-release 版本：【$(yum list | grep epel-release)】"
   echo ""
@@ -280,15 +312,16 @@ rms(){
 
 case $1 in
   *)
-    install >> ./k8s-centos7.log 2>&1 & tail -f ./k8s-centos7.log
+    install >> ./k8s-centos7-yum.log 2>&1 & tail -f ./k8s-centos7-yum.log
     ;;
 esac
 ```
 
 :::
 
-
 ## 安装docker
+
+[安装Docker文档](https://docs.docker.com/engine/install/)
 
 ::: details 点击查看代码
 
@@ -580,182 +613,11 @@ esac
 
 :::
 
-::: details 点击查看代码
-
-```shell
-#!/bin/bash
-
-kill_s(){
-  # https://blog.csdn.net/qq_42476834/article/details/124719250
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> PID=$$,PPID=$PPID"
-  # 2结束进程，3退出，9强制结束进程
-  # kill -2 $$ #|| kill -3 $$ || kill -9 $$
-  killall -2 tail
-}
-
-start(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 启动中 ..."
-  systemctl start docker
-  echo "----> 启动成功！"
-  echo -e "\n"
-}
-restart(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 重新启动中 ..."
-  systemctl restart docker
-  echo "----> 重新启动成功！"
-  echo -e "\n"
-}
-stop(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 停止进程中 ..."
-  systemctl stop docker
-  echo "----> 停止进程成功！"
-  echo -e "\n"
-}
-
-enable(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 开启自动启动 ..."
-  systemctl enable docker
-  systemctl enable docker
-  echo "----> 开启自动启动成功！"
-  echo -e "\n"
-}
-disable(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 关闭自动启动 ..."
-  systemctl disable docker
-  echo "----> 关闭自动启动成功！"
-  echo -e "\n"
-}
-status(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 当前状态 ..."
-  echo "$(systemctl status docker)"
-  echo -e "\n"
-}
-get_v(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 当前版本"
-  echo "$(docker -v)"
-  echo -e "\n"
-}
-
-# 安装
-waiting_input_version(){
-  echo -e "\n"
-  # 20.10.15-3.el7
-  yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-  echo -e "\n"
-}
-
-# 卸载
-uninstall(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 准备卸载旧版本"
-for i in $(rpm -qa | grep docker*) ; do
-  echo "----> 软件包 ${i} 将被 删除..."
-done
-for i in $(rpm -qa | grep docker*) ; do
-  echo "----> 正在删除 ${i} ..."
-  yum remove -y ${i}
-  yum remove -y docker-ce docker-ce-cli containerd.io
-  rm_file
-done
-echo -e "\n"
-}
-
-# 安装依赖
-install_tool(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 安装依赖 ..."
-  yum install -y yum-utils device-mapper-persistent-data lvm2
-  echo -e "\n"
-
-}
-
-# 配置
-daemon_reload(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 设置镜像加速 ..."
-mkdir -p /etc/docker
-tee /etc/docker/daemon.json <<-'EOF'
-{
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "100m"
-  },
-  "storage-driver": "overlay2",
-  "registry-mirrors": [
-    "https://04eo9xup.mirror.aliyuncs.com",
-    "https://098cc8006500f4db0f2fc01937bbce40.mirror.swr.myhuaweicloud.com"
-  ]
-}
-EOF
-
-echo -e "----> 写入文件[/etc/docker/daemon.json] 成功！\n等待重新加载本地文件..."
-systemctl daemon-reload
-sleep 5
-echo "----> 重新加载完成。"
-echo -e "\n"
-}
-
-# 安装华为版
-huawei_install(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 华为源 配置&安装"
-  install_tool
-  # Step 2: 添加软件源信息
-  echo "----> 下载repo文件 ..."
-  wget -O /etc/yum.repos.d/docker-ce.repo https://repo.huaweicloud.com/docker-ce/linux/centos/docker-ce.repo
-  # Step 3 修改repo
-  echo -e "----> 更新 docker-repo\n"
-  sed -i 's+download.docker.com+repo.huaweicloud.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
-  # Step 4
-  echo -e "\n-------------------------------------------------\n"
-  echo "---->  更新仓库索引 ..."
-  yum clean all 
-  
-	sleep 8;
-	echo "----> 查看版本 ..."
-	echo -e "\n"
-    yum list docker-ce.x86_64 --showduplicates | sort -r
-    echo -e "\n-------------------------------------------------\n"
-	sleep 8;
-
-  echo "---->  正在安装 ..."
-  echo -e "\n"
-  waiting_input_version
-  # Step 4: 开启Docker服务
-  sleep 8;
-  start
-  sleep 12;
-  enable
-  sleep 10;
-  status
-  sleep 10;
-  daemon_reload
-  restart
-  sleep 10;
-  usermod -aG docker a
-  docker images
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n"
-
-}
 
 
-main(){
-  echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> docker 安装"
-  uninstall
-  huawei_install
-  get_v
-  sleep 10;
-#  kill_s
-}
+## K8S基础环境init配置
 
 
-case $1 in
-  *)
-    main
-	;;
-esac
-```
-
-:::
-
-## K8S基础环境配置
 
 ::: details 点击查看代码
 
@@ -1100,7 +962,7 @@ esac
 
 :::
 
-## 安装k8s
+## install-k8s
 
 ::: details 点击查看代码
 
@@ -1324,6 +1186,5 @@ esac
 ```
 
 :::
-
 
 

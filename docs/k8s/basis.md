@@ -187,7 +187,7 @@ yum install -y net-tools
 
 [开启 ssh 远程登录文档](./ssh.md)
 
-执行sh脚本：`k8s-init.sh，k8s-docker.sh，k8s-install.sh`
+[执行sh脚本](./script.md)：`k8s-init.sh，k8s-docker.sh，k8s-install.sh`
 
 #### 开启IPVS支持
 
