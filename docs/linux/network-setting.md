@@ -18,9 +18,9 @@ Centos网络网卡配置
 
 ## 一、设置本机静态IP
 
-### 1、查看本机ip：ifconfig
+### 查看本机ip：ifconfig
 
-### 2、设置静态ip -> 配置文件
+### 设置静态ip -> 配置文件
 
 ```shell
 #网卡的目录:
@@ -39,8 +39,8 @@ vim /etc/sysconfig/network-scripts/ifcfg-eth0
 **BOOTPROTO**说明：
 
 - **dhcp**：表示使用动态IP，动态IP地址是自行生成。
-- **none**：无（不指定）通常是DHCP
-- **static**：要自己自行指定IP地址
+- **none**：无（不指定）通常是DHCP。
+- **static**：要自己自行指定IP地址，GATEWAY需要和虚拟机的网关地址一样。
 
 ```shell
 TYPE="Ethernet"
@@ -59,77 +59,32 @@ NAME="ens33"
 UUID="ccb173d2-9470-4fc3-b894-cce7029f0455"
 DEVICE="ens33"
 ONBOOT="yes"
-ETHTOOL_OPTS="autoneg off speed 10000 duplex full"
-IPADDR="192.168.100.119"
+IPADDR="192.168.100.129"
 # PREFIX="24"
 NETMASK="255.255.255.0"
-GATEWAY="192.168.100.1"
-DNS1="192.168.1.1"
-DNS2="192.168.100.1"
-```
-
-```shell
-TYPE="Ethernet"
-PROXY_METHOD="none"
-BROWSER_ONLY="no"
-BOOTPROTO="dhcp"
-DEFROUTE="yes"
-IPV4_FAILURE_FATAL="no"
-IPV6INIT="yes"
-IPV6_AUTOCONF="yes"
-IPV6_DEFROUTE="yes"
-IPV6_FAILURE_FATAL="no"
-IPV6_ADDR_GEN_MODE="stable-privacy"
-NAME="ens33"
-UUID="5ed15a21-bf0f-4b2a-a40a-33a07afb6560"
-DEVICE="ens33"
-ONBOOT="yes"
-IPADDR="192.168.100.130"
-PREFIX="24"
 GATEWAY="192.168.100.2"
 DNS1="192.168.100.2"
-IPV6_PRIVACY="no"
+DNS2="8.8.8.8"
+DNS3="192.168.1.1"
 ```
+
+### 设置网关
+
+`vim /etc/resolv.conf`
 
 ```shell
-TYPE=Ethernet
-PROXY_METHOD=none
-BROWSER_ONLY=no
-#设置为静态ＩＰ地址
-BOOTPROTO=static
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_PRIVACY=no
-IPV6_FAILURE_FATAL=no
-IPV6_ADDR_GEN_MODE=stable-privacy
-NAME=ens33
-#可以不配置
-UUID=7f69ba6b-895a-4cfa-941d-77dcceaa4c4c
-DEVICE=ens33
-#设置为随开机生效
-ONBOOT=yes
-#设置为IP地址,这个网段是由虚拟机的NAT模式的网关的决定
+nameserver 192.168.100.2
+nameserver 8.8.8.8
 ```
 
-### 3、配置 vim /etc/hosts 映射关系
-
-```shell
-//添加ip+主机名
-127.0.0.1  localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1     localhost localhost.localdomain localhost6 localhost6.localdomain6
-192.168.100.130 yu
-```
-
-### 4、重新启动网络服务
+### 重新启动网络服务
 
 ```shell
 system network start  //启动网络服务
-system network stop   //停止网络服务
-system network restart  //重启网络服务
-system network status   //查看网络服务状态
+service network stop   //停止网络服务
+service network start  //启动网络服务
+service network status   //查看网络服务状态
+service network restart  //重启网络服务
 systemctl restart network.service   //重启网络服务，
 ```
 
@@ -137,7 +92,7 @@ systemctl restart network.service   //重启网络服务，
   system：centos6之前使用
   systemctl：centos7之后出现的，centos7也可以使用system，兼容低版本
 
-### 5、ping：ctrl+z 退出
+### ping：ctrl+z 退出
 
 ```shell
 ping 语法
@@ -146,6 +101,16 @@ ping 语法
 -i  # 设定ping的时间间隔，如 ping -i 0.5 www.baidu.com 表示每隔0.5秒ping一次，如果没有设置默认是一秒一次
 -s  # 设置发送的数据包的大小，默认发送56字节，最大只能设置为65507字节
 ```
+
+### 配置 vim /etc/hosts 映射关系
+
+```shell
+//添加ip+主机名
+127.0.0.1  localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1     localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.100.130 yu
+```
+
 
 ## 二、wind映射Linux主机
 
