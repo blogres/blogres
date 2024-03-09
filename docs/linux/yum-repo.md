@@ -1,6 +1,6 @@
 ---
 icon: linux
-title: YUM 源配置
+title: Centos Yum源配置
 category: 
 - Linux
 headerDepth: 5
@@ -14,8 +14,6 @@ YUM 源配置
 
 <!-- more -->
 
-# yum 源配置
-
 [https://blog.csdn.net/qq_42476834/article/details/121433712](https://blog.csdn.net/qq_42476834/article/details/121433712)
 
 **查看系统的版本：**`cat /etc/redhat-release`
@@ -24,23 +22,29 @@ YUM 源配置
 
 ### 1.安装Centos后默认的yum源 如下
 
->ll /etc/yum.repos.d/
+```shell
+ll /etc/yum.repos.d/
+```
 
 ### 2.把默认yum源备份(可选)
 
->cp CentOS-Base.repo  CentOS-Base-cp.repo
+```shell
+cp CentOS-Base.repo  CentOS-Base-cp.repo
+```
 
 ### 3.在虚拟机上挂载CentOS镜像文件
 
 ![](./yum-repo.assets/true-image-20220909192114370.png)
 
->(1) mount -t iso9660 /dev/sr0 /opt/centos
->
->(2) mount /dev/cdrom /mnt/cdrom
+```shell
+(1) mount -t iso9660 /dev/sr0 /opt/centos
+
+(2) mount /dev/cdrom /mnt/cdrom
+```
 
 **自定义配置文件名：**`vim /etc/yum.repos.d/local.repo`
 
-```bash
+```shell
 [local]           #标签
 name=local        #设置yum源名称
 baseurl=file:///opt/centos  #挂载源
@@ -50,23 +54,24 @@ gpgcheck=0        #校验
 
 ### 5.清除缓存
 
->yum clean all             //全部消除缓存
->
->yum makecache        //把yum源缓存到本地，加快软件的搜索好安装速度
->
->yum -y update //更新yum库存
->
->yum repolist        //列出个包
+- **yum clean all**         //全部消除缓存
+- **yum makecache**          //把yum源缓存到本地，加快软件的搜索好安装速度
+- **yum -y update**          //更新yum库存
+- **yum repolist**           //列出个包
 
 ## 二、把默认的CentOS yum源修改成国内的aliyun-yum源
 
 ### 1.进入yum目录
 
->cd /etc/yum.repos.d/
+```shell
+cd /etc/yum.repos.d/
+```
 
 ### 2.把默认yum源备份(可选项)
 
->cp CentOS-Base.repo  CentOS-Base.repo-cp
+```shell
+cp CentOS-Base.repo  CentOS-Base.repo-cp
+```
 
 ### 3.下载ailiyun的yum源配置文件到/etc/yum.repos.d/
 
@@ -74,69 +79,70 @@ gpgcheck=0        #校验
 
 **CentOS 6：**
 
-> wget -O /etc/yum.repos.d/CentOS-Base.repo <https://mirrors.aliyun.com/repo/Centos-6.repo>
->
-> 或者
->
-> curl -o /etc/yum.repos.d/CentOS-Base.repo <https://mirrors.aliyun.com/repo/Centos-6.repo>
+```shell
+wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-6.repo
+或者
+curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-6.repo
+```
 
 **CentOS 7：**
 
-> wget -O /etc/yum.repos.d/CentOS-Base.repo <https://mirrors.aliyun.com/repo/Centos-7.repo>
->
-> 或者
->
-> curl -o /etc/yum.repos.d/CentOS-Base.repo <https://mirrors.aliyun.com/repo/Centos-7.repo>
+```shell
+wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+或者
+curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+```
 
 **CentOS 8：**
 
-> wget -O /etc/yum.repos.d/CentOS-Base.repo <https://mirrors.aliyun.com/repo/Centos-8.repo>
->
-> 或者
->
-> curl -o /etc/yum.repos.d/CentOS-Base.repo <https://mirrors.aliyun.com/repo/Centos-8.repo>
+```shell
+wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo
+或者
+curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo
+```
 
 ### 4.清除缓存
 
->yum clean all             //全部消除缓存
->
->yum makecache        //把yum源缓存到本地，加快软件的搜索好安装速度
->
->yum -y update //更新yum库存
->
->yum repolist        //列出个包
+- **yum clean all**         //全部消除缓存
+- **yum makecache**          //把yum源缓存到本地，加快软件的搜索好安装速度
+- **yum -y update**          //更新yum库存
+- **yum repolist**           //列出个包
 
 ## 三、把默认的CentOS yum源修改成国内的163源
 
 ### 1.安装Centos后默认的yum源如下
 
->ll /etc/yum.repos.d/
+```shell
+ll /etc/yum.repos.d/
+```
 
 ### 2.把默认yum源备份(可选)
 
->cp CentOS-Base.repo  CentOS-Base.repo-cp
+```shell
+cp CentOS-Base.repo  CentOS-Base.repo-cp
+```
 
 ### 3.下载163 yum源repo文件
 
 **CentOS 5：**
 
->wget <http://mirrors.163.com/.help/CentOS5-Base-163.repo>
+> wget http://mirrors.163.com/.help/CentOS5-Base-163.repo
 
 **CentOS 6：**
 
->wget <http://mirrors.163.com/.help/CentOS6-Base-163.repo>
+> wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
 
 **CentOS 7：**
 
->wget <http://mirrors.163.com/.help/CentOS7-Base-163.repo>
+> wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
 
 **CentOS 8：**
 
-> wget <http://mirrors.163.com/.help/CentOS8-Base-163.repo>
+> wget http://mirrors.163.com/.help/CentOS8-Base-163.repo
 
 *运行*
 
-> wget -O /etc/yum.repos.d/CentOS8-Base-163.repo <http://mirrors.163.com/.help/CentOS8-Base-163.repo>
+> wget -O /etc/yum.repos.d/CentOS8-Base-163.repo http://mirrors.163.com/.help/CentOS8-Base-163.repo
 
 ```shell
 Saving to: ‘/etc/yum.repos.d/CentOS8-Base-163.repo’100%[=>] 1,572       --.-K/s   in 0s      2017-06-20 06:29:47 (293 MB/s) - ‘/etc/yum.repos.d/CentOS8-Base-163.repo’ saved [1572/1572]
@@ -144,16 +150,12 @@ Saving to: ‘/etc/yum.repos.d/CentOS8-Base-163.repo’100%[=>] 1,572       --.-
 
 ### 4.清除缓存
 
->yum clean all             //全部消除缓存
->
->yum makecache        //把yum源缓存到本地，加快软件的搜索好安装速度
->
->yum -y update //更新yum库存
->
->yum repolist        //列出个包
+- **yum clean all**         //全部消除缓存
+- **yum makecache**          //把yum源缓存到本地，加快软件的搜索好安装速度
+- **yum -y update**          //更新yum库存
+- **yum repolist**           //列出个包
 
----
-==下面可忽略==：
+==下面可忽略==
 
 ## 四、修改yum源的优先级
 
@@ -210,7 +212,8 @@ priority=1//在原基础上加入priority=1 ；数字越小优先级越高//可�
 ```bash
 配置优先级前：(使用阿里云yum源)
 1# yum -y install vimDependencies Resolved
-=================================================================================================================================================Package                            Arch                         Version                                     Repository                     Size
+=================================================================================================================================================
+Package                            Arch                         Version                                     Repository                     Size
 =================================================================================================================================================
 Installing:
 vim-enhanced                       x86_64                       2:7.4.160-1.el7_3.1                         updates                       1.0 M
@@ -222,7 +225,8 @@ vim-common                         x86_64                       2:7.4.160-1.el7_
 ```bash
 配置优先级后：(使用本地yum源)
 1# yum -y install vimDependencies Resolved
-=================================================================================================================================================Package                                     Arch                        Version                                Repository                  Size
+=================================================================================================================================================
+Package                                     Arch                        Version                                Repository                  Size
 =================================================================================================================================================
 Installing:
 vim-enhanced                                x86_64                      2:7.4.160-1.el7                        local                      1.0 M

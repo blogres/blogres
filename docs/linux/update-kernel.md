@@ -15,9 +15,8 @@ Centos(kernel)内核升级
 
 <!-- more -->
 
-# centos(kernel)内核升级
 
-## 升级内核、并删除当前无用的系统内核版本
+## 内核版本列表
 
 [内核版本列表kernel.org](https://kernel.org/)
 
@@ -38,55 +37,57 @@ Centos(kernel)内核升级
 - stable：稳定版本
 - mainline：主线版本
 
-### centos 内核升级
+## 导入该源的秘钥
 
 [http://www.elrepo.org/](http://www.elrepo.org/)
 
 ```shell
-# 导入该源的秘钥
+# 1、导入该源的秘钥
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-# 启用该源仓库
+# 2、启用该源仓库
 rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-6.el7.elrepo.noarch.rpm
 或者：
 yum -y install https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
 ```
 
-**查看可升级的内核版本**
+## 查看可升级的内核版本
 
 ```shell
 yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
 ```
 
-**可安装的软件包**
+## 可安装的软件包
 
-kernel-lt.x86_64  5.4.211-1.el7.elrepo  elrepo-kernel
+kernel-lt(基于长期支持分支)   5.4.271-1.el7.elrepo
 
-kernel-ml.x86_64  5.19.4-1.el7.elrepo  elrepo-kernel
+kernel-ml(主流的，来源于主线稳定分支提供)   5.4.271-1.el7.elrepo
 
-**安装内核**
+## 安装内核
 
 ```shell
 yum --enablerepo=elrepo-kernel install -y kernel-lt-5.4.211-1.el7.elrepo
 ```
 
-**查看当前系统内可用内核**
+## 查看当前系统内可用内核
 
 ```shell
 awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg
 ```
 
-**设置开机从新内核版本启动（其中 0 是上面查询出来的可用内核编号）**
+## 设置开机从新内核版本启动
+
+**其中 0 是上面查询出来的可用内核编号**
 
 ```shell
 grub2-set-default 0 && reboot
 ```
 
-### 并删除当前无用的系统内核版本
+## 删除当前无用的系统内核版本
 
-**所有已安装的内核版本**
+### 查看所有已安装的内核版本
 
 ```shell
-[root@master ~]# rpm -qa | grep kernel
+[root@init ~]# rpm -qa | grep kernel
 
 kernel-tools-libs-3.10.0-1160.76.1.el7.x86_64
 kernel-3.10.0-1160.76.1.el7.x86_64
@@ -94,19 +95,19 @@ kernel-headers-3.10.0-1160.76.1.el7.x86_64
 kernel-devel-3.10.0-1160.el7.x86_64
 kernel-tools-3.10.0-1160.76.1.el7.x86_64
 kernel-devel-3.10.0-1160.76.1.el7.x86_64
-kernel-lt-5.4.211-1.el7.elrepo.x86_64
+kernel-lt-5.4.271-1.el7.elrepo.x86_64
 kernel-3.10.0-1160.el7.x86_64
 abrt-addon-kerneloops-2.1.11-60.el7.centos.x86_64
 ```
 
-**当前使用的内核版本**
+### 当前使用的内核版本
 
 ```shell
-[root@master ~]# uname -r
-5.4.192-1.el7.elrepo.x86_64
+[root@init ~]# uname -r
+5.4.271-1.el7.elrepo.x86_64
 ```
 
-**删除**
+### 删除
 
 ```shell
 yum remove -y kernel-3.10.0-1160.el7.x86_64 kernel-3.10.0-1160.76.1.el7.x86_64
@@ -117,23 +118,28 @@ yum remove -y kernel-3.10.0-1160.el7.x86_64 kernel-3.10.0-1160.76.1.el7.x86_64
 ```shell
 yum remove $(rpm -qa | grep kernel | grep -v $(uname -r))
 
-# 卸载后重新安装
-yum --enablerepo=elrepo-kernel install -y kernel-lt-devel-5.4.211-1.el7.elrepo \
-kernel-lt-doc-5.4.211-1.el7.elrepo \
-kernel-lt-headers-5.4.211-1.el7.elrepo \
-kernel-lt-tools-5.4.211-1.el7.elrepo \
-kernel-lt-tools-libs-5.4.211-1.el7.elrepo \
-kernel-lt-tools-libs-devel-5.4.211-1.el7.elrepo
+# 全部卸载后重新安装
+[root@init ~]# yum --enablerepo=elrepo-kernel install -y kernel-lt-5.4.271-1.el7.elrepo \
+kernel-lt-doc-5.4.271-1.el7.elrepo \
+kernel-lt-headers-5.4.271-1.el7.elrepo \
+kernel-lt-tools-5.4.271-1.el7.elrepo \
+kernel-lt-tools-libs-5.4.271-1.el7.elrepo \
+kernel-lt-tools-libs-devel-5.4.271-1.el7.elrepo \
+kernel-lt-devel-5.4.271-1.el7.elrepo
 
-[root@master ~]# rpm -qa | grep kernel
-kernel-lt-doc-5.4.211-1.el7.elrepo.noarch
-kernel-lt-tools-5.4.211-1.el7.elrepo.x86_64
-kernel-lt-devel-5.4.211-1.el7.elrepo.x86_64
-kernel-lt-5.4.211-1.el7.elrepo.x86_64
-kernel-lt-tools-libs-5.4.211-1.el7.elrepo.x86_64
-kernel-lt-headers-5.4.211-1.el7.elrepo.x86_64
-kernel-lt-tools-libs-devel-5.4.211-1.el7.elrepo.x86_64
+[root@init ~]# rpm -qa | grep kernel
+kernel-lt-5.4.271-1.el7.elrepo.x86_64
+kernel-lt-doc-5.4.271-1.el7.elrepo.noarch
+kernel-lt-tools-5.4.271-1.el7.elrepo.x86_64
+kernel-lt-tools-libs-5.4.271-1.el7.elrepo.x86_64
+kernel-lt-tools-libs-devel-5.4.271-1.el7.elrepo.x86_64
+kernel-lt-headers-5.4.271-1.el7.elrepo.x86_64
+abrt-addon-kerneloops-2.1.11-60.el7.centos.x86_64
+kernel-lt-devel-5.4.271-1.el7.elrepo.x86_64
+```
 
+## 安装其他工具
 
+```shell
 yum install -y gcc make ncurses-devel openssl-devel flex bison  elfutils-libelf-devel
 ```
