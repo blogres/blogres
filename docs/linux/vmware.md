@@ -16,14 +16,12 @@ tag:
 
 ## 安装VMware虚拟机
 
-[vmware官网下载](https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html)
-
-[vmware16官网下载](https://my.vmware.com/cn/web/vmware/downloads/info/slug/desktop_end_user_computing/vmware_workstation_pro/16_0)
-
-[vmware-16.2.5百度网盘](https://pan.baidu.com/s/1MYvYkBpDnly6J3Xo8DmNzQ)，提取码：`1234`
-
-[vmware-full-17.5.1百度网盘](https://pan.baidu.com/share/init?surl=PfQ8AHEo6BHtVjs6qFcIdg)，提取码：`1234` <img src="./vmware.assets/vmware-full-17.5.1.png" alt="vmware-full-17.5.1" style="zoom:35%;" />使用微信扫一扫
-
+- [vmware官网下载](https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html)
+- [vmware16官网下载](https://my.vmware.com/cn/web/vmware/downloads/info/slug/desktop_end_user_computing/vmware_workstation_pro/16_0)
+- [vmware-16.2.5百度网盘](https://pan.baidu.com/s/1MYvYkBpDnly6J3Xo8DmNzQ)，提取码：`1234`
+- [vmware-full-17.5.1百度网盘](https://pan.baidu.com/share/init?surl=PfQ8AHEo6BHtVjs6qFcIdg)，提取码：`1234` <img src="./vmware.assets/vmware-full-17.5.1.png" alt="vmware-full-17.5.1" style="zoom:35%;" />使用微信扫一扫
+- [Centos7下载-aliyun](https://mirrors.aliyun.com/centos/7.9.2009/isos/x86_64/)
+- [Centos7下载-huawei](https://mirrors.huaweicloud.com/centos/7/isos/x86_64/)
 
 ### 密钥
 
