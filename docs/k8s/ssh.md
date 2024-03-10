@@ -23,8 +23,8 @@ k8s开启ssh远程登录
 
 （2）安装SSH服务,有就跳过 嘿嘿嘿
  　  通过 yum 安装，命令：yum install ssh
- > 客户端   yum install -y openssh-client	  yum -y install openssh-client
- > 服务器   yum install -y openssh-server	  yum -y install openssh-server
+ > 客户端   yum install -y openssh-client
+ > 服务器   yum install -y openssh-server
 	
 （3）修改SSH配置文件
  　命令：  vim /etc/ssh/sshd_config，找到 PermitRootLogin without-password 修改为 PermitRootLogin yes
@@ -33,21 +33,19 @@ k8s开启ssh远程登录
 （4）登录 master、node1、node2、node3，每个节点都执行。
     ssh-keygen -t rsa	（ssh-keygen这里一路回车就行）
     
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.120 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.121 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.122 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.123 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.120 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.121 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.122 && \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.123
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.130 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.131 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.132 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.130 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.131 && \
+    ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.132
 
 （5）重启SSH服务
 　命令：  systemctl restart sshd 或   service ssh restart
 　
 （6）免密登录测试
-	ssh 192.168.100.120 ssh 192.168.100.121
-	ssh 192.168.100.122 ssh 192.168.100.123
+	ssh 192.168.100.130 ssh 192.168.100.131
+	ssh 192.168.100.132
 ```
 
 master

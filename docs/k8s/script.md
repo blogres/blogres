@@ -797,121 +797,6 @@ yum repolist all >> ./k8s-init.log 2>&1
 echo -e "\n"
 }
 
-alias_0(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 设置 alias"
-cat -s <<EOF > ~/.bashrc
-
-
-# .bashrc
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias rmf='rm -rf'
-alias ll='ls -l'
-alias la='ls -all'
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
-
-alias getgroup='cat /etc/group'
-alias getpasswd='cat /etc/passwd'
-
-alias stdk='systemctl start docker'
-alias restdk='systemctl restart docker'
-alias stopdk='systemctl stop docker'
-alias enabledk='systemctl enable docker'
-alias disabledk='systemctl disable docker'
-alias statusdk='systemctl status kubectl'
-
-alias stk8s='systemctl start kubectl'
-alias restk8s='systemctl restart kubectl'
-alias stopk8s='systemctl stop kubectl'
-alias enablek8s='systemctl enable kubectl'
-alias disablek8s='systemctl disable kubectl'
-alias statusk8s='systemctl status kubectl'
-
-
-########k8s############
-###########k8s-创建与删除
-alias k='kubectl'
-alias kaf='kubectl apply -f' #使用yaml创建apps
-alias kdf='kubectl delete -f' #删除yaml创建apps
-###########k8s-资源信息
-alias kg='kubectl get'
-alias kgnodes='kubectl get nodes -o wide' #获取node资源信息
-alias kgpods='kubectl get pods -o wide' #获取pods资源信息
-alias kgingress='kubectl get ingress -owide' #获取ingress资源信息
-###########k8s-名称空间
-alias kgns='kubectl get ns' #获取所有名称空间
-alias kgall='kubectl get all -o wide' #获取所有apps-pod-service
-###########k8s-svc服务信息
-alias kgsvc='kubectl get svc'
-alias kgsvc-n='kubectl get svc -n $1' #自定义名称空间的svc查询
-alias kgsvc-k8s='kubectl get svc -n kube-system -o wide' #获取k8s服务
-alias kgsvc-ing='kubectl get svc -n ingress-nginx -o wide' #获取ingress服务
-###########k8s-pod信息
-alias kgpod='kubectl get pod --show-labels' #查看k8s的pod信息
-alias kgpod-show='kubectl get pod --show-labels'
-alias kgpodw='watch kubectl get pod -n kube-system -o wide'	#监控k8s-pod的kube-system进度
-###########k8s-pods信息
-alias kgpodsallns='kubectl get pods --all-namespaces -o wide' #获取pods所有名称空间
-alias kgpodsn='kubectl get pods -o wide -n $1' #查看输入的【kgpodsallns】名称空间信息
-alias kgpodsn-k8s='kubectl get pods -n kube-system -o wide' #查看名称空间kube-system的信息
-alias kgpodsn-ingressnginx='kubectl get pods -n ingress-nginx -o wide' #查看名称空间ingress-nginx的信息
-alias kgpodsn-node='kubectl get pods -n kube-system -o wide | grep $1' #查看node子节点的pod信息
-###########k8s-describe信息
-alias kdesc-node='kubectl describe node $1' #传入node主机名称
-alias kdesc-pod='kubectl describe pod -n $1' #传入名称空间
-###########k8s-log信息
-alias klog='kubectl logs -n $1' #传入名称空间
-alias klog='kubectl logs $1' #传入svc的名称【tomcat-b8cdc6f6b-7ngdx】
-###########k8s-系统操作部分
-alias ks='kubectl set' #设置应用资源
-alias ke='kubectl edit' #编辑资源
-alias kc='kubectl create' #创建资源
-alias kd='kubectl delete' #删除
-alias krollout='kubectl rollout' #输出、查看、回滚
-alias klabel='kubectl label' #更新资源对象的label
-alias kpatch='kubectl patch' #更新资源对象字段
-###########k8s-快捷键提示
-source <(kubectl completion bash)
-
-########docker############
-alias dkse='docker search'      #镜像名称
-alias dklogin='docker login'    #登录远程镜像仓库
-alias dkpull='docker pull'      #镜像名称
-alias dkcommit='docker commit'  #提交容器为镜像         [-a='作者' -m='备注' 运行时容器ID 新镜像名称]
-alias dkb='docker build'        #file文件构建镜像       [-f [DockerFile文件] -t [设置标签]:版本 . ]
-alias dktag='docker tag'        #设置镜像为阿里|xx标签  [容器ID [设置标签]:version]
-alias dkpush='docker push'      #镜像提交到仓库         [输入设置好的标签:verison]
-alias dki='docker images'       #镜像名称or镜像Id
-alias dkrmi='docker rmi'        #镜像名称or镜像Id
-alias dkrmif='docker rmi -f'
-alias dkrmia='docker rmi \$(docker images -q)' #自动删除没有启动的镜像
-alias dkps='docker ps'  #在运行的容器
-alias dkpsa='docker ps -a'      #全部容器
-alias dkstart='docker start'    #容器名称or容器Id
-alias dkrestart='docker restart'  #容器名称or容器Id
-alias dkstop='docker stop'      #stop 容器名称or容器Id
-alias dkkill='docker kill'      #docker kill 容器ID or 容器名
-alias dkrm='docker rm'  #docker rm 容器id
-alias dkrmf='docker rm -f'      #容器ID1  容器ID2 中间空格隔开
-alias dkrma='docker rm \$(docker ps -a -q)'      #自动删除所有停止的容器
-alias dkcp='docker cp'
-alias dklogs='docker logs'
-EOF
-
-bash
-bash
-bash
-echo "----> alias"
-alias
-echo -e "\n"
-}
-
 main(){
 echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n------------> k8s基础环境配置：k8s依赖|仓库源"
 yum install -y net-tools >> ./k8s-init.log 2>&1
@@ -966,13 +851,11 @@ case $1 in
   k8s_repo)
     m5 >> ./k8s-init.log 2>&1 & tail -f ./k8s-init.log
     ;;
-  alias_0)
-    alias_0;;
   rm)
     m6 & tail -f ./k8s-init.log
     ;;
   -h)
-    echo "sh $0 { * | set_IPVS | k8s_conf | k8s_conf_net | time_sync | k8s_repo | alias_0 | rm | -h }";;
+    echo "sh $0 { * | set_IPVS | k8s_conf | k8s_conf_net | time_sync | k8s_repo | rm | -h }";;
   *)
     main >> ./k8s-init.log 2>&1 & tail -f ./k8s-init.log;;
 esac

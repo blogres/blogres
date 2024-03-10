@@ -175,9 +175,9 @@ yum install -y net-tools
 192.168.100.132 node2
 ```
 
-重启网络服务：`systemctl restart network.service`
+重启网络服务：`service network restart`
 
-`ping -c 3 master-120 && ping -c 3 node-121 && ping -c 3 node-122 && ping -c 3 node-123`
+`ping -c 3 master && ping -c 3 node1 && ping -c 3 node2`
 
 用户：`a`，密码：`123456a`， 设置主机名称：`hostnamectl set-hostname`
 
@@ -187,7 +187,7 @@ yum install -y net-tools
 
 [开启 ssh 远程登录文档](./ssh.md)
 
-[执行sh脚本](./script.md)：`k8s-init.sh，k8s-docker.sh，k8s-install.sh`
+[执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
 
 #### 开启IPVS支持
 
