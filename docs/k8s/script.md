@@ -18,9 +18,9 @@ k8s集群实用脚本，实现自动化安装部署
 
 **注意**：请使用**GitBash**运行脚本。
 
-## 根据CentOS7模板镜像自动创建集群系统auto_VM.sh
+## 根据CentOS7模板镜像自动创建集群系统auto-clone.sh
 
-[CentOS7模板镜像地址](https://pan.baidu.com/s/1XtM6EqHFsIdU90LeULa5TQ)，提取码：`1234`
+[CentOS7模板镜像地址](https://pan.baidu.com/s/1K84oi2qsF33WnNrgqbJ_NA)，提取码：`1234`
 
 ### 文件放置规范
 
@@ -44,7 +44,7 @@ E:\\k8s
 |-- node2: ...
 |-- auto-clone.sh	#自动克隆系统脚本，与CentOS7模板镜像处于同一位置。
 |-- kill.bat	#结束vmware进程
-|-- CentOS7-2.7z	#打包CentOS7镜像，使用时需要解压
+|-- CentOS7.7z	#打包CentOS7模板镜像，使用时需要解压
 ```
 
 ### auto-clone.sh
