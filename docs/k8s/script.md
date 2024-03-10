@@ -55,7 +55,8 @@ E:\\k8s
 #!/bin/bash
 
 # 把first.sh脚本手动上传到CentOS7系统里的/root/first.sh，chmod -R 755 ./first.sh
-# 在vmware手动批量克隆虚拟机-修改IP+hostname
+# 在vmware手动克隆虚拟机，并开机，修改IP+hostname
+# vmrun 命令的语法：https://docs.vmware.com/cn/VMware-Fusion/13/com.vmware.fusion.using.doc/GUID-24F54E24-EFB0-4E94-8A07-2AD791F0E497.html
 
 host_master=(130)
 host_node=(131 132)
@@ -64,6 +65,7 @@ gp="123456a"
 
 #模板镜像位置，可自由修改
 VMX_FILE="$(pwd)/CentOS7/CentOS7.vmx"
+VMX_FILE_2="\\CentOS7\\CentOS7.vmx"
 if [ ! -e ${VMX_FILE} ]; then
    echo ">>>>>>>>>> 没有模板镜像 <<<<<<<<<<"
 fi
@@ -77,50 +79,64 @@ MASTER_NAME="master"
 NODE_NAME="node"
 
 # master 修改IP地址
-set_ip_master(){
+set_clone_master(){
   for i in {0..1};
   do
-    >  ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
-    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx\" /bin/bash /root/first.sh 13${i} ${MASTER_NAME}" >>  ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
-    echo "ping -n 6 192.168.100.13${i}" >> ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
-	echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
+    >  ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	# 创建快照
+	echo "${PATH_VMRUN_EXE_CMD} -T ws snapshot ${K8S_CENTOS7_CMD}${VMX_FILE_2} centos7init" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	# 根据快照来clone镜像
+	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${K8S_CENTOS7_CMD}${VMX_FILE_2} ${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx full -snapshot=centos7init -cloneName=${MASTER_NAME}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	# 启动虚拟机 gui：打开vm应用；nogui：不打开vm应用
+	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx\" /bin/bash /root/first.sh 13${i} ${MASTER_NAME}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    echo "ping -n 6 192.168.100.13${i}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
   done
 
 }
 
 # node 修改IP地址
-set_ip_node(){
+set_clone_node(){
   for i in {1..2};
   do
-    >  ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
-    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx\" /bin/bash /root/first.sh 13${i} ${NODE_NAME}${i}" >>  ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
-    echo "ping -n 6 192.168.100.13${i}" >> ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
-    echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip13${i}.bat
+    >  ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	# 根据快照来clone镜像
+	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${K8S_CENTOS7_CMD}${VMX_FILE_2} ${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx full -snapshot=centos7init -cloneName=${NODE_NAME}${i}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	# 启动虚拟机 gui：打开vm应用；nogui：不打开vm应用
+	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx\" /bin/bash /root/first.sh 13${i} ${NODE_NAME}${i}" >>  ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    echo "ping -n 6 192.168.100.13${i}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
   done
 }
 
-VM_set_IP(){
-  set_ip_master
-  set_ip_node
+main(){
+  set_clone_master
+  set_clone_node
+  # 删除快照
+  echo "${PATH_VMRUN_EXE_CMD} -T ws deleteSnapshot ${K8S_CENTOS7_CMD}${VMX_FILE_2} centos7init" >> ${K8S_CENTOS7_CMD}\\delete_Snapshot.bat
   echo "-------------------执行 bat 脚本---------------------"
-  `command` ./set_ip130.bat
-  `command` ./set_ip131.bat
-  `command` ./set_ip132.bat 
-  rm -rf ./set_ip13*.bat
+  `command` ./set_ip_hostname130.bat
+  `command` ./set_ip_hostname131.bat
+  `command` ./set_ip_hostname132.bat
+  `command` ./delete_Snapshot.bat
+  rm -rf ./set_ip_hostname13*.bat
+  rm -rf ./delete_Snapshot.bat
 }
 
 case $1 in
-    set_ip)
-        VM_set_IP
+    master)
+        set_clone_master
         ;;
-    set_ip1)
-        set_ip_master
+    node)
+        set_clone_node
         ;;
-    set_ip2)
-        set_ip_node
+	  h)
+        echo "sh auto_clone.sh [选项]; 选项【master【clone master系统】；node【clone node系统】；】"
         ;;
     *)
-        VM_set_IP
+        main
 esac
 ```
 
