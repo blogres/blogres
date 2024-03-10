@@ -258,10 +258,11 @@ install(){
   echo ""
   yum repolist all
   echo ""
-  echo "----> 下载 华为 CentOS-Base.repo"
+  echo "----> 下载CentOS-Base.repo"
   echo ""
-  #wget -O /etc/yum.repos.d/CentOS-Base-huawei.repo https://repo.huaweicloud.com/repository/conf/CentOS-7-reg.repo
-  wget -O /etc/yum.repos.d/CentOS-Base-aliyun.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+  mv /etc/yum.repos.d/CentOS-Base.repo  /etc/yum.repos.d/CentOS-Base.repo.backup
+  #wget -O /etc/yum.repos.d/CentOS-Base.repo https://repo.huaweicloud.com/repository/conf/CentOS-7-reg.repo
+  wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
   ls /etc/yum.repos.d/
   echo ""
   echo "----> 更新 yum 源"
@@ -282,10 +283,11 @@ install(){
   chmod -R 755 /etc/yum.repos.d/epel.repo
   ls -all /etc/yum.repos.d/
   echo ""
+  wget -O /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo
   echo ""
   sed -i "s/#baseurl/baseurl/g" /etc/yum.repos.d/epel.repo
   sed -i "s/metalink/#metalink/g" /etc/yum.repos.d/epel.repo
-  sed -i "s@https\?://download.fedoraproject.org/pub@https://repo.huaweicloud.com@g" /etc/yum.repos.d/epel.repo
+  sed -i "s@https\?://download.fedoraproject.org/pub@https://repo.aliyun.com@g" /etc/yum.repos.d/epel.repo
   echo "$(cat /etc/yum.repos.d/epel.repo)"
   echo ""
   echo "----> 更新 yum 源"
@@ -693,14 +695,14 @@ for kernel_module in ${ipvs_modules}; do
 done
 EOF
 
-echo -e "\n"
+	echo -e "\n"
 
-chmod 755 /etc/sysconfig/modules/ipvs.modules
-echo "----> start IPVS：[sh /etc/sysconfig/modules/ipvs.modules]"
-sh /etc/sysconfig/modules/ipvs.modules
-echo "----> lsmod | grep ip_vs"
-lsmod | grep ip_vs
-echo -e "\n"
+	chmod 755 /etc/sysconfig/modules/ipvs.modules
+	echo "----> start IPVS：[sh /etc/sysconfig/modules/ipvs.modules]"
+	sh /etc/sysconfig/modules/ipvs.modules
+	echo "----> lsmod | grep ip_vs"
+	lsmod | grep ip_vs
+	echo -e "\n"
 }
 
 # 将桥接的IPv4流量传递到iptables的链
@@ -710,6 +712,7 @@ echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 允许 iptables 检查桥接流量"
 
 echo "----> 写入 [/etc/modules-load.d/k8s.conf]"
 cat -s <<EOF > /etc/modules-load.d/k8s.conf
+overlay
 br_netfilter
 EOF
 
@@ -722,56 +725,58 @@ net.ipv4.ip_forward = 1
 vm.swappiness=0
 EOF
 
-echo -e "\n"
-
-echo "----> modprobe br_netfilter"
-modprobe br_netfilter
-echo "----> start iptables：[sysctl -p /etc/sysctl.d/k8s.conf]"
-sysctl -p /etc/sysctl.d/k8s.conf
-echo -e "----> start：[sysctl --system]"
-sysctl --system
-echo -e "----> lsmod | grep br_netfilter"
-lsmod | grep br_netfilter
-echo -e "\n"
+	echo -e "\n"
+	modprobe overlay
+	echo "----> modprobe br_netfilter"
+	modprobe br_netfilter
+	echo "----> start iptables：[sysctl -p /etc/sysctl.d/k8s.conf]"
+	sysctl -p /etc/sysctl.d/k8s.conf
+	echo -e "----> start：[sysctl --system]"
+	sysctl --system
+	echo -e "----> lsmod | grep br_netfilter"
+	lsmod | grep br_netfilter
+	lsmod | grep overlay
+	sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
+	echo -e "\n"
 }
 
 #开启网络安全
 #与 /usr/lib/sysctl.d/50-default.conf 类似
 k8s_conf_10_network_security_conf(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 开启网络安全"
+	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 开启网络安全"
 cat -s <<EOF > /etc/sysctl.d/10-network-security.conf
 net.ipv4.conf.default.rp_filter=1
 net.ipv4.conf.all.rp_filter=1
 EOF
 
-echo ""
-echo "----> start 网络安全：[sysctl --system]"
-#生效
-sysctl --system
-echo -e "\n"
+	echo ""
+	echo "----> start 网络安全：[sysctl --system]"
+	#生效
+	sysctl --system
+	echo -e "\n"
 }
 
 #时间同步
 time_sync(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 时间同步"
-rm -rf /var/run/yum.pid
-yum install -y chrony
-systemctl enable chronyd
-systemctl start chronyd
-timedatectl set-ntp true
-timedatectl set-timezone Asia/Shanghai
-echo "----> 时区状态：timedatectl status"
-timedatectl status
-echo "----> 检测：chronyc activity -v"
-chronyc activity -v
-yum -y install ntpdate
-yum install -y ntpsec-ntpdate
-ntpdate time.windows.com
-echo -e "\n"
+	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 时间同步"
+	rm -rf /var/run/yum.pid
+	yum install -y chrony
+	systemctl enable chronyd
+	systemctl start chronyd
+	timedatectl set-ntp true
+	timedatectl set-timezone Asia/Shanghai
+	echo "----> 时区状态：timedatectl status"
+	timedatectl status
+	echo "----> 检测：chronyc activity -v"
+	chronyc activity -v
+	yum -y install ntpdate
+	yum install -y ntpsec-ntpdate
+	ntpdate time.windows.com
+	echo -e "\n"
 }
 
 k8s_repo(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 设置 k8s_repo 仓库源"
+	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 设置 k8s_repo 仓库源"
 cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -782,58 +787,82 @@ repo_gpgcheck=0
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 
-echo -e "\n"
-echo "----> 更新仓库缓存"
-yum -y clean all >> ./k8s-init.log 2>&1
-echo -e "\n"
-sleep 3;
-yum -y makecache >> ./k8s-init.log 2>&1
-echo -e "\n"
-sleep 3;
-yum -y update >> ./k8s-init.log 2>&1
-echo -e "\n"
-sleep 3;
-yum repolist all >> ./k8s-init.log 2>&1
-echo -e "\n"
+	echo -e "\n"
+	echo "----> 更新仓库缓存"
+	yum -y clean all >> ./k8s-init.log 2>&1
+	echo -e "\n"
+	sleep 3;
+	yum -y makecache >> ./k8s-init.log 2>&1
+	echo -e "\n"
+	sleep 3;
+	yum -y update >> ./k8s-init.log 2>&1
+	echo -e "\n"
+	sleep 3;
+	yum repolist all >> ./k8s-init.log 2>&1
+	echo -e "\n"
+}
+
+other(){
+	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 设置其他选项"
+	echo "----> 关闭防火墙：firewalld"
+	systemctl stop firewalld
+	systemctl disable firewalld
+	echo -e "\n"
+	echo "----> 禁用selinux"
+	setenforce 0
+	sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+	echo -e "\n"
+	echo "----> 关闭swap分区"
+	nano /etc/fstab
+	echo -e "\n"
+	echo "----> 关闭swap分区"
+
+	echo -e "\n"
+	echo "----> 关闭swap分区"
+
+	echo -e "\n"
+	echo "----> 关闭swap分区"
+
+	echo -e "\n"
 }
 
 main(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n------------> k8s基础环境配置：k8s依赖|仓库源"
-yum install -y net-tools >> ./k8s-init.log 2>&1
-sed -ri 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
-set_IPVS
-k8s_conf
-k8s_conf_10_network_security_conf
-time_sync
-k8s_repo
-yum install -y nfs-utils >> ./k8s-init.log 2>&1
-yum install -y socat conntrack ebtables ipset ipvsadm >> ./k8s-init.log 2>&1
-kill_s
+	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n------------> k8s基础环境配置：k8s依赖|仓库源"
+	yum install -y net-tools >> ./k8s-init.log 2>&1
+	sed -ri 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
+	set_IPVS
+	k8s_conf
+	k8s_conf_10_network_security_conf
+	time_sync
+	k8s_repo
+	yum install -y nfs-utils >> ./k8s-init.log 2>&1
+	yum install -y socat conntrack ebtables ipset ipvsadm >> ./k8s-init.log 2>&1
+	kill_s
 }
 
 m1(){
-set_IPVS
-kill_s
+	set_IPVS
+	kill_s
 }
 m2(){
-k8s_conf
-kill_s
+	k8s_conf
+	kill_s
 }
 m3(){
-k8s_conf_10_network_security_conf
-kill_s
+	k8s_conf_10_network_security_conf
+	kill_s
 }
 m4(){
-time_sync
-kill_s
+	time_sync
+	kill_s
 }
 m5(){
-k8s_repo
-kill_s
+	k8s_repo
+	kill_s
 }
 m6(){
-rm_file  >> ./k8s-init.log 2>&1
-kill_s
+	rm_file  >> ./k8s-init.log 2>&1
+	kill_s
 }
 case $1 in
   set_IPVS)
@@ -870,7 +899,7 @@ esac
 ```shell
 #!/bin/bash
 
-# 安装k8s-1.27.8
+# 安装k8s-1.28.7
 
 if [ -e "k8s-install.log" ]; then
   rm -rf ./k8s-install.log
@@ -955,7 +984,7 @@ uni_rm_file(){
      yum remove -y ${i}
   done
 
-  #yum remove -y kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0
+  #yum remove -y kubeadm-1.28.7-0 kubelet-1.28.7-0 kubectl-1.28.7-0
 
   # 这里最好不好执行，否则，清除后，重新安装后会找不到【kubeadm: 未找到命令、kubelet: 未找到命令、kubectl: 未找到命令】
   rm -rf ~/.kube/
@@ -979,7 +1008,7 @@ uni_rm_file(){
 masters="master"
 nodes="node"
 hostnames="$(hostname)"
-k8sVersion="1.27.8-0"
+k8sVersion="1.28.7-0"
 install(){
   echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> k8s 安装 ..."
   echo "----> 查看 k8s 可用版本"
@@ -1029,38 +1058,38 @@ install(){
 }
 
 main(){
-echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> k8s 安装..."
-#uni_rm_file
-install >> ./k8s-install.log 2>&1
+	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> k8s 安装..."
+	#uni_rm_file
+	install >> ./k8s-install.log 2>&1
 }
 
 m1(){
-install
-kill_s
+	install
+	kill_s
 }
 m2(){
-uni_rm_file
-kill_s
+	uni_rm_file
+	kill_s
 }
 m3(){
-start
-kill_s
+	start
+	kill_s
 }
 m4(){
-stop
-kill_s
+	stop
+	kill_s
 }
 m5(){
-status
-kill_s
+	status
+	kill_s
 }
 m6(){
-enable
-kill_s
+	enable
+	kill_s
 }
 m7(){
-disable
-kill_s
+	disable
+	kill_s
 }
 
 case $1 in
@@ -1087,5 +1116,4 @@ esac
 ```
 
 :::
-
 

@@ -467,27 +467,22 @@ yum install --nogpgcheck kubelet-1.27.8-0 kubeadm-1.27.8-0 kubectl-1.27.8-0
 
 `kubeadm config images list`
 
-设置k8s镜像仓库为，如果不确定，可以设置为 *registry.aliyuncs.com/google_containers*
+设置k8s镜像仓库为，如果不确定，可以设置为 **registry.aliyuncs.com/google_containers**
 
-`kubeadm config images list --kubernetes-version=v1.27.8 --image-repository registry.cn-chengdu.aliyuncs.com/k8sjf`
+`kubeadm config images list --kubernetes-version=v1.28.2 --image-repository registry.aliyuncs.com/google_containers`
 
 
 所需镜像版本：
 
 ```text
 ------------官方需要
-kube-apiserver:v1.27.8
-kube-controller-manager:v1.27.8
-kube-scheduler:v1.27.8
-kube-proxy:v1.27.8
-pause:3.6
-etcd:3.5.1-0
-coredns:v1.8.6
-------------其他需要
-flannel:v0.19.0
-flannelcni-flannel-cni-plugin:v1.1.0
-nginx-ingress-controller:v1.3.0
-kube-webhook-certgen:v1.1.1
+kube-apiserver:v1.28.2
+kube-controller-manager:v1.28.2
+kube-scheduler:v1.28.2
+kube-proxy:v1.28.2
+pause:3.9
+etcd:3.5.9-0
+coredns:v1.10.1
 ```
 
 ```shell
@@ -500,8 +495,8 @@ docker login --username=ngerapp registry.cn-chengdu.aliyuncs.com
 kubeadm init \
 --apiserver-advertise-address=192.168.100.130 \
 --control-plane-endpoint=192.168.100.130 \
---image-repository registry.cn-chengdu.aliyuncs.com/k8sjf \
---kubernetes-version v1.27.8 \
+--image-repository registry.aliyuncs.com/google_containers \
+--kubernetes-version v1.28.2 \
 --service-cidr=10.96.0.0/16 \
 --pod-network-cidr=10.244.0.0/16
 ```
@@ -614,7 +609,7 @@ data:
         dataDir: /var/lib/etcd
     imageRepository: registry.cn-chengdu.aliyuncs.com/k8sjf
     kind: ClusterConfiguration
-    kubernetesVersion: v1.27.8
+    kubernetesVersion: v1.28.2
     networking:
       dnsDomain: cluster.local
       podSubnet: 10.244.0.0/16
@@ -718,10 +713,10 @@ No resources found in default namespace.
 ```shell
 [root@master-120 kubelet]# kg nodes
 NAME         STATUS   ROLES                  AGE   VERSION
-master-120   Ready    control-plane,master   63m   v1.27.8
-node-121     Ready    <none>                 58m   v1.27.8
-node-122     Ready    <none>                 58m   v1.27.8
-node-123     Ready    <none>                 58m   v1.27.8
+master-120   Ready    control-plane,master   63m   v1.28.2
+node-121     Ready    <none>                 58m   v1.28.2
+node-122     Ready    <none>                 58m   v1.28.2
+node-123     Ready    <none>                 58m   v1.28.2
 ```
 
 查看命名空间 **kubectl get ns**
