@@ -54,7 +54,8 @@ E:\\k8s
 ```shell
 #!/bin/bash
 
-# 自动批量克隆虚拟机-修改IP+hostname
+# 把first.sh脚本手动上传到CentOS7系统里的/root/first.sh，chmod -R 755 ./first.sh
+# 在vmware手动批量克隆虚拟机-修改IP+hostname
 
 host_master=(130)
 host_node=(131 132)
@@ -134,6 +135,7 @@ esac
 ```shell
 #!/bin/bash
 
+# 把first.sh脚本手动上传到CentOS7系统里的/root/first.sh，chmod -R 755 ./first.sh
 # 复制到 vm-centos 虚拟机 /root/first.sh 里，配合 auto-clone.sh 使用
 
 ip=$1
