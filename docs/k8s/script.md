@@ -238,7 +238,7 @@ cmd
 ```shell
 #!/bin/bash
 
-# 创建好的虚拟机初始化配置
+# 创建好的虚拟机初始化配置，如果还没有配置yum源可以运行此脚本。
 
 if [ -e "./k8s-centos7-yum.log" ]; then
     rm -rf ./k8s-centos7-yum.log
@@ -246,7 +246,7 @@ fi
 touch ./k8s-centos7-yum.log
 
 
-install(){
+main(){
   echo "--> centos7配置"
   echo ""
   echo ""
@@ -269,6 +269,29 @@ install(){
   echo ""
   yum -y clean all && yum -y makecache && yum -y update && yum -y repolist all >> ./k8s-centos7-yum.log 2>&1
   echo ""
+  
+  epelrepo
+  
+#cat -s <<EOF > /etc/yum.repos.d/epel.repo
+#[epel]
+#name=Extra Packages for Enterprise Linux 7 - \$basearch
+#baseurl=https://repo.huaweicloud.com/epel/7/\$basearch
+##metalink=https://mirrors.fedoraproject.org/#metalink?repo=epel-7&arch=$basearch
+#failovermethod=priority
+#enabled=1
+#gpgcheck=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+#EOF
+
+   echo ""
+   #sed -i "s/enabled=0/enabled=1/g" /etc/yum.repos.d/CentOS-Base.repo
+   echo ""
+  yum -y clean all && yum makecache && yum -y update && yum repolist all
+  ls -all /etc/yum.repos.d/
+  killall -2 tail
+}
+
+epelrepo(){
   echo "----> 查看 epel-release 版本：【$(yum list | grep epel-release)】"
   echo ""
   echo "----> 安装 epel-release"
@@ -301,24 +324,6 @@ install(){
     rm -rf /etc/yum.repos.d/epel-testing.repo
   fi
   echo ""
-  
-cat -s <<EOF > /etc/yum.repos.d/epel.repo
-[epel]
-name=Extra Packages for Enterprise Linux 7 - \$basearch
-baseurl=https://repo.huaweicloud.com/epel/7/\$basearch
-#metalink=https://mirrors.fedoraproject.org/#metalink?repo=epel-7&arch=$basearch
-failovermethod=priority
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-EOF
-
-   echo ""
-   #sed -i "s/enabled=0/enabled=1/g" /etc/yum.repos.d/CentOS-Base.repo
-   echo ""
-  yum -y clean all && yum makecache && yum -y update && yum repolist all
-  ls -all /etc/yum.repos.d/
-  killall -2 tail
 }
 
 rms(){
@@ -332,9 +337,10 @@ rms(){
 
 case $1 in
   *)
-    install >> ./k8s-centos7-yum.log 2>&1 & tail -f ./k8s-centos7-yum.log
+    main >> ./k8s-centos7-yum.log 2>&1 & tail -f ./k8s-centos7-yum.log
     ;;
 esac
+
 ```
 
 :::
@@ -561,7 +567,7 @@ ali_install(){
 main(){
   echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> docker 安装"
   uninstall >> ./k8s-docker.log 2>&1
-  huawei_install >> ./k8s-docker.log 2>&1
+  ali_install >> ./k8s-docker.log 2>&1
   get_v
   sleep 10;
   kill_s
@@ -716,7 +722,13 @@ overlay
 br_netfilter
 EOF
 
+	echo -e "\n"
+	echo "----> modprobe overlay and br_netfilter"
+	modprobe overlay
+	modprobe br_netfilter
+	
 echo "----> 写入 [/etc/sysctl.d/k8s.conf]"
+#cat /usr/lib/sysctl.d/00-system.conf 与之相同
 cat -s <<EOF > /etc/sysctl.d/k8s.conf
 # For binary values, 0 is disabled, 1 is enabled
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -726,9 +738,6 @@ vm.swappiness=0
 EOF
 
 	echo -e "\n"
-	modprobe overlay
-	echo "----> modprobe br_netfilter"
-	modprobe br_netfilter
 	echo "----> start iptables：[sysctl -p /etc/sysctl.d/k8s.conf]"
 	sysctl -p /etc/sysctl.d/k8s.conf
 	echo -e "----> start：[sysctl --system]"
@@ -777,14 +786,25 @@ time_sync(){
 
 k8s_repo(){
 	echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> 设置 k8s_repo 仓库源"
-cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
+## 老版配置v1.28部分版本
+#cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
+#[kubernetes]
+#name=Kubernetes
+#baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+#enabled=1
+#gpgcheck=1
+#repo_gpgcheck=0
+#gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+#EOF
+
+## 新版配置v1.24 - v1.29
+cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+baseurl=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/rpm/
 enabled=1
 gpgcheck=1
-repo_gpgcheck=0
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+gpgkey=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/rpm/repodata/repomd.xml.key
 EOF
 
 	echo -e "\n"
@@ -795,10 +815,10 @@ EOF
 	yum -y makecache >> ./k8s-init.log 2>&1
 	echo -e "\n"
 	sleep 3;
-	yum -y update >> ./k8s-init.log 2>&1
-	echo -e "\n"
-	sleep 3;
-	yum repolist all >> ./k8s-init.log 2>&1
+	#yum -y update >> ./k8s-init.log 2>&1
+	#echo -e "\n"
+	#sleep 3;
+	yum repolist >> ./k8s-init.log 2>&1
 	echo -e "\n"
 }
 
@@ -812,17 +832,8 @@ other(){
 	setenforce 0
 	sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 	echo -e "\n"
-	echo "----> 关闭swap分区"
-	nano /etc/fstab
-	echo -e "\n"
-	echo "----> 关闭swap分区"
-
-	echo -e "\n"
-	echo "----> 关闭swap分区"
-
-	echo -e "\n"
-	echo "----> 关闭swap分区"
-
+	echo "----> 永久禁用swap分区：nano /etc/fstab"
+	free -m
 	echo -e "\n"
 }
 
@@ -831,12 +842,15 @@ main(){
 	yum install -y net-tools >> ./k8s-init.log 2>&1
 	sed -ri 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
 	set_IPVS
+	other
 	k8s_conf
 	k8s_conf_10_network_security_conf
 	time_sync
 	k8s_repo
 	yum install -y nfs-utils >> ./k8s-init.log 2>&1
 	yum install -y socat conntrack ebtables ipset ipvsadm >> ./k8s-init.log 2>&1
+	echo "接下来请手动配置SSH"
+	echo -e "\n"
 	kill_s
 }
 
@@ -864,6 +878,10 @@ m6(){
 	rm_file  >> ./k8s-init.log 2>&1
 	kill_s
 }
+m6(){
+	other  >> ./k8s-init.log 2>&1
+	kill_s
+}
 case $1 in
   set_IPVS)
     m1 >> ./k8s-init.log 2>&1 & tail -f ./k8s-init.log
@@ -882,6 +900,9 @@ case $1 in
     ;;
   rm)
     m6 & tail -f ./k8s-init.log
+    ;;
+  other)
+    m7 & tail -f ./k8s-init.log
     ;;
   -h)
     echo "sh $0 { * | set_IPVS | k8s_conf | k8s_conf_net | time_sync | k8s_repo | rm | -h }";;
@@ -1008,7 +1029,7 @@ uni_rm_file(){
 masters="master"
 nodes="node"
 hostnames="$(hostname)"
-k8sVersion="1.28.7-0"
+k8sVersion="1.28.7"
 install(){
   echo -e "\n$(date +%Y-%m-%d,%H:%M:%S)\n--> k8s 安装 ..."
   echo "----> 查看 k8s 可用版本"
@@ -1033,7 +1054,7 @@ install(){
 #  elif [[ ${hostnames} == ${nodes}[0-9]* ]] ; then
     echo -e "\n"
     echo "----> install k8s-${k8sVersion} for ${hostnames}..."
-	yum install -y kubeadm-${k8sVersion} kubelet-${k8sVersion} kubectl-${k8sVersion} --disableexcludes=kubernetes
+	yum install -y --nogpgcheck kubelet-${k8sVersion} kubeadm-${k8sVersion} kubectl-${k8sVersion} --disableexcludes=kubernetes
 	sleep 5;
 	start
 	sleep 10;
@@ -1047,6 +1068,7 @@ install(){
 	if [ -f /usr/bin/kubectl ]; then
 		echo "----> 创建软连接..."
 		ln -s /usr/bin/kube*  /usr/local/bin/
+		ls /usr/local/bin/kube*
 		echo -e "\n"
 	fi
 	kill_s

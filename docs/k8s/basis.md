@@ -136,7 +136,7 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 
 ![](./basis.assets/true-image-20211119155506746.png)
 
-### 环境准备
+### 环境准备k8s-init
 
 ![](./basis.assets/true-image-20211212160128007.png)
 
@@ -181,13 +181,47 @@ yum install -y net-tools
 
 用户：`a`，密码：`123456a`， 设置主机名称：`hostnamectl set-hostname`
 
-#### 开启 ssh 远程登录
+#### 关闭防火墙
 
-[具体参考文档](https://blog.csdn.net/qq_42476834/article/details/124766896)
+```
+systemctl stop firewalld
+systemctl disable firewalld
+```
 
-[开启 ssh 远程登录文档](./ssh.md)
 
-[执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
+
+#### 禁用selinux
+
+```
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+```
+
+
+
+#### 禁用swap分区
+
+`nano /etc/fstab`
+
+```
+[root@master ~]# cat /etc/fstab
+
+#
+# /etc/fstab
+# Created by anaconda on Sat Mar  9 21:50:29 2024
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+/dev/mapper/centos-root /                       xfs     defaults        0 0
+UUID=6e78f73f-f9c1-47ff-8a2e-27042e0cfaaf /boot                   xfs     defaults        0 0
+/dev/mapper/centos-home /home                   xfs     defaults        0 0
+/dev/mapper/centos-swap swap                    swap    defaults        0 0
+```
+
+把*/dev/mapper/centos-swap swap* 改为 *#/dev/mapper/centos-swap swap*，用**#**注释掉
+
+
 
 #### 开启IPVS支持
 
@@ -212,12 +246,19 @@ EOF
 >
 > lsmod | grep ip_vs
 
-#### 将桥接的IPv4流量传递到iptables的链
+#### k8s.conf配置
+
+将桥接的IPv4流量传递到iptables的链
 
 ```shell
 cat -s <<EOF > /etc/modules-load.d/k8s.conf
+overlay
 br_netfilter
 EOF
+echo -e "\n"
+echo "----> modprobe overlay and br_netfilter"
+modprobe overlay
+modprobe br_netfilter
 
 # cat /usr/lib/sysctl.d/00-system.conf 与之相同
 cat -s <<EOF > /etc/sysctl.d/k8s.conf
@@ -228,41 +269,143 @@ net.ipv4.ip_forward = 1
 vm.swappiness=0
 EOF
 
-cat -s <<EOF > /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-net.ipv4.ip_forward = 1
-vm.swappiness=0
-EOF
-
-modprobe br_netfilter
+echo -e "\n"
+echo "----> start iptables：[sysctl -p /etc/sysctl.d/k8s.conf]"
 sysctl -p /etc/sysctl.d/k8s.conf
 sysctl --system
+#校验
+lsmod | grep br_netfilter
+lsmod | grep overlay
+sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
+```
 
+#### network-security开启网络安全
+
+```shell
 #修改/etc/sysctl.d/10-network-security.conf
 #与 /usr/lib/sysctl.d/50-default.conf 类似
 cat -s <<EOF > /etc/sysctl.d/10-network-security.conf
 net.ipv4.conf.default.rp_filter=1
 net.ipv4.conf.all.rp_filter=1
 EOF
+
 #然后使之生效
 sysctl --system
 ```
 
+
+
 #### 时间同步
 
 ```shell
-  yum install -y chrony
-  systemctl enable chronyd
-  systemctl start chronyd
-  timedatectl set-ntp true
-  设置时区：timedatectl set-timezone Asia/Shanghai
-  timedatectl status
-  检查 ntp-server 是否可用：chronyc activity -v
----------------------------------------
-  yum -y install ntpdate && yum install ntpsec-ntpdate
-  ntpdate time.windows.com
+rm -rf /var/run/yum.pid
+yum install -y chrony
+systemctl enable chronyd
+systemctl start chronyd
+timedatectl set-ntp true
+timedatectl set-timezone Asia/Shanghai
+echo "----> 时区状态：timedatectl status"
+timedatectl status
+echo "----> 检测：chronyc activity -v"
+chronyc activity -v
+yum -y install ntpdate
+yum install -y ntpsec-ntpdate
+ntpdate time.windows.com
+echo -e "\n"
 ```
+
+
+
+#### 开启 ssh 远程登录
+
+[具体参考文档](https://blog.csdn.net/qq_42476834/article/details/124766896)
+
+[开启 ssh 远程登录文档](./ssh.md)
+
+[执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
+
+
+
+#### 所有节点安装容器运行时containerd
+
+[官方原文地址](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
+
+**安装containerd，默认已经安装**
+
+```shell
+yum install -y yum-utils
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum -y install containerd.io
+```
+
+
+
+需要从这里开始配置：**生成config.toml配置**
+
+```shell
+containerd config default > /etc/containerd/config.toml
+```
+
+
+
+**配置 systemd cgroup 驱动 在 /etc/containerd/config.toml 中设置**
+
+```shell
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+
+或手动修改
+
+[plugins]
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+        SystemdCgroup = true
+```
+
+
+
+**将sandbox_image下载地址改为阿里云地址**
+
+```shell
+sed -i 's/sandbox_image = \"registry.k8s.io\/pause:3.6\"/sandbox_image = \"registry.aliyuncs.com\/google_containers\/pause:3.9\"/g' /etc/containerd/config.toml
+
+或手动修改
+
+[plugins."io.containerd.grpc.v1.cri"]
+    sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.9"
+```
+
+
+
+**启动containerd 并设置开机自启动**
+
+```
+systemctl restart containerd && systemctl enable containerd
+```
+
+
+
+#### containerd和docker操作差异
+
+| 操作                | Docker            | Containerd (ctr)     | Crictl (K8s)      |
+| ------------------- | ----------------- | -------------------- | ----------------- |
+| 查看运行的容器      | docker ps         | ctr task ls          | crictl ps         |
+| 查看镜像            | docker images     | ctr image ls         | crictl images     |
+| 查看容器日志        | docker logs       | 无                   | crictl logs       |
+| 查看容器数据信息    | docker inspect    | ctr container info   | crictl inspect    |
+| 查看容器资源        | docker stats      | 无                   | crictl stats      |
+| 启动/关闭已有的容器 | docker start/stop | ctr task start/kill  | crictl start/stop |
+| 运行一个新的容器    | docker run        | ctr run              | 无                |
+| 修改镜像标签        | docker tag        | ctr image tag        | 无                |
+| 创建一个新的容器    | docker create     | ctr container create | crictl create     |
+| 导入镜像            | docker load       | ctr image import     | 无                |
+| 导出镜像            | docker save       | ctr image export     | 无                |
+| 删除容器            | docker rm         | ctr container rm     | crictl rm         |
+| 删除镜像            | docker rmi        | ctr image rm         | crictl rmi        |
+| 拉取镜像            | docker pull       | ctr image pull       | crictl pull       |
+| 推送镜像            | docker push       | ctr image push       | 无                |
+| 在容器内部执行命令  | docker exec       | 无                   | crictl exec       |
+
+
 
 ### A、在所有节点上安装 Docker和 kubeadm、kubelet、kubectl
 
@@ -274,12 +417,14 @@ sysctl --system
 
 #### 1、安装docker
 
+**Kubernetes 1.24+ 版本已经去除了对Docker的直接接口支持,需要通过containerd + docker CRI使用Docker。**
+
 <https://docs.docker.com/engine/install/centos/>
 
 卸载的旧版本
 
 ```shell
-  yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
+yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 ```
 
 华为安装
@@ -371,6 +516,7 @@ Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 #### 2、添加 阿里kubernetes 仓库源（推荐）
 
 ```shell
+## 老版配置v1.28以前+部分版本
 cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -379,6 +525,16 @@ enabled=1
 gpgcheck=1
 repo_gpgcheck=0
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+
+## 新版配置v1.24-v1.29
+cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/rpm/repodata/repomd.xml.key
 EOF
 ```
 
@@ -399,8 +555,9 @@ EOF
 #### 4、更新索引文件并安装 **kubernetes**
 
 ```shell
-yum clean all && yum makecache && yum -y update && yum repolist all
-yum list kubelet yum list kube*
+yum clean all && yum makecache && yum -y update && yum repolist
+
+yum list kube*
 ```
 
 `failure: repodata/repomd.xml from kubernetes: [Errno 256] No more mirrors to try.`
@@ -416,18 +573,20 @@ yum list kubelet yum list kube*
 **升级0，新安装0，降级3，删除0，未升级25**
 
 ```ABAP
-apt-get install -y kubeadm=1.27.8-0 kubelet=1.27.8-0 kubectl=1.27.8-0
+apt-get install -y kubeadm=1.28.7-0 kubelet=1.28.7-0 kubectl=1.28.7-0
 
-yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0
-yum install --nogpgcheck kubelet-1.27.8-0 kubeadm-1.27.8-0 kubectl-1.27.8-0
+yum install kubelet-1.28.7-0 kubeadm-1.28.7-0 kubectl-1.28.7-0
 
-华为：yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0 --disableexcludes=kubernetes
-阿里：yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0
+华为：
+yum install kubelet-1.28.7-0 kubeadm-1.28.7-0 kubectl-1.28.7-0 --disableexcludes=kubernetes
+阿里：
+yum install kubelet-1.28.7 kubeadm-1.28.7 kubectl-1.28.7 --disableexcludes=kubernetes
+yum install --nogpgcheck kubelet-1.28.7 kubeadm-1.28.7 kubectl-1.28.7 --disableexcludes=kubernetes
 ```
 
 #### 6、node 节点安装
 
-`yum install kubeadm-1.27.8-0 kubelet-1.27.8-0 kubectl-1.27.8-0`
+`yum install kubelet-1.28.7-0 kubeadm-1.28.7-0 kubectl-1.28.7-0`
 
 #### 7、创建k8s软连接
 
@@ -452,6 +611,7 @@ yum install --nogpgcheck kubelet-1.27.8-0 kubeadm-1.27.8-0 kubectl-1.27.8-0
 
 ```shell
 > swr.myhuaweicloud.com/iivey
+> registry.k8s.io
 > registry.cn-chengdu.aliyuncs.com/k8sjf
 > registry.aliyuncs.com/google_containers
 ```
@@ -469,20 +629,20 @@ yum install --nogpgcheck kubelet-1.27.8-0 kubeadm-1.27.8-0 kubectl-1.27.8-0
 
 设置k8s镜像仓库为，如果不确定，可以设置为 **registry.aliyuncs.com/google_containers**
 
-`kubeadm config images list --kubernetes-version=v1.28.2 --image-repository registry.aliyuncs.com/google_containers`
+`kubeadm config images list --kubernetes-version=v1.28.7 --image-repository registry.aliyuncs.com/google_containers`
 
 
 所需镜像版本：
 
 ```text
 ------------官方需要
-kube-apiserver:v1.28.2
-kube-controller-manager:v1.28.2
-kube-scheduler:v1.28.2
-kube-proxy:v1.28.2
-pause:3.9
-etcd:3.5.9-0
-coredns:v1.10.1
+registry.k8s.io/kube-apiserver:v1.28.7
+registry.k8s.io/kube-controller-manager:v1.28.7
+registry.k8s.io/kube-scheduler:v1.28.7
+registry.k8s.io/kube-proxy:v1.28.7
+registry.k8s.io/pause:3.9
+registry.k8s.io/etcd:3.5.10-0
+registry.k8s.io/coredns/coredns:v1.10.1
 ```
 
 ```shell
@@ -496,7 +656,7 @@ kubeadm init \
 --apiserver-advertise-address=192.168.100.130 \
 --control-plane-endpoint=192.168.100.130 \
 --image-repository registry.aliyuncs.com/google_containers \
---kubernetes-version v1.28.2 \
+--kubernetes-version v1.28.7 \
 --service-cidr=10.96.0.0/16 \
 --pod-network-cidr=10.244.0.0/16
 ```
@@ -514,26 +674,42 @@ kubeadm init \
   export KUBECONFIG=/etc/kubernetes/admin.conf
   
 您现在应该在集群上部署一个pod网络。
-使用下列选项之一运行“kubectl apply-f[podnetwork].yaml”：
+使用下列选项之一运行“kubectl apply -f [podnetwork].yaml”：
 https://kubernetes.io/docs/concepts/cluster-administration/addons/
 
 ##### master
 现在，您可以通过复制证书颁发机构来加入任意数量的控制平面节点
 和每个节点上的服务帐户密钥，然后以root用户身份运行以下操作：
-kubeadm join 192.168.100.130:6443 --token wmgb01.rwvu0csqrn5ayt1k \
-        --discovery-token-ca-cert-hash sha256:e542e830fa...7f39bb0 \
+kubeadm join 192.168.100.130:6443 --token y1iv7u.3j2bvevxwj0pcmxr \
+        --discovery-token-ca-cert-hash sha256:5aba30843f69ff954e4afed9b712cfd1773c5a0c622a9d6e1cdcc2d937857815 \
         --control-plane
 
 然后，在每个节点上以root身份运行以下操作，可以加入任意数量的工作节点：
 ###### node
 su root
-kubeadm join 192.168.100.130:6443 --token wmgb01.rwvu0csqrn5ayt1k \
-        --discovery-token-ca-cert-hash sha256:e542e830f...27bc27f39bb0
+kubeadm join 192.168.100.130:6443 --token y1iv7u.3j2bvevxwj0pcmxr \
+        --discovery-token-ca-cert-hash sha256:5aba30843f69ff954e4afed9b712cfd1773c5a0c622a9d6e1cdcc2d937857815
 ```
 
-#### kubectl 命令的自动补全功能（所有的节点）
 
-`echo "source <(kubectl completion bash)" >> ~/.bashrc`
+
+#### [ERROR CRI]: container runtime is not running:
+
+[官网解决方案](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
+
+[所有节点安装containerd](#所有节点安装containerd)
+
+1. 删除 `/etc/containerd/config.toml` 文件。
+2. 要确保 `cri` 没有出现在 `/etc/containerd/config.toml` 文件中 `disabled_plugins` 列表内。
+3. 执行`生成config.toml配置` 命令：`containerd config default > /etc/containerd/config.toml`
+
+然后重新启动 containerd：
+
+```shell
+systemctl restart containerd
+```
+
+
 
 #### 重启后出现：`The connection to the server localhost:8080 was refused - did you specify the right host or port?`
 
@@ -548,6 +724,7 @@ scp /etc/kubernetes/admin.conf root@192.168.100.131:/etc/kubernetes/ && \
 scp /etc/kubernetes/admin.conf root@192.168.100.132:/etc/kubernetes/
 
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
+或者
 scp ~/.bash_profile root@192.168.100.131:/root/ && \
 scp ~/.bash_profile root@192.168.100.132:/root/
 
@@ -609,7 +786,7 @@ data:
         dataDir: /var/lib/etcd
     imageRepository: registry.cn-chengdu.aliyuncs.com/k8sjf
     kind: ClusterConfiguration
-    kubernetesVersion: v1.28.2
+    kubernetesVersion: v1.28.7
     networking:
       dnsDomain: cluster.local
       podSubnet: 10.244.0.0/16
@@ -653,45 +830,266 @@ Flannel 的缺点之一是缺乏高级功能，例如配置网络策略和防火
 
 #### 配置网络策略 Flannel
 
-root用户：使用[Flannel](https://github.com/flannel-io/flannel#deploying-flannel-manually) 配置，执行：
+root用户：
 
-><https://gitee.com/k8s_s/flannel/blob/master/Documentation/kube-flannel.yml>
+><https://github.com/flannel-io/flannel#deploying-flannel-manually>
 >
-><https://gitee.com/k8s_s/flannel/blob/v0.17.0/Documentation/kube-flannel.yml>
+><https://gitee.com/k8s_s/flannel/blob/master/Documentation/kube-flannel.yml>
 >
 ><https://gitee.com/k8s_s/flannel/blob/v0.19.1/Documentation/kube-flannel.yml>
 >
->kubectl apply -f kube-flannel-0.19.1.yml
+>kubectl apply -f kube-flannel.yml
 >
->删除：kubectl delete -f kube-flannel-0.19.1.yml
+>kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+>
+>删除：kubectl delete -f kube-flannel.yml
 
-##### kube-flannel.yml 镜像版本
+##### kube-flannel.yml
 
 ```yaml
-（flannel版本）---（flannel-cni-plugin镜像版本）---（flannel镜像版本）
-### v0.15.1-v0.16.1：：：：：：v1.0.0、v0.15.1
-### v0.16.2-v0.16.3：：：：：：v1.0.1、v0.16.1
-### v0.17.0：：：：：：v1.0.1、v0.16.3
-### v0.18.0：：：：：：v1.1.0、v0.18.0
-### v0.18.1：：：：：：v1.1.0、v0.18.1
-### v0.19.0：：：：：：v1.1.0、v0.18.1
-### v0.19.1：：：：：：v1.1.0、v0.19.0
-
-dkpull rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0
-dkpull rancher/mirrored-flannelcni-flannel:v0.19.0
-
-docker tag rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0 registry.cn-chengdu.aliyuncs.com/k8sjf/flannelcni-flannel-cni-plugin:v1.1.0
-docker push registry.cn-chengdu.aliyuncs.com/k8sjf/flannelcni-flannel-cni-plugin:v1.1.0
-docker rmi rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0
-------------------------
-docker tag rancher/mirrored-flannelcni-flannel:v0.19.0 registry.cn-chengdu.aliyuncs.com/k8sjf/flannel:v0.19.0
-docker push registry.cn-chengdu.aliyuncs.com/k8sjf/flannel:v0.19.0
-docker rmi rancher/mirrored-flannelcni-flannel:v0.19.0
-
-image修改：
-registry.cn-chengdu.aliyuncs.com/k8sjf/flannelcni-flannel-cni-plugin:v1.1.0
-registry.cn-chengdu.aliyuncs.com/k8sjf/flannel:v0.19.0
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: kube-flannel
+  labels:
+    k8s-app: flannel
+    pod-security.kubernetes.io/enforce: privileged
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    k8s-app: flannel
+  name: flannel
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - nodes/status
+  verbs:
+  - patch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - clustercidrs
+  verbs:
+  - list
+  - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    k8s-app: flannel
+  name: flannel
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: flannel
+subjects:
+- kind: ServiceAccount
+  name: flannel
+  namespace: kube-flannel
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: flannel
+  name: flannel
+  namespace: kube-flannel
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kube-flannel-cfg
+  namespace: kube-flannel
+  labels:
+    tier: node
+    k8s-app: flannel
+    app: flannel
+data:
+  cni-conf.json: |
+    {
+      "name": "cbr0",
+      "cniVersion": "0.3.1",
+      "plugins": [
+        {
+          "type": "flannel",
+          "delegate": {
+            "hairpinMode": true,
+            "isDefaultGateway": true
+          }
+        },
+        {
+          "type": "portmap",
+          "capabilities": {
+            "portMappings": true
+          }
+        }
+      ]
+    }
+  net-conf.json: |
+    {
+      "Network": "10.244.0.0/16",
+      "Backend": {
+        "Type": "vxlan"
+      }
+    }
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kube-flannel-ds
+  namespace: kube-flannel
+  labels:
+    tier: node
+    app: flannel
+    k8s-app: flannel
+spec:
+  selector:
+    matchLabels:
+      app: flannel
+  template:
+    metadata:
+      labels:
+        tier: node
+        app: flannel
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - linux
+      hostNetwork: true
+      priorityClassName: system-node-critical
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      serviceAccountName: flannel
+      initContainers:
+      - name: install-cni-plugin
+        image: docker.io/flannel/flannel-cni-plugin:v1.4.0-flannel1
+        command:
+        - cp
+        args:
+        - -f
+        - /flannel
+        - /opt/cni/bin/flannel
+        volumeMounts:
+        - name: cni-plugin
+          mountPath: /opt/cni/bin
+      - name: install-cni
+        image: docker.io/flannel/flannel:v0.24.3
+        command:
+        - cp
+        args:
+        - -f
+        - /etc/kube-flannel/cni-conf.json
+        - /etc/cni/net.d/10-flannel.conflist
+        volumeMounts:
+        - name: cni
+          mountPath: /etc/cni/net.d
+        - name: flannel-cfg
+          mountPath: /etc/kube-flannel/
+      containers:
+      - name: kube-flannel
+        image: docker.io/flannel/flannel:v0.24.3
+        command:
+        - /opt/bin/flanneld
+        args:
+        - --ip-masq
+        - --kube-subnet-mgr
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "50Mi"
+        securityContext:
+          privileged: false
+          capabilities:
+            add: ["NET_ADMIN", "NET_RAW"]
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: EVENT_QUEUE_DEPTH
+          value: "5000"
+        volumeMounts:
+        - name: run
+          mountPath: /run/flannel
+        - name: flannel-cfg
+          mountPath: /etc/kube-flannel/
+        - name: xtables-lock
+          mountPath: /run/xtables.lock
+      volumes:
+      - name: run
+        hostPath:
+          path: /run/flannel
+      - name: cni-plugin
+        hostPath:
+          path: /opt/cni/bin
+      - name: cni
+        hostPath:
+          path: /etc/cni/net.d
+      - name: flannel-cfg
+        configMap:
+          name: kube-flannel-cfg
+      - name: xtables-lock
+        hostPath:
+          path: /run/xtables.lock
+          type: FileOrCreate
 ```
+
+#获取pods所有名称空间
+
+```shell
+[root@master ~]# kubectl get pods --all-namespaces -o wide
+NAMESPACE      NAME                             READY   STATUS    RESTARTS   AGE    IP                NODE     NOMINATED NODE   READINESS GATES
+kube-flannel   kube-flannel-ds-2vkzl            1/1     Running   0          2m7s   192.168.100.130   master   <none>           <none>
+kube-flannel   kube-flannel-ds-f5jkp            1/1     Running   0          2m7s   192.168.100.131   node1    <none>           <none>
+kube-flannel   kube-flannel-ds-tlh6w            1/1     Running   0          2m7s   192.168.100.132   node2    <none>           <none>
+kube-system    coredns-66f779496c-7qfs6         1/1     Running   0          42m    10.244.2.2        node1    <none>           <none>
+kube-system    coredns-66f779496c-bhx66         1/1     Running   0          42m    10.244.2.3        node1    <none>           <none>
+kube-system    etcd-master                      1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
+kube-system    kube-apiserver-master            1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
+kube-system    kube-controller-manager-master   1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
+kube-system    kube-proxy-2wq4b                 1/1     Running   0          35m    192.168.100.131   node1    <none>           <none>
+kube-system    kube-proxy-69rng                 1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
+kube-system    kube-proxy-q4tj8                 1/1     Running   0          35m    192.168.100.132   node2    <none>           <none>
+kube-system    kube-scheduler-master            1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
+```
+
+
+
+#### 配置网络策略 Cilium
+
+
+
+
 
 #### [kubectl命令表](https://blog.csdn.net/qq_42476834/article/details/121781274)
 
@@ -713,10 +1111,10 @@ No resources found in default namespace.
 ```shell
 [root@master-120 kubelet]# kg nodes
 NAME         STATUS   ROLES                  AGE   VERSION
-master-120   Ready    control-plane,master   63m   v1.28.2
-node-121     Ready    <none>                 58m   v1.28.2
-node-122     Ready    <none>                 58m   v1.28.2
-node-123     Ready    <none>                 58m   v1.28.2
+master-120   Ready    control-plane,master   63m   v1.28.7
+node-121     Ready    <none>                 58m   v1.28.7
+node-122     Ready    <none>                 58m   v1.28.7
+node-123     Ready    <none>                 58m   v1.28.7
 ```
 
 查看命名空间 **kubectl get ns**

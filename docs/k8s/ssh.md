@@ -41,7 +41,7 @@ k8s开启ssh远程登录
     ssh-copy-id -i ~/.ssh/id_rsa.pub a@192.168.100.132
 
 （5）重启SSH服务
-　命令：  systemctl restart sshd 或   service ssh restart
+　命令：  systemctl restart sshd 或   service sshd restart
 　
 （6）免密登录测试
 	ssh 192.168.100.130 ssh 192.168.100.131
