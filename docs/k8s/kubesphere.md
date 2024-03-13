@@ -47,51 +47,9 @@ KubeSphere 是一个开源的容器平台，提供了一套完整的 Kubernetes 
 - 3、ConfigMap [ConfigMap](https://kubernetes.io/zh-cn/docs/concepts/configuration/configmap/)
 - 4、secret  [secret](https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/)
 
-[具体设置请看](./nfs-pv-pvc-config-secret.md)
+[具体设置请看](./datastorage.md)
 
-## 需要的镜像
 
-> kubesphere/pause:3.4.1
->
-> kubesphere/kube-apiserver:v1.22.9
->
-> kubesphere/kube-proxy:v1.22.9
->
-> kubesphere/kube-controller-manager:v1.22.9
->
-> kubesphere/kube-proxy:v1.22.9
->
-> kubesphere/kube-scheduler:v1.22.9
->
-> kubesphere/k8s-dns-node-cache:1.15.12
->
-> kubesphere/k8s-dns-node-cache:1.15.12
->
-> coredns/coredns:v1.8.4
->
-> calico/kube-controllers:v3.20.0
->
-> calico/cni:v3.20.0
->
-> calico/kube-controllers:v3.20.0
->
-> calico/node:v3.20.0
->
-> calico/cni:v3.20.0
->
-> calico/pod2daemon-flexvol:v3.20.0
-
-dkpush registry.cn-chengdu.aliyuncs.com/jinfang/ks-apiserver:v3.2.1
-
-dkpush registry.cn-chengdu.aliyuncs.com/jinfang/ks-console:v3.2.1
-
-dkpush registry.cn-chengdu.aliyuncs.com/jinfang/fluent-bit:v1.8.3
-
-dkpush registry.cn-chengdu.aliyuncs.com/jinfang/kube-rbac-proxy:v0.8.0
-
-dkpush registry.cn-chengdu.aliyuncs.com/jinfang/openldap:1.3.0
-
-dkpush registry.cn-chengdu.aliyuncs.com/jinfang/node-exporter:v0.18.1
 
 ## 1、环境安装
 
@@ -99,7 +57,9 @@ dkpush registry.cn-chengdu.aliyuncs.com/jinfang/node-exporter:v0.18.1
 
 ### A、参考helm笔记
 
-### B、安装存储类 OpenEBS （仅适用于开发测试环境）<a name="OpenEBS"></a>
+### B、安装存储类OpenEBS
+
+（仅适用于开发测试环境）
 
 <https://v2-1.docs.kubesphere.io/docs/zh-CN/appendix/install-openebs/>
 
@@ -112,7 +72,7 @@ kubectl apply -f https://github.com/openebs/charts/blob/openebs-3.0.6/archive/1.
 https://github.com/openebs/charts/blob/openebs-3.0.6/charts/openebs/Chart.yaml
 ```
 
-### C、KubeKey-2.2.2（推荐）<a name="KubeKey"></a>
+### C、KubeKey-2.2.2（推荐）
 
 |    选项     | Kubernetes 版本 ≥ 1.18 | Kubernetes 版本 < 1.18 |
 |:---------:|----------------------|----------------------|
@@ -122,9 +82,9 @@ https://github.com/openebs/charts/blob/openebs-3.0.6/charts/openebs/Chart.yaml
 |   ipset   | 可选，但推荐安装             | 可选，但推荐安装             |
 |  ipvsadm  | 可选，但推荐安装             | 可选，但推荐安装             |
 
-> yum install -y socat conntrack ebtables ipset ipvsadm
+**yum install -y socat conntrack ebtables ipset ipvsadm**
 
-默认情况下，KubeKey 将安装 [OpenEBS](#OpenEBS) 来为开发和测试环境配置 LocalPV
+默认情况下，KubeKey 将安装 [安装存储类OpenEBS](#安装存储类OpenEBS) 来为开发和测试环境配置 LocalPV
 
 <https://kubesphere.io/zh/>
 
@@ -157,30 +117,9 @@ rm -rf ./kubekey-v2.2.2 && \
 ls /usr/local/bin/ && kk version
 ```
 
-## 2、使用 KubeKey 手动安装（推荐1）<a name="使用 KubeKey 安装"></a>
+## 2、使用 KubeKey 手动安装（推荐1）
 
 **查看支持的k8s版本**：`kk version --show-supported-k8s`
-
-2.0.0：<https://gitee.com/k8s_s/kubekey/blob/v2.0.0/docs/kubernetes-versions.md>
-
-```
-v1.19.0 v1.19.8 v1.19.9
-v1.20.4 v1.20.6 v1.20.10
-v1.21.4 v1.21.5
-v1.22.1
-v1.23.0
-```
-
-2.1.0：<https://gitee.com/k8s_s/kubekey/blob/v2.1.0/docs/kubernetes-versions.md>
-
-```
-v1.19.0 v1.19.8 v1.19.9
-v1.20.4 v1.20.6 v1.20.10
-v1.21.4 v1.21.5
-v1.22.1 v1.22.9
-v1.23.0 v1.23.6
-v1.24.0
-```
 
 2.2.2：<https://gitee.com/k8s_s/kubekey/blob/v2.2.2/docs/kubernetes-versions.md>
 
@@ -193,11 +132,11 @@ v1.23.0->8
 v1.24.0 v1.24.1
 ```
 
-内置下载版本：【kubeadm v1.22.9、kubelet v1.22.9、kubectl v1.22.9、helm v3.9.4、kubecni v0.9.1、crictl v1.22.0、etcd v3.4.13、docker 20.10.8】
+内置下载版本：【kubeadm v1.28.7、kubelet v1.28.7、kubectl v1.28.7、helm v3.9.4、kubecni v0.9.1、crictl v1.22.0、etcd v3.4.13、docker 20.10.8】
 
 **开始 init config 文件**
 
-> ./kk create config --with-kubernetes v1.22.9 --with-kubesphere v3.2.1
+> ./kk create config --with-kubernetes v1.28.7 --with-kubesphere v3.2.1
 
 kk create config 会自动创建 `config-sample.yaml`
 
@@ -253,7 +192,7 @@ network.plugin: flannel
 ./kk init os -f config-sample.yaml
 ```
 
-[master-kubeadm-初始化](./basis.html#master-kubeadm初始化)
+[master-kubeadm-初始化](./basis.md#master-kubeadm初始化)
 
 **开始安装：使用配置文件创建集群**
 
@@ -302,7 +241,7 @@ https://kubesphere.io             20xx-xx-xx xx:xx:xx
 
 <http://ks.k8s.com:30880/>
 
-## 3、 以 ks-installer-3.2.1 安装 kubesphere3.2.1（推荐2）
+## 3、以 ks-installer-3.2.1 安装 kubesphere3.2.1（推荐2）
 
 [github.com/kubesphere/ks-installer/](https://github.com/kubesphere/ks-installer/)
 
@@ -321,9 +260,9 @@ https://gitee.com/k8s_s/ks-installer/blob/v3.2.1/deploy/cluster-configuration.ya
 
 ### 安装
 
-kubectl apply -f ks-installer.yaml
+**kubectl apply -f ks-installer.yaml**
 
-kubectl apply -f ks-cluster.yaml
+**kubectl apply -f ks-cluster.yaml**
 
 *等待10秒左右，再查看安装进度:*
 
@@ -356,326 +295,13 @@ kubectl get svc/ks-console -n kubesphere-system
 
 解决etcd监控证书找不到问题:
 
-> kubectl -n kubesphere-monitoring-system create secret generic kube-etcd-client-certs  --from-file=etcd-client-ca.crt=/etc/kubernetes/pki/etcd/ca.crt  --from-file=etcd-client.crt=/etc/kubernetes/pki/apiserver-etcd-client.crt  --from-file=etcd-client.key=/etc/kubernetes/pki/apiserver-etcd-client.key
-
-### ks-installer.yaml
-
-::: details 点击查看代码
-
-```yaml
----
-apiVersion: apiextensions.k8s.io/v1
-kind: CustomResourceDefinition
-metadata:
-  name: clusterconfigurations.installer.kubesphere.io
-spec:
-  group: installer.kubesphere.io
-  versions:
-    - name: v1alpha1
-      served: true
-      storage: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-              x-kubernetes-preserve-unknown-fields: true
-            status:
-              type: object
-              x-kubernetes-preserve-unknown-fields: true
-  scope: Namespaced
-  names:
-    plural: clusterconfigurations
-    singular: clusterconfiguration
-    kind: ClusterConfiguration
-    shortNames:
-      - cc
-
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: kubesphere-system
-
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: ks-installer
-  namespace: kubesphere-system
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: ks-installer
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - apps
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - extensions
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - batch
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - rbac.authorization.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - apiregistration.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - apiextensions.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - tenant.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - certificates.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - devops.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - monitoring.coreos.com
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - logging.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - jaegertracing.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - storage.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - admissionregistration.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - policy
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - autoscaling
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - networking.istio.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - config.istio.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - iam.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - notification.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - auditing.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - events.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - core.kubefed.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - installer.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - storage.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - security.istio.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - monitoring.kiali.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - kiali.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - networking.k8s.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - kubeedge.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - types.kubefed.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - monitoring.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
-  - application.kubesphere.io
-  resources:
-  - '*'
-  verbs:
-  - '*'
-
-
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ks-installer
-subjects:
-- kind: ServiceAccount
-  name: ks-installer
-  namespace: kubesphere-system
-roleRef:
-  kind: ClusterRole
-  name: ks-installer
-  apiGroup: rbac.authorization.k8s.io
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ks-installer
-  namespace: kubesphere-system
-  labels:
-    app: ks-install
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: ks-install
-  template:
-    metadata:
-      labels:
-        app: ks-install
-    spec:
-      serviceAccountName: ks-installer
-      containers:
-      - name: installer
-        image: kubesphere/ks-installer:v3.2.1
-        imagePullPolicy: "Always"
-        resources:
-          limits:
-            cpu: "1"
-            memory: 1Gi
-          requests:
-            cpu: 20m
-            memory: 100Mi
-        volumeMounts:
-        - mountPath: /etc/localtime
-          name: host-time
-          readOnly: true
-      volumes:
-      - hostPath:
-          path: /etc/localtime
-          type: ""
-        name: host-time
-
+```shell
+kubectl -n kubesphere-monitoring-system create secret generic kube-etcd-client-certs  --from-file=etcd-client-ca.crt=/etc/kubernetes/pki/etcd/ca.crt  --from-file=etcd-client.crt=/etc/kubernetes/pki/apiserver-etcd-client.crt  --from-file=etcd-client.key=/etc/kubernetes/pki/apiserver-etcd-client.key
 ```
 
-:::
 
-### ks-cluster.yaml
+
+### ks-cluster.yaml主要说明
 
 ::: details 点击查看代码
 
@@ -876,191 +502,17 @@ spec:
 >
 > vim manifest.yaml
 
-::: details 点击查看代码
 
-```yaml
----
-apiVersion: kubekey.kubesphere.io/v1alpha2
-kind: Manifest
-metadata:
-  name: sample
-spec:
-  arches:
-  - amd64
-  operatingSystems:
-  - arch: amd64
-    type: linux
-    id: centos
-    version: "7"
-    repository:
-      iso:
-        localPath: ""
-        url: "https://github.com/kubesphere/kubekey/releases/download/v2.2.2/centos-7-amd64-rpms.iso"
-  kubernetesDistributions:
-  - type: kubernetes
-    version: v1.22.9
-  components:
-    helm:
-      version: v3.9.4
-    cni:
-      version: v0.9.1
-    etcd:
-      version: v3.4.13
-    ## For now, if your cluster container runtime is containerd, KubeKey will add a docker 20.10.8 container runtime in the below list.
-    ## The reason is KubeKey creates a cluster with containerd by installing a docker first and making kubelet connect the socket file of containerd which docker contained.
-    containerRuntimes:
-    - type: docker
-      version: 20.10.17
-    crictl:
-      version: v1.24.0
-    ##
-    # docker-registry:
-    #   version: "2"
-    harbor:
-      version: v2.4.1
-    docker-compose:
-      version: v2.2.2
-  images:
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-apiserver:v1.22.9
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-controller-manager:v1.22.9
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-proxy:v1.22.9
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-scheduler:v1.22.9
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/pause:3.5
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/pause:3.4.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/coredns:1.8.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/cni:v3.20.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-controllers:v3.20.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/node:v3.20.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/pod2daemon-flexvol:v3.20.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/typha:v3.20.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/flannel:v0.12.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/provisioner-localpv:2.10.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/linux-utils:2.10.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/haproxy:2.3
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/nfs-subdir-external-provisioner:v4.0.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/k8s-dns-node-cache:1.15.12
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/ks-installer:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/ks-apiserver:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/ks-console:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/ks-controller-manager:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kubectl:v1.21.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kubectl:v1.20.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kubefed:v0.8.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/tower:v0.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/minio:RELEASE.2019-08-07T01-59-21Z
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/mc:RELEASE.2019-08-07T23-14-43Z
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/snapshot-controller:v4.0.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/nginx-ingress-controller:v0.48.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/defaultbackend-amd64:1.4
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/metrics-server:v0.4.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/redis:5.0.14-alpine
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/haproxy:2.0.25-alpine
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/alpine:3.14
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/openldap:1.3.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/netshoot:v1.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/cloudcore:v1.7.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/edge-watcher:v0.1.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/edge-watcher-agent:v0.1.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/gatekeeper:v3.5.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/openpitrix-jobs:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/devops-apiserver:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/devops-controller:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/devops-tools:v3.2.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/ks-jenkins:v3.2.0-2.249.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/jnlp-slave:3.27-1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-base:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-nodejs:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-maven:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-python:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-go:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-go:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-base:v3.2.0-podman
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-nodejs:v3.2.0-podman
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-maven:v3.2.0-podman
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-python:v3.2.0-podman
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-go:v3.2.0-podman
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/builder-go:v3.2.0-podman
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/s2ioperator:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/s2irun:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/s2i-binary:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/tomcat85-java11-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/tomcat85-java11-runtime:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/tomcat85-java8-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/tomcat85-java8-runtime:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/java-11-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/java-8-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/java-8-runtime:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/java-11-runtime:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/nodejs-8-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/nodejs-6-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/nodejs-4-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/python-36-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/python-35-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/python-34-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/python-27-centos7:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/configmap-reload:v0.3.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/prometheus:v2.26.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/prometheus-config-reloader:v0.43.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/prometheus-operator:v0.43.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-rbac-proxy:v0.8.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-state-metrics:v1.9.7
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/node-exporter:v0.18.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/k8s-prometheus-adapter-amd64:v0.6.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/alertmanager:v0.21.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/thanos:v0.18.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/grafana:7.4.3
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-rbac-proxy:v0.8.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/notification-manager-operator:v1.4.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/notification-manager:v1.4.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/notification-tenant-sidecar:v3.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/elasticsearch-curator:v5.7.6
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/elasticsearch-oss:6.7.0-1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/fluentbit-operator:v0.11.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/docker:19.03
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/fluent-bit:v1.8.3
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/log-sidecar-injector:1.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/filebeat:6.7.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-events-operator:v0.3.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-events-exporter:v0.3.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-events-ruler:v0.3.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-auditing-operator:v0.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-auditing-webhook:v0.2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/pilot:1.11.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/proxyv2:1.11.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/jaeger-operator:1.27
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/jaeger-agent:1.27
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/jaeger-collector:1.27
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/jaeger-query:1.27
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/jaeger-es-index-cleaner:1.27
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kiali-operator:v1.38.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/kiali:v1.38
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/busybox:1.31.1
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/nginx:1.14-alpine
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/wget:1.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/hello:plain-text
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/wordpress:4.8-apache
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/hpa-example:latest
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/java:openjdk-8-jre-alpine
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/fluentd:v1.4.2-2.0
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/perl:latest
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/examples-bookinfo-productpage-v1:1.16.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/examples-bookinfo-reviews-v1:1.16.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/examples-bookinfo-reviews-v2:1.16.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/examples-bookinfo-details-v1:1.16.2
-  - registry.cn-beijing.aliyuncs.com/kubesphereio/examples-bookinfo-ratings-v1:1.16.3
-  registry:
-    auths: {}
-```
 
-:::
+**export KKZONE=cn**
 
-export KKZONE=cn
+**./kk artifact export -m manifest-sample.yaml -o kubesphere.tar.gz**
 
-./kk artifact export -m manifest-sample.yaml -o kubesphere.tar.gz
+
 
 ## 5、访问、卸载 kubesphere
 
-访问：<http://192.168.100.120:30880> admin
+访问：<http://192.168.100.130:30880> admin
 
 <https://kubesphere.com.cn/docs/installing-on-linux/uninstall-kubesphere-and-kubernetes/>
 
@@ -1195,11 +647,11 @@ KubeSphere 的多租户系统分**三个**层级，即集群、企业空间和�
 
 ##### 访问模式
 
-RWO (ReadWriteOnce)：单个节点读写
+**RWO (ReadWriteOnce)**：单个节点读写
 
-ROX (ReadOnlyMany)：多节点只读
+**ROX (ReadOnlyMany)**：多节点只读
 
-RWX (ReadWriteMany)：多节点读写
+**RWX (ReadWriteMany)**：多节点读写
 
 ![](./kubesphere.assets/true-image-20220516142317994.png)
 

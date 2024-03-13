@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s nfs-pv-pvc-ConfigMap-secret
+title: k8s 数据持久化存储
 category: 
 - kubernetes
 headerDepth: 5
@@ -11,9 +11,24 @@ tag:
 - k8s
 ---
 
-k8s nfs-pv-pvc-ConfigMap-secret
+k8s数据持久化存储：nfs（pv-pvc，ConfigMap，secret）、local、hostPath
 
 <!-- more -->
+
+[卷](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/)
+
+[持久卷的类型](https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)
+
+PV 持久卷是用插件的形式来实现的。Kubernetes 目前支持以下插件：
+
+- [`csi`](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/#csi) - 容器存储接口 (CSI)
+- [`fc`](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/#fc) - Fibre Channel (FC) 存储
+- [`hostPath`](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/#hostpath) - HostPath 卷 （仅供单节点测试使用；不适用于多节点集群；请尝试使用 `local` 卷作为替代）
+- [`iscsi`](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/#iscsi) - iSCSI (SCSI over IP) 存储
+- [`local`](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/#local) - 节点上挂载的本地存储设备
+- [`nfs`](https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/#nfs) - 网络文件系统 (NFS) 存储
+
+
 
 ## NFS 文件系统
 
@@ -66,9 +81,11 @@ mkdir -p /nfs/data
 mount -t nfs 192.168.100.130:/nfs/data /nfs/data
 ```
 
-### c、配置默认存储
+### c、配置默认存储StorageClass
 
-创建一个文件 vim ./nfs.yaml
+创建一个文件 **vim ./nfs.yaml**
+
+**kubectl apply -f nfs.yaml**
 
 ::: details 点击查看代码
 
@@ -201,7 +218,7 @@ roleRef:
 
 :::
 
-kubectl apply -f nfs.yaml
+
 
 ### d、确认配置是否生效
 
@@ -215,9 +232,11 @@ nfs-storage (default)   k8s-sigs.io/nfs-subdir-external-provisioner   Delete    
 
 ### e、metrics-server
 
-vim metrics-server.yaml
+**vim metrics-server.yaml**
 
-kubectl apply -f metrics-server.yaml
+**kubectl apply -f metrics-server.yaml**
+
+
 
 ::: details 点击查看代码
 
@@ -413,6 +432,8 @@ spec:
 
 :::
 
+
+
 ## PV&PVC
 
 **PV**：持久卷（Persistent Volume），将应用需要持久化的数据保存到指定位置
@@ -430,9 +451,9 @@ mkdir -p /nfs/data/{01,02,03}
 
 创建PV
 
-pv.yaml
+**vim pv.yaml**
 
-kaf pv.yaml
+**kaf pv.yaml**
 
 ```yaml
 apiVersion: v1
@@ -480,11 +501,11 @@ spec:
 
 ### 2、PVC创建与绑定
 
-创建 nginx的PVC
+创建nginx的PVC
 
-nginx-pvc.yaml
+**nginx-pvc.yaml**
 
-kaf nginx-pvc.yaml
+**kaf nginx-pvc.yaml**
 
 ```yaml
 kind: PersistentVolumeClaim
@@ -500,11 +521,11 @@ spec:
   storageClassName: nfs
 ```
 
-### 3、创建Pod绑定PVC pvc-deploy.yaml
+### 3、创建Pod绑定PVC
 
-pvc-deploy.yaml
+**vim pvc-deploy.yaml**
 
-kaf pvc-deploy.yaml
+**kaf pvc-deploy.yaml**
 
 ```yaml
 apiVersion: apps/v1
@@ -539,11 +560,11 @@ spec:
 
 抽取应用配置，并且可以自动更新
 
-[https://kubernetes.io/zh-cn/docs/concepts/configuration/configmap/](https://kubernetes.io/zh-cn/docs/concepts/configuration/configmap/)
+<https://kubernetes.io/zh-cn/docs/concepts/configuration/configmap/>
 
-### 1、以 redis 示例
+**以 redis 示例**
 
-#### 1、把之前的配置文件创建为配置集
+### 1、把之前的配置文件创建为配置集
 
 创建配置，redis保存到k8s的etcd；
 
@@ -568,7 +589,7 @@ data:    #data是所有真正的数据，key：默认是文件名   value：配�
     appendonly yes
 ```
 
-#### 2、创建Pod
+### 2、创建Pod
 
 redis-pod.yaml
 
@@ -604,7 +625,7 @@ spec:
           path: redis.conf
 ```
 
-#### 3、检查默认配置
+### 3、检查默认配置
 
 ```yaml
 kubectl exec -it redis -- redis-cli
@@ -618,7 +639,7 @@ kubectl exec -it redis -- redis-cli
 2) ""
 ```
 
-#### 4、修改ConfigMap
+### 4、修改ConfigMap
 
 redis.yaml
 
@@ -633,7 +654,7 @@ data:  #data是所有真正的数据，key：默认是文件名   value：配置
     maxmemory-policy allkeys-lru 
 ```
 
-#### 5、检查配置是否更新
+### 5、检查配置是否更新
 
 ```yaml
 kubectl exec -it redis -- redis-cli
@@ -669,9 +690,9 @@ kubectl create secret docker-registry jinfang-docker \
   --docker-password=xx --docker-email=iskong9@163.com
 ```
 
-secret-pod.yaml
+**secret-pod.yaml**
 
-kaf secret-pod.yaml
+**kaf secret-pod.yaml**
 
 ```yaml
 apiVersion: v1

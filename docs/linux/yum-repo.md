@@ -126,23 +126,23 @@ cp CentOS-Base.repo  CentOS-Base.repo-cp
 
 **CentOS 5：**
 
-> wget http://mirrors.163.com/.help/CentOS5-Base-163.repo
+`wget http://mirrors.163.com/.help/CentOS5-Base-163.repo`
 
 **CentOS 6：**
 
-> wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
+`wget http://mirrors.163.com/.help/CentOS6-Base-163.repo`
 
 **CentOS 7：**
 
-> wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
+`wget http://mirrors.163.com/.help/CentOS7-Base-163.repo`
 
 **CentOS 8：**
 
-> wget http://mirrors.163.com/.help/CentOS8-Base-163.repo
+`wget http://mirrors.163.com/.help/CentOS8-Base-163.repo`
 
 *运行*
 
-> wget -O /etc/yum.repos.d/CentOS8-Base-163.repo http://mirrors.163.com/.help/CentOS8-Base-163.repo
+`wget -O /etc/yum.repos.d/CentOS8-Base-163.repo http://mirrors.163.com/.help/CentOS8-Base-163.repo`
 
 ```shell
 Saving to: ‘/etc/yum.repos.d/CentOS8-Base-163.repo’100%[=>] 1,572       --.-K/s   in 0s      2017-06-20 06:29:47 (293 MB/s) - ‘/etc/yum.repos.d/CentOS8-Base-163.repo’ saved [1572/1572]

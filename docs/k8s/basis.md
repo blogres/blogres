@@ -192,8 +192,9 @@ systemctl disable firewalld
 
 #### 禁用selinux
 
-```
+```shell
 setenforce 0
+
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 ```
 
@@ -203,7 +204,7 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 `nano /etc/fstab`
 
-```
+```shell
 [root@master ~]# cat /etc/fstab
 
 #
@@ -378,7 +379,7 @@ sed -i 's/sandbox_image = \"registry.k8s.io\/pause:3.6\"/sandbox_image = \"regis
 
 **启动containerd 并设置开机自启动**
 
-```
+```shell
 systemctl restart containerd && systemctl enable containerd
 ```
 
@@ -407,15 +408,15 @@ systemctl restart containerd && systemctl enable containerd
 
 
 
-### A、在所有节点上安装 Docker和 kubeadm、kubelet、kubectl
-
-#### 准备
+### A、在所有节点上安装 Docker和kubernetes
 
 [安装工具](https://kubernetes.io/zh/docs/tasks/tools/)：[docker](https://docs.docker.com/engine/install/centos/)、kubeadm管理、kukelet代理、kubectl命令行
 
-[kubernetes版本 History](https://kubernetes.io/zh-cn/releases/) <https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG>
+[kubernetes版本 History](https://kubernetes.io/zh-cn/releases/)
 
-#### 1、安装docker
+<https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG>
+
+#### 安装docker
 
 **Kubernetes 1.24+ 版本已经去除了对Docker的直接接口支持,需要通过containerd + docker CRI使用Docker。**
 
@@ -461,19 +462,15 @@ yum remove docker docker-client docker-client-latest docker-common docker-latest
   service docker start
 ```
 
-`systemctl docker`
-
-`systemctl restart docker`
-
-`systemctl stop docker`
-
-`systemctl enable docker`
-
-`systemctl disable docker`
-
-`systemctl status docker`
-
-`usermod -aG docker a` #非root用户
+```shell
+systemctl docker
+systemctl restart docker
+systemctl stop docker
+systemctl enable docker
+systemctl disable docker
+systemctl status docker
+usermod -aG docker a #非root用户
+```
 
 设置加速
 
@@ -512,8 +509,9 @@ Environment="HTTPS_PROXY=http://127.0.0.1:10809"
 Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 ```
 
+#### 添加kubernetes仓库源
 
-#### 2、添加 阿里kubernetes 仓库源（推荐）
+
 
 ```shell
 ## 老版配置v1.28以前+部分版本
@@ -538,21 +536,7 @@ gpgkey=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/rpm/repodata/
 EOF
 ```
 
-#### 3、添加 华为kubernetes 仓库源（仓库维护太慢了）
-
-```shell
-cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://repo.huaweicloud.com/kubernetes/yum/repos/kubernetes-el7-x86_64
-enabled=1
-gpgcheck=1
-repo_gpgcheck=0
-gpgkey=https://repo.huaweicloud.com/kubernetes/yum/doc/yum-key.gpg https://repo.huaweicloud.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
-```
-
-#### 4、更新索引文件并安装 **kubernetes**
+**更新索引文件并查看 kubernetes版本列表**
 
 ```shell
 yum clean all && yum makecache && yum -y update && yum repolist
@@ -568,7 +552,7 @@ yum list kube*
 
 如果不可用，则跳过：`yum-config-manager --save --setopt=kubernetes.skip_if_unavailable=true`
 
-#### 5、master 安装
+#### master节点安装
 
 **升级0，新安装0，降级3，删除0，未升级25**
 
@@ -584,28 +568,32 @@ yum install kubelet-1.28.7 kubeadm-1.28.7 kubectl-1.28.7 --disableexcludes=kuber
 yum install --nogpgcheck kubelet-1.28.7 kubeadm-1.28.7 kubectl-1.28.7 --disableexcludes=kubernetes
 ```
 
-#### 6、node 节点安装
+#### node节点安装
 
 `yum install kubelet-1.28.7-0 kubeadm-1.28.7-0 kubectl-1.28.7-0`
 
-#### 7、创建k8s软连接
+#### 创建k8s软连接
 
 执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
 
 #### 启动 k8s
 
-`systemctl enable kubelet` `systemctl disable kubelet`
-
-`systemctl start kubelet` `systemctl stop kubelet`
-
-`systemctl status kubelet`
+```shell
+systemctl enable kubelet
+systemctl disable kubelet
+systemctl start kubelet
+systemctl stop kubelet
+systemctl status kubelet
+```
 
 发现：`kubelet.service - kubelet: The Kubernetes Node Agent`，属于正常，k8s还没有配置
 
 
+
+
 ### B、Master 部署 Kubernetes
 
-编辑 master_images.sh：设置需要的镜像，仓库地址,[官网docker镜像搜索](https://hub.docker.com/)
+编辑 master_images.sh：设置需要的镜像，仓库地址：[官网docker镜像搜索](https://hub.docker.com/)
 
 <https://hub.docker.com/u/aiotceo> 、<https://hub.docker.com/u/mirrorgooglecontainers>
 
@@ -693,7 +681,7 @@ kubeadm join 192.168.100.130:6443 --token y1iv7u.3j2bvevxwj0pcmxr \
 
 
 
-#### [ERROR CRI]: container runtime is not running:
+#### [ERROR CRI]: container runtime is not running
 
 [官网解决方案](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
 
@@ -731,13 +719,17 @@ scp ~/.bash_profile root@192.168.100.132:/root/
 source ~/.bash_profile
 ```
 
+
+
 #### 解决端口占用：kubeadm reset
+
+
 
 ### C、将从节点（node）加入 Kubernetes （Master）集群中
 
 su root 在每个根节点上运行以下操作：
 
-[查看 kubeadm init](#kubeadm init)
+[查看 kubeadm init](#master-kubeadm初始化)
 
 ```shell
 su root
@@ -832,239 +824,21 @@ Flannel 的缺点之一是缺乏高级功能，例如配置网络策略和防火
 
 root用户：
 
-><https://github.com/flannel-io/flannel#deploying-flannel-manually>
->
-><https://gitee.com/k8s_s/flannel/blob/master/Documentation/kube-flannel.yml>
->
-><https://gitee.com/k8s_s/flannel/blob/v0.19.1/Documentation/kube-flannel.yml>
->
->kubectl apply -f kube-flannel.yml
->
->kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
->
->删除：kubectl delete -f kube-flannel.yml
+```shell
+https://github.com/flannel-io/flannel#deploying-flannel-manually
 
-##### kube-flannel.yml
+https://gitee.com/k8s_s/flannel/blob/master/Documentation/kube-flannel.yml
 
-```yaml
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: kube-flannel
-  labels:
-    k8s-app: flannel
-    pod-security.kubernetes.io/enforce: privileged
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  labels:
-    k8s-app: flannel
-  name: flannel
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - nodes
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ""
-  resources:
-  - nodes/status
-  verbs:
-  - patch
-- apiGroups:
-  - networking.k8s.io
-  resources:
-  - clustercidrs
-  verbs:
-  - list
-  - watch
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  labels:
-    k8s-app: flannel
-  name: flannel
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: flannel
-subjects:
-- kind: ServiceAccount
-  name: flannel
-  namespace: kube-flannel
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    k8s-app: flannel
-  name: flannel
-  namespace: kube-flannel
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: kube-flannel-cfg
-  namespace: kube-flannel
-  labels:
-    tier: node
-    k8s-app: flannel
-    app: flannel
-data:
-  cni-conf.json: |
-    {
-      "name": "cbr0",
-      "cniVersion": "0.3.1",
-      "plugins": [
-        {
-          "type": "flannel",
-          "delegate": {
-            "hairpinMode": true,
-            "isDefaultGateway": true
-          }
-        },
-        {
-          "type": "portmap",
-          "capabilities": {
-            "portMappings": true
-          }
-        }
-      ]
-    }
-  net-conf.json: |
-    {
-      "Network": "10.244.0.0/16",
-      "Backend": {
-        "Type": "vxlan"
-      }
-    }
----
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: kube-flannel-ds
-  namespace: kube-flannel
-  labels:
-    tier: node
-    app: flannel
-    k8s-app: flannel
-spec:
-  selector:
-    matchLabels:
-      app: flannel
-  template:
-    metadata:
-      labels:
-        tier: node
-        app: flannel
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/os
-                operator: In
-                values:
-                - linux
-      hostNetwork: true
-      priorityClassName: system-node-critical
-      tolerations:
-      - operator: Exists
-        effect: NoSchedule
-      serviceAccountName: flannel
-      initContainers:
-      - name: install-cni-plugin
-        image: docker.io/flannel/flannel-cni-plugin:v1.4.0-flannel1
-        command:
-        - cp
-        args:
-        - -f
-        - /flannel
-        - /opt/cni/bin/flannel
-        volumeMounts:
-        - name: cni-plugin
-          mountPath: /opt/cni/bin
-      - name: install-cni
-        image: docker.io/flannel/flannel:v0.24.3
-        command:
-        - cp
-        args:
-        - -f
-        - /etc/kube-flannel/cni-conf.json
-        - /etc/cni/net.d/10-flannel.conflist
-        volumeMounts:
-        - name: cni
-          mountPath: /etc/cni/net.d
-        - name: flannel-cfg
-          mountPath: /etc/kube-flannel/
-      containers:
-      - name: kube-flannel
-        image: docker.io/flannel/flannel:v0.24.3
-        command:
-        - /opt/bin/flanneld
-        args:
-        - --ip-masq
-        - --kube-subnet-mgr
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "50Mi"
-        securityContext:
-          privileged: false
-          capabilities:
-            add: ["NET_ADMIN", "NET_RAW"]
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: EVENT_QUEUE_DEPTH
-          value: "5000"
-        volumeMounts:
-        - name: run
-          mountPath: /run/flannel
-        - name: flannel-cfg
-          mountPath: /etc/kube-flannel/
-        - name: xtables-lock
-          mountPath: /run/xtables.lock
-      volumes:
-      - name: run
-        hostPath:
-          path: /run/flannel
-      - name: cni-plugin
-        hostPath:
-          path: /opt/cni/bin
-      - name: cni
-        hostPath:
-          path: /etc/cni/net.d
-      - name: flannel-cfg
-        configMap:
-          name: kube-flannel-cfg
-      - name: xtables-lock
-        hostPath:
-          path: /run/xtables.lock
-          type: FileOrCreate
+kubectl apply -f kube-flannel.yml
+
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 
-#获取pods所有名称空间
+删除：kubectl delete -f kube-flannel.yml
+
+
+
+获取pods所有名称空间
 
 ```shell
 [root@master ~]# kubectl get pods --all-namespaces -o wide
@@ -1171,6 +945,8 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.100.131   n
 **kube-flannel-ds-xxxx 必须运行OK**
 
 
+
+
 ### E、可视化管理工具
 
 #### 1、dashboard（不推荐）
@@ -1179,11 +955,11 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.100.131   n
 
 <https://github.com/kubernetes/dashboard/releases/tag/v2.4.0>
 
-`kubectl apply -f <https://gitee.com/k8s_s/dashboard1/blob/v2.4.0/aio/deploy/recommended.yaml> -o yaml > dashboard.yaml`
+`kubectl apply -f https://gitee.com/k8s_s/dashboard1/blob/v2.4.0/aio/deploy/recommended.yaml -o yaml > dashboard.yaml`
 
 #### 2、KubeSphere（推荐1）
 
-- [跳转-本站文档](./kube-sphere.md)
+- [跳转-本站文档](./kubeSphere.md)
 - [Github KubeSphere](https://github.com/kubesphere/kubesphere)，star: 14.1+K
 
 #### 3、Rancher（推荐2）
