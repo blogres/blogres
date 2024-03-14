@@ -440,7 +440,7 @@ spec:
 
 **PVC**：持久卷申明（**Persistent Volume Claim**），申明需要使用的持久卷规格
 
-### 1、创建pv池 pv.yaml
+### 1、创建pv池pv.yaml
 
 静态供应
 
@@ -453,7 +453,7 @@ mkdir -p /nfs/data/{01,02,03}
 
 **vim pv.yaml**
 
-**kaf pv.yaml**
+**kubectl apply -f pv.yaml**
 
 ```yaml
 apiVersion: v1
@@ -505,7 +505,7 @@ spec:
 
 **nginx-pvc.yaml**
 
-**kaf nginx-pvc.yaml**
+**kubectl apply -f pvc-nginx.yaml**
 
 ```yaml
 kind: PersistentVolumeClaim
@@ -525,7 +525,7 @@ spec:
 
 **vim pvc-deploy.yaml**
 
-**kaf pvc-deploy.yaml**
+**kubectl apply -f pvc-deploy.yaml**
 
 ```yaml
 apiVersion: apps/v1
@@ -576,7 +576,7 @@ kubectl create configmap redis-conf --from-file=redis.conf
 
 vim redis.yaml
 
-kaf redis.yaml
+kubectl apply -f redis.yaml
 
 ```yaml
 apiVersion: v1
@@ -593,7 +593,7 @@ data:    #data是所有真正的数据，key：默认是文件名   value：配�
 
 redis-pod.yaml
 
-kaf redis-pod.yaml
+kubectl apply -f redis-pod.yaml
 
 ```yaml
 apiVersion: v1
@@ -692,7 +692,7 @@ kubectl create secret docker-registry jinfang-docker \
 
 **secret-pod.yaml**
 
-**kaf secret-pod.yaml**
+**kubectl apply -f secret-pod.yaml**
 
 ```yaml
 apiVersion: v1

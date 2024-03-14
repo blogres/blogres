@@ -31,8 +31,9 @@ KubeSphere 是一个开源的容器平台，提供了一套完整的 Kubernetes 
 
 [v3-2版本说明](https://v3-2.docs.kubesphere.io/zh/docs/release/release-v321/)
 
-| KubeSphere |               支持的 Kubernetes 版本               |
-|:----------:|:---------------------------------------------:|
+| KubeSphere |            支持的 Kubernetes 版本             |
+| :--------: | :-------------------------------------------: |
+|   3.4.x    |                1.22.x - 1.27.2                |
 |   3.3.x    | 1.19.x, 1.20.x, 1.21.x, 1.22.x (experimental) |
 |   3.2.x    | 1.19.x, 1.20.x, 1.21.x, 1.22.x (experimental) |
 |   3.1.x    |        1.17.x, 1.18.x, 1.19.x, 1.20.x         |
@@ -55,7 +56,9 @@ KubeSphere 是一个开源的容器平台，提供了一套完整的 Kubernetes 
 
 `A B C`选其一即可
 
-### A、参考helm笔记
+### A、安装helm
+
+[helm笔记](./helm.md)
 
 ### B、安装存储类OpenEBS
 
@@ -72,7 +75,7 @@ kubectl apply -f https://github.com/openebs/charts/blob/openebs-3.0.6/archive/1.
 https://github.com/openebs/charts/blob/openebs-3.0.6/charts/openebs/Chart.yaml
 ```
 
-### C、KubeKey-2.2.2（推荐）
+### C、安装KubeKey
 
 |    选项     | Kubernetes 版本 ≥ 1.18 | Kubernetes 版本 < 1.18 |
 |:---------:|----------------------|----------------------|
@@ -88,32 +91,31 @@ https://github.com/openebs/charts/blob/openebs-3.0.6/charts/openebs/Chart.yaml
 
 <https://kubesphere.io/zh/>
 
-下载：<https://github.com/kubesphere/kubekey/releases、https://gitee.com/k8s_s/kubekey/tags>
+下载：<https://github.com/kubesphere/kubekey/releases> ，<https://gitee.com/k8s_s/kubekey/tags>
 
-<https://github.com/kubesphere/kubekey/releases/download/v2.2.2/kubekey-v2.2.2-linux-amd64.tar.gz>
+<https://github.com/kubesphere/kubekey/releases/download/v3.0.13/kubekey-v3.0.13-linux-amd64.tar.gz>
 
 或使用以下命令：
 
 ```shell
 export KKZONE=cn
 
-curl -sfL https://get-kk.kubesphere.io | VERSION=v1.2.0 sh -
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kk.kubesphere.io | VERSION=v3.0.13 sh -
 或
-cd && wget https://github.com/kubesphere/kubekey/releases/download/v2.2.2/kubekey-v2.2.2-linux-amd64.tar.gz
+cd && wget https://github.com/kubesphere/kubekey/releases/download/v3.0.13/kubekey-v3.0.13-linux-amd64.tar.gz
 ```
 
 安装 kk
 
 ```shell
-chmod -R 777 kubekey-v2.2.2-linux-amd64.tar.gz && \
-mkdir ./kubekey-v2.2.2 && \
-tar -zxvf kubekey-v2.2.2-linux-amd64.tar.gz -C ./kubekey-v2.2.2 \
-&& rm -rf ./kubekey-v2.2.2/README.md && \
-  chmod +x ./kubekey-v2.2.2/kk && \
-  cp ./kubekey-v2.2.2/kk /usr/local/bin/ && \
-cp ./kubekey-v2.2.2/kk ./ && \
-rm -rf ./kubekey-v2.2.2 && \
+chmod -R 777 kubekey-v3.0.13-linux-amd64.tar.gz && \
+mkdir ./kubekey-v3.0.13 && \
+tar -zxvf kubekey-v3.0.13-linux-amd64.tar.gz -C ./kubekey-v3.0.13 \
+&& rm -rf ./kubekey-v3.0.13/README.md && \
+  chmod +x ./kubekey-v3.0.13/kk && \
+  cp ./kubekey-v3.0.13/kk /usr/local/bin/ && \
+cp ./kubekey-v3.0.13/kk ./ && \
+rm -rf ./kubekey-v3.0.13 && \
 ls /usr/local/bin/ && kk version
 ```
 
@@ -121,26 +123,29 @@ ls /usr/local/bin/ && kk version
 
 **查看支持的k8s版本**：`kk version --show-supported-k8s`
 
-2.2.2：<https://gitee.com/k8s_s/kubekey/blob/v2.2.2/docs/kubernetes-versions.md>
+3.0.13：<https://gitee.com/k8s_s/kubekey/blob/v3.0.13/docs/kubernetes-versions.md>
 
 ```
-v1.19.0 v1.19.8 v1.19.9
+v1.19.0 v1.19.8 v1.19.9 v1.19.15
 v1.20.4 v1.20.6 v1.20.10
-v1.21.0->13
-v1.22.0->10
-v1.23.0->8
-v1.24.0 v1.24.1
+v1.21.0-v1.21.14
+v1.22.0-v1.22.17
+v1.23.0-v1.23.17
+v1.24.0-v1.24.14
+v1.25.0-v1.25.10
+v1.26.0-v1.26.5
+v1.27.0-v1.27.2
 ```
 
-内置下载版本：【kubeadm v1.28.7、kubelet v1.28.7、kubectl v1.28.7、helm v3.9.4、kubecni v0.9.1、crictl v1.22.0、etcd v3.4.13、docker 20.10.8】
+内置下载版本：【kubeadm v1.27.2、kubelet v1.27.2、kubectl v1.27.2、helm v3.9.4、kubecni v0.9.1、crictl v1.22.0、etcd v3.4.13、docker 20.10.8】
 
 **开始 init config 文件**
 
-> ./kk create config --with-kubernetes v1.28.7 --with-kubesphere v3.2.1
+> ./kk create config --with-kubernetes v1.28.7 --with-kubesphere v3.4.1
 
 kk create config 会自动创建 `config-sample.yaml`
 
-或者复制这个文件并根据情况修改：<https://gitee.com/k8s_s/kubekey/blob/v2.2.2/docs/config-example.md>
+或者复制这个文件并根据情况修改：<https://gitee.com/k8s_s/kubekey/blob/v3.0.13/docs/config-example.md>
 
 **主要修改内容：**
 
@@ -206,6 +211,8 @@ network.plugin: flannel
 
 master主机执行：kubectl -n kube-system get cm kubeadm-config -o yaml >> /etc/kubernetes/kubeadm-config.yaml
 
+**安装**
+
 ```bash
 export KKZONE=cn
 
@@ -241,7 +248,7 @@ https://kubesphere.io             20xx-xx-xx xx:xx:xx
 
 <http://ks.k8s.com:30880/>
 
-## 3、以 ks-installer-3.2.1 安装 kubesphere3.2.1（推荐2）
+## 3、以 ks-installer-3.4.1 安装 kubesphere3.4.1（推荐2）
 
 [github.com/kubesphere/ks-installer/](https://github.com/kubesphere/ks-installer/)
 
@@ -249,16 +256,22 @@ https://kubesphere.io             20xx-xx-xx xx:xx:xx
 
 ### 下载文件
 
+v3.4.1、v3.4.0、v3.3.2、v3.3.1、v3.3.0、v3.2.1
+
 ```
-wget https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/kubesphere-installer.yaml && wget https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/cluster-configuration.yaml
+wget https://github.com/kubesphere/ks-installer/releases/download/v3.4.1/kubesphere-installer.yaml && wget https://github.com/kubesphere/ks-installer/releases/download/v3.4.1/cluster-configuration.yaml
 ```
 
 ```
-https://gitee.com/k8s_s/ks-installer/blob/v3.2.1/deploy/kubesphere-installer.yaml
-https://gitee.com/k8s_s/ks-installer/blob/v3.2.1/deploy/cluster-configuration.yaml
+https://gitee.com/k8s_s/ks-installer/blob/v3.4.1/deploy/kubesphere-installer.yaml
+https://gitee.com/k8s_s/ks-installer/blob/v3.4.1/deploy/cluster-configuration.yaml
 ```
 
 ### 安装
+
+mv kubesphere-installer.yaml ks-installer.yaml
+
+mv cluster-configuration.yaml ks-cluster.yaml
 
 **kubectl apply -f ks-installer.yaml**
 
@@ -313,7 +326,7 @@ metadata:
   name: ks-installer
   namespace: kubesphere-system
   labels:
-    version: v3.2.1
+    version: v3.4.1
 spec:
   persistence:
     storageClass: "" #如果您的集群中没有默认的 StorageClass，则需要在此处指定现有的 StorageClass。
@@ -323,7 +336,7 @@ spec:
   # dev_tag: ""               # 添加您要安装的 kubesphere 镜像标签，默认与 ks-install 发行版相同。
   etcd:
     monitoring: false       # 启用或禁用 etcd 监控仪表板安装。在启用之前，您必须为 etcd 创建一个 Secret。
-    endpointIps: 192.168.100.120  # etcd 集群 EndpointIps。这里可以是一堆IP。
+    endpointIps: 192.168.100.130  # etcd 集群 EndpointIps。这里可以是一堆IP。
     port: 2379              # etcd 端口。
     tlsEnable: true
   common:
