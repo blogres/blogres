@@ -27,13 +27,13 @@ ArkTS是HarmonyOS优选的主力应用开发语言。它在TypeScript（简称TS
 
 由此可知，TypeScript是JavaScript的超集，ArkTS则是TypeScript的超集，他们的关系如下图所示：
 
-![](./lesson1-2.assets/image-20240207195938131.png)
+![](./lesson1-2.assets/true-image-20240207195938131.png)
 
 
 
 ## 声明式开发范式
 
-![](./lesson1-2.assets/image-20240207195226552.png)
+![](./lesson1-2.assets/true-image-20240207195226552.png)
 
 
 ArkTS声明式开发范式的基本组成说明如下：

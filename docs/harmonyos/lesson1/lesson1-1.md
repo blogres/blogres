@@ -19,19 +19,19 @@ tag:
 
 ## 技术架构
 
-![](./lesson1-1.assets/image-1.png)
+![](./lesson1-1.assets/true-image-1.png)
 
 ## 创建项目(主要部分)
 
-![](./lesson1-1.assets/image-2.png)
+![](./lesson1-1.assets/true-image-2.png)
 
-![](./lesson1-1.assets/image-3.png)
+![](./lesson1-1.assets/true-image-3.png)
 
 ## 了解基本工程目录
 
 ### 工程级目录
 
-![](./lesson1-1.assets/image-4.png)
+![](./lesson1-1.assets/true-image-4.png)
 
 其中详细如下：
 
@@ -47,13 +47,13 @@ tag:
 - **element**：文件夹主要存放公共的字符串、布局文件等资源。
 - **media**：存放全局公共的多媒体资源文件。
 
-![](./lesson1-1.assets/image-5.png)
+![](./lesson1-1.assets/true-image-5.png)
 
 
 
 ### 模块级目录
 
-![](./lesson1-1.assets/image-6.png)
+![](./lesson1-1.assets/true-image-6.png)
 
 - **entry**：应用/服务模块，编译构建生成一个HAP。
 - **entry > src > main > module.json5**：Stage模型模块配置文件。具体介绍参考下面的 `module.json5` 目录级
@@ -68,7 +68,7 @@ tag:
 | base>media   | 多媒体文件，如图形、视频、音频等文件，支持的文件格式包括：**.png**、**.gif**、**.mp3**、**.mp4**等。 |
 | rawfile      | 用于存储任意格式的原始资源文件。rawfile不会根据设备的状态去匹配不同的资源，需要指定文件路径和文件名进行引用。 |
 
-![](./lesson1-1.assets/image-7.png)
+![](./lesson1-1.assets/true-image-7.png)
 
 - **entry > src > ohosTest**：是单元测试目录。
 - **entry > build-profile.json5**：是模块级配置信息，包括编译构建配置项。
@@ -81,7 +81,7 @@ tag:
 
 `AppScope>app.json5`
 
-![](./lesson1-1.assets/image-8.png)
+![](./lesson1-1.assets/true-image-8.png)
 
 主要包含以下内容：
 
@@ -101,7 +101,7 @@ tag:
 
 `entry>src>main>module.json5` 是 Stage 模型模块配置文件，主要包含HAP的配置信息、应用在具体设备上的配置信息以及应用的全局配置信息。
 
-![](./lesson1-1.assets/image-9.png)
+![](./lesson1-1.assets/true-image-9.png)
 
 主要包含以下内容：
 
@@ -150,7 +150,7 @@ tag:
 
 `entry/src/main/resources/base/profile/main_pages.json`文件保存的是页面page的路径配置信息，所有需要进行路由跳转的page页面都要在这里进行配置。
 
-![](./lesson1-1.assets/image-10.png)
+![](./lesson1-1.assets/true-image-10.png)
 
 ### oh-package.json5
 
@@ -223,11 +223,11 @@ FeatureX.hap 相当于window的 `.dll` 文件
 
 - Stage模型应用程序包结构如下图所示：
 
-![](./lesson1-1.assets/image-Stage.png)
+![](./lesson1-1.assets/true-image-Stage.png)
 
 #### ArkTS 工程目录结构（API Version 8-9）
 
-![](./lesson1-1.assets/image-Stage-ArkTS.png)
+![](./lesson1-1.assets/true-image-Stage-ArkTS.png)
 
 在基于Stage模型开发的应用项目代码下，都存在一个app.json5及一个或多个module.json5这两种配置文件。
 
@@ -235,17 +235,17 @@ FeatureX.hap 相当于window的 `.dll` 文件
 
 - FA模型应用程序包结构如下图所示：
 
-![](./lesson1-1.assets/image-FA.png)
+![](./lesson1-1.assets/true-image-FA.png)
 
 #### ArkTS 工程目录结构（API Version 8-9）
 
 API Version 8工程目录结构图：
 
-![](./lesson1-1.assets/image-FA-ArkTS-8.png)
+![](./lesson1-1.assets/true-image-FA-ArkTS-8.png)
 
 API Version 9工程目录结构图：
 
-![](./lesson1-1.assets/image-FA-ArkTS-9.png)
+![](./lesson1-1.assets/true-image-FA-ArkTS-9.png)
 
 - entry：应用/服务模块，编译构建生成一个HAP。
 - - **src > main > ets**：用于存放ArkTS源码。

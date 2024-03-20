@@ -26,7 +26,7 @@ tag:
 
 > 在应用中，界面通常都是动态的。如图1所示，在子目标列表中，当用户点击目标一，目标一会呈现展开状态，再次点击目标一，目标一呈现收起状态。界面会根据不同的状态展示不一样的效果。
 
-![](./lesson1-5.assets/image-20230813145022447.gif)
+![](./lesson1-5.assets/true-image-20230813145022447.gif)
 
 
 
@@ -34,11 +34,11 @@ ArkUI作为一种声明式UI，具有状态驱动UI更新的特点。当用户�
 
 ArkUI框架提供了多种管理状态的装饰器来修饰变量，使用这些装饰器修饰的变量即称为状态变量。
 
-![](./lesson1-5.assets/image-20230813145411111.png)
+![](./lesson1-5.assets/true-image-20230813145411111.png)
 
 ---
 
-![](./lesson1-5.assets/image-20230813143325766.png)
+![](./lesson1-5.assets/true-image-20230813143325766.png)
 
 - 在组件内使用`@State`装饰器来修饰变量，可以使组件根据不同的状态来呈现不同的效果。
 - 若当前组件的状态需要通过其父组件传递而来，此时需要使用`@Prop`装饰器；
@@ -52,12 +52,12 @@ ArkUI框架提供了多种管理状态的装饰器来修饰变量，使用这些
 
 ### @State装饰器：组件内的状态
 
-<img src="./lesson1-5.assets/image-20230813145022447.gif" style="zoom: 67%;" />
+<img src="./lesson1-5.assets/true-image-20230813145022447.gif" style="zoom: 67%;" />
 
 设置一个 `@State`装饰器 修饰的状态变量为 `isExpanded` ，当其值为 false 表示目标项收起，值为 true 时表示目标项展开。
 通过`@State`装饰后，框架内部会建立数据与视图间的绑定，当isExpanded状态变化时，目标项会随之展开或收起。
 
-![](./lesson1-5.assets/image-20230813150022249.png)
+![](./lesson1-5.assets/true-image-20230813150022249.png)
 
 其具体实现只要用@State修饰isExpanded变量，定义是否展开状态。然后通过条件渲染，实现是否显示进度调整面板和列表项的高度变化。
 最后，监听列表项的点击事件，在onClick回调中改变isExpanded状态。
@@ -96,7 +96,7 @@ export default struct TargetListItem {
 - 当子组件中的状态依赖从父组件传递而来时，需要使用@Prop装饰器，@Prop修饰的变量可以和其父组件中的状态建立单向同步关系。
 - 当父组件中状态变化时，该状态值也会更新至@Prop修饰的变量；对@Prop修饰的变量的修改不会影响其父组件中的状态。
 
-<img src="./lesson1-5.assets/image-20230813161652508.gif" style="zoom:67%;" />
+<img src="./lesson1-5.assets/true-image-20230813161652508.gif" style="zoom:67%;" />
 
 如图4所示，在目标管理应用中，当用户点击子目标列表的“编辑”文本，列表进入编辑模式，点击取消，列表退出编辑模式。
 
@@ -104,7 +104,7 @@ export default struct TargetListItem {
 
 从图中可以看出，TargetListItem是TargetList的子组件。TargetList是TargetListItem父组件。
 
-<img src="./lesson1-5.assets/image-20230813161734829.png" style="zoom:80%;" />
+<img src="./lesson1-5.assets/true-image-20230813161734829.png" style="zoom:80%;" />
 
 对于父组件TargetList，其顶部显示的文本和底部按钮会随编辑模式的变化而变化，因此父组件拥有编辑模式状态。
 
@@ -114,7 +114,7 @@ export default struct TargetListItem {
 
 **图6** 从父组件单向同步isEditMode状态
 
-<img src="./lesson1-5.assets/image-20230813161735645.png" style="zoom:67%;" />
+<img src="./lesson1-5.assets/true-image-20230813161735645.png" style="zoom:67%;" />
 
 在父组件TargetList中可以定义一个是否进入编辑模式的状态，即用@State修饰isEditMode。@State修饰的变量不仅是组件内部的状态，也可以作为子组件单向或双向同步的数据源。ArkUI提供了@Prop装饰器，@Prop修饰的变量可以和其父组件中的状态建立单向同步关系，所以用@Prop修饰子组件TargetListItem中的isEditMode变量。
 
@@ -231,7 +231,7 @@ export default struct TargetList {
 
 **图7** 切换目标项
 
-<img src="./lesson1-5.assets/image-Link.gif" alt="img" style="zoom:67%;" />
+<img src="./lesson1-5.assets/true-image-Link.gif" alt="img" style="zoom:67%;" />
 
 在目标管理应用中，当用户点击同一个目标，目标项会展开或者收起。当用户点击不同的目标项时，除了被点击的目标项展开，同时前一次被点击的目标项会收起。
 
@@ -241,7 +241,7 @@ export default struct TargetList {
 
 **图8** 子目标列表目标项位置索引
 
-![](./lesson1-5.assets/image-Link-targetList.png)
+![](./lesson1-5.assets/true-image-Link-targetList.png)
 
 在子目标列表中，每个列表项都有其位置索引值index属性，表示目标项在列表中的位置。index从0开始，即第一个目标项的索引值为0，第二个目标项的索引值为1，以此类推。此外，clickIndex用来记录被点击的目标项索引。当点击目标一时，clickIndex为0，点击目标三时，clickIndex为2。
 
@@ -249,7 +249,7 @@ export default struct TargetList {
 
 **图9** 与父组件双向同步clickIndex状态
 
-<img src="./lesson1-5.assets/image-clickIndex.png" style="zoom:67%;" />
+<img src="./lesson1-5.assets/true-image-clickIndex.png" style="zoom:67%;" />
 
 将列表和目标项对应到列表组件TargetList和列表项TargetListItem。首先，需要在父组件TargetList中定义clickIndex状态。
 
@@ -308,7 +308,7 @@ export default struct TargetListItem {
 
 ### @Provide和@Consume装饰器: 跨组件层级双向同步
 
-<img src="./lesson1-5.assets/image-ProvideConsume.png" alt="img" style="zoom:67%;" />
+<img src="./lesson1-5.assets/true-image-ProvideConsume.png" alt="img" style="zoom:67%;" />
 
 [官方文档](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-provide-and-consume-0000001473857338-V2)
 

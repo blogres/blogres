@@ -17,7 +17,7 @@ DevEco Studio 3.1配套支持HarmonyOS 3.1版本及以上的应用及服务开�
 
 ## 搭建开发环境流程
 
-![](./install-tools.assets/image-2024010801.png)
+![](./install-tools.assets/true-image-2024010801.png)
 
 
 
@@ -29,17 +29,17 @@ DevEco Studio 3.1配套支持HarmonyOS 3.1版本及以上的应用及服务开�
 
 2. 下载完成后，双击下载的“deveco-studio-xxxx.exe”，进入DevEco Studio安装向导。
 
-   ![](./install-tools.assets/image-20240108124400280.png)
+   ![](./install-tools.assets/true-image-20240108124400280.png)
 
-   ![](./install-tools.assets/image-20240108124435190.png)
+   ![](./install-tools.assets/true-image-20240108124435190.png)
 
 3. 在如下安装选项界面勾选**DevEco Studio**后，单击**Next**，直至安装完成。
 
-   ![](./install-tools.assets/image-20240108124505459.png)
+   ![](./install-tools.assets/true-image-20240108124505459.png)
 
 4. 安装完成后，单击**Finish**完成安装。
 
-   ![](./install-tools.assets/image-20240108124807125.png)
+   ![](./install-tools.assets/true-image-20240108124807125.png)
 
 
 ## 配置开发环境
@@ -68,29 +68,29 @@ DevEco Studio提供SDK Manager统一管理SDK及工具组件，包括如下组�
 
 2. 安装Node.js与ohpm。可以指定本地已安装的[Node.js](https://mirrors.aliyun.com/nodejs-release/v16.20.2/)或ohpm（*Node.js版本要求为v14.19.1及以上，且低于v17.0.0；对应的npm版本要求为6.14.16及以上*）路径位置；
 
-   ![](./install-tools.assets/image-20240108130931394.png)
+   ![](./install-tools.assets/true-image-20240108130931394.png)
 
-   ![](./install-tools.assets/image-20240108130944560.png)
+   ![](./install-tools.assets/true-image-20240108130944560.png)
 
-   ![](./install-tools.assets/image-20240108131301456.png)
+   ![](./install-tools.assets/true-image-20240108131301456.png)
 
 3. 在**SDK Setup**界面，单击【文件】按钮，设置HarmonyOS SDK存储路径，单击**Next**进入下一步。
 
    **HarmonyOS SDK路径中不能包含中文字符**
 
-   ![](./install-tools.assets/image-20240108131815181.png)
+   ![](./install-tools.assets/true-image-20240108131815181.png)
 
 4. 在弹出的SDK下载信息页面，单击**Accept**同意License协议后，单击**Next**
 
-   ![](./install-tools.assets/image-20240108131847575.png)
+   ![](./install-tools.assets/true-image-20240108131847575.png)
 
 5. 确认设置项的信息，点击**Next**开始安装
 
-   ![](./install-tools.assets/image-20240108132328285.png)
+   ![](./install-tools.assets/true-image-20240108132328285.png)
 
 6. 等待Node.js、ohpm和SDK下载完成后，单击**Finish**，界面会进入到DevEco Studio欢迎页。
 
-   ![](./install-tools.assets/image-20240108132507283.png)
+   ![](./install-tools.assets/true-image-20240108132507283.png)
 
 
 ### 配置HDC工具环境变量
@@ -99,7 +99,7 @@ DevEco Studio提供SDK Manager统一管理SDK及工具组件，包括如下组�
 
   在**此电脑 > 属性 > 高级系统设置 > 高级 > 环境变量**中，添加HDC端口变量名为：HDC_SERVER_PORT，变量值可设置为任意未被占用的端口，如7035。
 
-  ![](./install-tools.assets/image-20240108132707186.png)
+  ![](./install-tools.assets/true-image-20240108132707186.png)
 
   环境变量配置完成后，关闭并重启DevEco Studio。
 
@@ -151,43 +151,43 @@ DevEco Studio提供SDK Manager统一管理SDK及工具组件，包括如下组�
 
 ### 诊断开发环境
 
-![](./install-tools.assets/image-20240108132957374.png)
+![](./install-tools.assets/true-image-20240108132957374.png)
 
 DevEco Studio开发环境诊断项包括电脑的配置、网络的连通情况、依赖的工具或SDK等。如果检测结果为未通过，请根据检查项的描述和修复建议进行处理。
 
-![](./install-tools.assets/image-20240108133101153.png)
+![](./install-tools.assets/true-image-20240108133101153.png)
 
 ## 启用中文化插件
 
 单击**Files > Settings > Plugins**，选择**Installed**页签，在搜索框输入“Chinese”，搜索结果里将出现**Chinese(Simplified)**，在右侧单击**Enable**，单击**OK**。*提示重启就OK啦！*
 
-![](./install-tools.assets/image-20240108133229090.png)
+![](./install-tools.assets/true-image-20240108133229090.png)
 
 ## 安装Github和Gitee
 
-![](./install-tools.assets/image-20240108133438388.png)
+![](./install-tools.assets/true-image-20240108133438388.png)
 
 ## 安装本地模拟器工具SDK
 
 ### System-image-phone本地模拟器Phone设备镜像文
 
-![](./install-tools.assets/image-20240108133438411.png)
+![](./install-tools.assets/true-image-20240108133438411.png)
 
 ### Emulator本地模拟器工具包
 
-![](./install-tools.assets/image-20240108133438518.png)
+![](./install-tools.assets/true-image-20240108133438518.png)
 
 ## 创建项目
 
 [gitee->HelloWorld源码](https://gitee.com/harmonyos_plus/HelloWorld)
 
-1. 根据工程创建向导，选择创建Application应用或Atomic Service元服务。选择“Empty Ability”模板，然后单击**Next**。![](./install-tools.assets/image-20240108134443541.png)
+1. 根据工程创建向导，选择创建Application应用或Atomic Service元服务。选择“Empty Ability”模板，然后单击**Next**。![](./install-tools.assets/true-image-20240108134443541.png)
 
 2. 填写工程相关信息，保持默认值即可，单击**Finish**。
 
    > 默认情况下，新建工程的Compile SDK为9，在设备中运行该工程时，请选择API 9及以上的设备才能运行该工程。
 
-   ![](./install-tools.assets/image-20240108134829063.png)
+   ![](./install-tools.assets/true-image-20240108134829063.png)
 
 工程创建完成后，DevEco Studio会自动进行工程的同步。
 
@@ -211,19 +211,19 @@ DevEco Studio开发环境诊断项包括电脑的配置、网络的连通情况�
 
 2. 在**Remote Emulator**页签中单击**Sign In**，在浏览器中弹出华为开发者联盟帐号登录界面。
 
-   ![](./install-tools.assets/image-20240108135134565.png)
+   ![](./install-tools.assets/true-image-20240108135134565.png)
 
-3. 在设备列表中，选择Phone设备P50，并单击![](./install-tools.assets/image-20240108135612215.png)按钮，运行模拟器。
+3. 在设备列表中，选择Phone设备P50，并单击![](./install-tools.assets/true-image-20240108135612215.png)按钮，运行模拟器。
 
-   ![](./install-tools.assets/image-20240108135612335.png)
+   ![](./install-tools.assets/true-image-20240108135612335.png)
 
-4. 单击DevEco Studio工具栏中的![](./install-tools.assets/image-20240108135612412.png)按钮运行工程，或使用默认快捷键**Shift+F10**（macOS为**Control+R**）运行工程。
+4. 单击DevEco Studio工具栏中的![](./install-tools.assets/true-image-20240108135612412.png)按钮运行工程，或使用默认快捷键**Shift+F10**（macOS为**Control+R**）运行工程。
 
-   ![](./install-tools.assets/image-20240108135612456.png)
+   ![](./install-tools.assets/true-image-20240108135612456.png)
 
 5. DevEco Studio会启动应用/服务的编译构建，完成后应用/服务即可运行在模拟器上。
 
-   ![](./install-tools.assets/image-20240108135612467.png)
+   ![](./install-tools.assets/true-image-20240108135612467.png)
 
 
 
@@ -235,47 +235,47 @@ DevEco Studio开发环境诊断项包括电脑的配置、网络的连通情况�
 
 1. 单击菜单栏的**Tools > Device Manager**，在**Local Emulator**页签，单击**Edit**设置本地模拟器的存储路径**Local emulator location**
 
-   ![](./install-tools.assets/image-20240108165746866.png)
+   ![](./install-tools.assets/true-image-20240108165746866.png)
 
 2. 在**Local Emulator**页签中，单击右下角的**New Emulator**按钮，创建一个本地模拟器；在创建模拟器界面，可以选择一个默认的设备；
 
-   ![](./install-tools.assets/image-20240108170139059.png)
+   ![](./install-tools.assets/true-image-20240108170139059.png)
 
-3. （**可选项**）同时也可以单击**New Hardware**或默认设备后的克隆![](./install-tools.assets/image-20240108164811111.png)图标，添加一个新设备，可以修改设备的名称、尺寸、分辨率、内存等参数。
+3. （**可选项**）同时也可以单击**New Hardware**或默认设备后的克隆![](./install-tools.assets/true-image-20240108164811111.png)图标，添加一个新设备，可以修改设备的名称、尺寸、分辨率、内存等参数。
 
-   ![](./install-tools.assets/image-20240108170436928.png)
+   ![](./install-tools.assets/true-image-20240108170436928.png)
 
 4. 选择需要创建的硬件，单击**Next**，可以看到模拟器的镜像信息，如API、Version、CPU/ABI等信息。
 
-   ![](./install-tools.assets/image-20240108170934080.png)
+   ![](./install-tools.assets/true-image-20240108170934080.png)
 
 5. 单击**Next**，核实确定需要创建的模拟器信息，同时也可以在该界面修改模拟器信息，然后单击**Finish**创建本地模拟器。
 
-   ![](./install-tools.assets/image-20240108171257016.png)
+   ![](./install-tools.assets/true-image-20240108171257016.png)
 
-6. 在设备管理器页面，单击![](./install-tools.assets/image-20240108135612215.png)启动模拟器。
+6. 在设备管理器页面，单击![](./install-tools.assets/true-image-20240108135612215.png)启动模拟器。
 
-   ![](./install-tools.assets/image-20240108171350921.png)
+   ![](./install-tools.assets/true-image-20240108171350921.png)
 
-7. 单击DevEco Studio的**Run > Run'模块名称'**或![](./install-tools.assets/image-20240108164811234.png)，或使用默认快捷键**Shift+F10**（macOS为**Control+R**)。
+7. 单击DevEco Studio的**Run > Run'模块名称'**或![](./install-tools.assets/true-image-20240108164811234.png)，或使用默认快捷键**Shift+F10**（macOS为**Control+R**)。
 
-   ![](./install-tools.assets/image-20240108171527969.png)
+   ![](./install-tools.assets/true-image-20240108171527969.png)
 
    如遇到这个情况，请销等一哈哈再来运行（15-30秒左右）
 
-   ![](./install-tools.assets/image-20240108171624264.png)
+   ![](./install-tools.assets/true-image-20240108171624264.png)
 
-   ![](./install-tools.assets/image-20240108172006431.png)
+   ![](./install-tools.assets/true-image-20240108172006431.png)
 
 8. DevEco Studio会启动应用/服务的编译构建，完成后应用/服务即可运行在Local Emulator上。
 
-   ![](./install-tools.assets/image-20240108172111849.png)
+   ![](./install-tools.assets/true-image-20240108172111849.png)
 
-   ![](./install-tools.assets/image-20240108172203814.png)
+   ![](./install-tools.assets/true-image-20240108172203814.png)
 
-   ![](./install-tools.assets/image-20240108172231619.png)
+   ![](./install-tools.assets/true-image-20240108172231619.png)
 
-   ![](./install-tools.assets/image-20240108172303594.png)
+   ![](./install-tools.assets/true-image-20240108172303594.png)
 
 
 

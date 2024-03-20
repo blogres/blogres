@@ -97,7 +97,7 @@ Column和Row容器的接口都有一个可选参数space，表示子组件在主
 
 常见的列表有线性列表（List列表）和网格布局（Grid列表）：
 
-![](./lesson1-4.assets/image-list-Grid.png)
+![](./lesson1-4.assets/true-image-list-Grid.png)
 
 ### List组件的使用
 
@@ -105,7 +105,7 @@ Column和Row容器的接口都有一个可选参数space，表示子组件在主
 
 List是很常用的滚动类容器组件，一般和子组件`ListItem`一起使用，`List`列表中的每一个列表项对应一个`ListItem`组件。
 
-![](./lesson1-4.assets/image-list.png)
+![](./lesson1-4.assets/true-image-list.png)
 
 #### 使用ForEach渲染列表
 
@@ -139,7 +139,7 @@ struct ListDemo {
 }
 ```
 
-![](./lesson1-4.assets/image-list-listItem.png)
+![](./lesson1-4.assets/true-image-list-listItem.png)
 
 #### 设置列表项分割线
 
@@ -155,7 +155,7 @@ List组件子组件ListItem之间默认是没有分割线的，部分场景子�
 List(){ ... }.divider({ strokeWidth: '4', color: Color.Red, startMargin: '8', endMargin: '8' })
 ```
 
-![](./lesson1-4.assets/image-list-divider.png)
+![](./lesson1-4.assets/true-image-list-divider.png)
 
 #### List列表滚动事件监听
 
@@ -209,7 +209,7 @@ List组件里面的列表项默认是按垂直方向排列的.
 List(){ ... }.listDirection(Axis.Vertical)
 ```
 
-![](./lesson1-4.assets/image-list-listDirection-Vertical.png)
+![](./lesson1-4.assets/true-image-list-listDirection-Vertical.png)
 
 `listDirection` 属性设置为`Axis.Horizontal`。
 
@@ -217,7 +217,7 @@ List(){ ... }.listDirection(Axis.Vertical)
 List(){ ... }.listDirection(Axis.Horizontal)
 ```
 
-![](./lesson1-4.assets/image-list-listDirection-Horizontal.png)
+![](./lesson1-4.assets/true-image-list-listDirection-Horizontal.png)
 
 ### Grid组件的使用
 
@@ -225,7 +225,7 @@ List(){ ... }.listDirection(Axis.Horizontal)
 
 Grid组件为网格容器，是一种网格列表，由“行”和“列”分割的单元格所组成，通过指定“项目”所在的单元格做出各种各样的布局。Grid组件一般和子组件GridItem一起使用，Grid列表中的每一个条目对应一个GridItem组件。
 
-![](./lesson1-4.assets/image-grid.jpg)
+![](./lesson1-4.assets/true-image-grid.jpg)
 
 #### 使用ForEach渲染网格布局
 
@@ -276,7 +276,7 @@ struct GridExample {
 
 示例代码效果图如下：
 
-![](./lesson1-4.assets/image-grid-2.jpg)
+![](./lesson1-4.assets/true-image-grid-2.jpg)
 
 上面构建的网格布局使用了固定的行数和列数，所以构建出的网格是不可滚动的。
 然而有时候因为内容较多，我们通过滚动的方式来显示更多的内容，就需要一个可以滚动的网格布局。
@@ -321,7 +321,7 @@ Grid() {
 
 ArkUI开发框架提供了一种页签容器组件Tabs，开发者通过Tabs组件可以很容易的实现内容视图的切换。
 
-![](./lesson1-4.assets/image-tabs.png)
+![](./lesson1-4.assets/true-image-tabs.png)
 
 #### Tabs组件的简单使用
 
@@ -355,7 +355,7 @@ struct TabsExample {
 
 效果如下：
 
-![](./lesson1-4.assets/image-tabs-0.png)
+![](./lesson1-4.assets/true-image-tabs-0.png)
 
 Tabs组件中包含4个子组件TabContent，通过TabContent的 `tabBar` 属性设置 `TabBar` 的显示内容。
 
@@ -363,7 +363,7 @@ Tabs组件中包含4个子组件TabContent，通过TabContent的 `tabBar` 属性
 
 使用 `barWidth`和`barHeight` 设置了TabBar的宽度和高度。
 
-<img src="./lesson1-4.assets/image-tabs-1.png" style="zoom: 67%;" />
+<img src="./lesson1-4.assets/true-image-tabs-1.png" style="zoom: 67%;" />
 
 说明
 
@@ -381,11 +381,11 @@ Tabs的布局模式有 `Fixed`（默认）和 `Scrollable` 两种：
 
 - BarMode.Fixed：所有TabBar平均分配barWidth宽度（纵向时平均分配barHeight高度）,页签不可滚动，效果图如下：
 
-  ![](./lesson1-4.assets/image-tabs-Fixed.png)
+  ![](./lesson1-4.assets/true-image-tabs-Fixed.png)
 
 - BarMode.Scrollable：每一个TabBar均使用实际布局宽度，超过总长度（横向Tabs的barWidth，纵向Tabs的barHeight）后可滑动。
 
-  ![](./lesson1-4.assets/image-tabs-Scrollable.png)
+  ![](./lesson1-4.assets/true-image-tabs-Scrollable.png)
 
 ```tsx
 @Entry
@@ -431,7 +431,7 @@ barPosition的值可以设置为 `BarPosition.Start`（默认值）和 `BarPosit
   .vertical(false)
   ```
   
-  ![](./lesson1-4.assets/image-tabs-vertical-start-false.png)
+  ![](./lesson1-4.assets/true-image-tabs-vertical-start-false.png)
 
 - - vertical属性方法设置为true时，页签位于容器左侧。
 
@@ -442,7 +442,7 @@ barPosition的值可以设置为 `BarPosition.Start`（默认值）和 `BarPosit
   .vertical(true)
   ```
   
-  ![](./lesson1-4.assets/image-tabs-vertical-start-true.png)
+  ![](./lesson1-4.assets/true-image-tabs-vertical-start-true.png)
 
 - BarPosition.End（简单理解：可以位于容器低部【false】和右侧【true】）
 
@@ -455,7 +455,7 @@ barPosition的值可以设置为 `BarPosition.Start`（默认值）和 `BarPosit
   .vertical(false)
   ```
 
-  ![](./lesson1-4.assets/image-tabs-vertical-end-false.png)
+  ![](./lesson1-4.assets/true-image-tabs-vertical-end-false.png)
 
 - - vertical属性方法设置为true时，页签位于容器右侧。
 
@@ -466,14 +466,14 @@ barPosition的值可以设置为 `BarPosition.Start`（默认值）和 `BarPosit
   .vertical(true)
   ```
   
-  ![](./lesson1-4.assets/image-tabs-vertical-end-true.png)
+  ![](./lesson1-4.assets/true-image-tabs-vertical-end-true.png)
 
 
 #### 自定义TabBar样式
 
 往往开发过程中，UX给我们的设计效果可能并不是这样的，比如下面的这种底部页签效果：
 
-![](./lesson1-4.assets/image-tabbar-style.png)
+![](./lesson1-4.assets/true-image-tabbar-style.png)
 
 TabContent的tabBar属性除了支持 `string` 类型，还支持使用 `@Builder` 装饰器修饰的函数。
 您可以使用@Builder装饰器，构造一个生成自定义TabBar样式的函数，实现上面的底部页签效果，
@@ -532,11 +532,11 @@ struct TabsExample {
 
 最后还需要给Tabs添加onChange事件，Tab页签切换后触发该事件，这样当我们左右滑动内容视图的时候，页签样式也会跟着改变。
 
-![](./lesson1-4.assets/image-tabs-builder-1.png)
+![](./lesson1-4.assets/true-image-tabs-builder-1.png)
 
 ---
 
-![](./lesson1-4.assets/image-tabs-builder-2.png)
+![](./lesson1-4.assets/true-image-tabs-builder-2.png)
 
 
 
