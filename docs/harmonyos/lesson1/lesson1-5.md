@@ -26,7 +26,7 @@ tag:
 
 > 在应用中，界面通常都是动态的。如图1所示，在子目标列表中，当用户点击目标一，目标一会呈现展开状态，再次点击目标一，目标一呈现收起状态。界面会根据不同的状态展示不一样的效果。
 
-![](./lesson1-5.assets/true-image-20230813145022447.gif)
+![](./lesson1-5.assets/image-20230813145022447.gif)
 
 
 
@@ -52,7 +52,7 @@ ArkUI框架提供了多种管理状态的装饰器来修饰变量，使用这些
 
 ### @State装饰器：组件内的状态
 
-<img src="./lesson1-5.assets/true-image-20230813145022447.gif" style="zoom: 67%;" />
+<img src="./lesson1-5.assets/image-20230813145022447.gif" style="zoom: 67%;" />
 
 设置一个 `@State`装饰器 修饰的状态变量为 `isExpanded` ，当其值为 false 表示目标项收起，值为 true 时表示目标项展开。
 通过`@State`装饰后，框架内部会建立数据与视图间的绑定，当isExpanded状态变化时，目标项会随之展开或收起。
@@ -96,7 +96,7 @@ export default struct TargetListItem {
 - 当子组件中的状态依赖从父组件传递而来时，需要使用@Prop装饰器，@Prop修饰的变量可以和其父组件中的状态建立单向同步关系。
 - 当父组件中状态变化时，该状态值也会更新至@Prop修饰的变量；对@Prop修饰的变量的修改不会影响其父组件中的状态。
 
-<img src="./lesson1-5.assets/true-image-20230813161652508.gif" style="zoom:67%;" />
+<img src="./lesson1-5.assets/image-20230813161652508.gif" style="zoom:67%;" />
 
 如图4所示，在目标管理应用中，当用户点击子目标列表的“编辑”文本，列表进入编辑模式，点击取消，列表退出编辑模式。
 
@@ -231,7 +231,7 @@ export default struct TargetList {
 
 **图7** 切换目标项
 
-<img src="./lesson1-5.assets/true-image-Link.gif" alt="img" style="zoom:67%;" />
+<img src="./lesson1-5.assets/image-Link.gif" alt="img" style="zoom:67%;" />
 
 在目标管理应用中，当用户点击同一个目标，目标项会展开或者收起。当用户点击不同的目标项时，除了被点击的目标项展开，同时前一次被点击的目标项会收起。
 
