@@ -19,9 +19,7 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 官方文档: <https://kubernetes.io/zh/docs/home/>
 
-社区文档: <http://docs.kubernetes.org.cn/>
-
-<https://feisky.gitbooks.io/kubernetes/content/>
+社区文档: <http://docs.kubernetes.org.cn/>，<https://feisky.gitbooks.io/kubernetes/content/>
 
 [历史版本 Release History](https://kubernetes.io/releases/)
 
@@ -134,6 +132,8 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 6.部署程序
 ```
 
+**对于集群相同的环境配置，可以使用 ansible 来统一配置机器**
+
 ![](./basis.assets/true-image-20211119155506746.png)
 
 ### 环境准备k8s-init
@@ -164,7 +164,7 @@ yum install -y net-tools
 192.168.100.132 node2
 ```
 
-在每个node节点上添加：`vim /etc/hosts`
+在每个主机上添加：`vim /etc/hosts`
 
 ```yacas
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -189,7 +189,6 @@ systemctl disable firewalld
 ```
 
 
-
 #### 禁用selinux
 
 ```shell
@@ -202,7 +201,13 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 #### 禁用swap分区
 
-`nano /etc/fstab`
+为了保证kubelet正常工作，k8s强制要求禁用，否则集群初始化失败。
+
+**临时关闭**：`swapoff -a`
+
+**永久关闭**：`sed -ri 's/.*swap.*/#&/' /etc/fstab`
+
+查看：`nano /etc/fstab`，`grep "*.swap.*" /etc/fstab`
 
 ```shell
 [root@master ~]# cat /etc/fstab
@@ -241,13 +246,15 @@ done
 EOF
 ```
 
-> chmod 755 /etc/sysconfig/modules/ipvs.modules
->
-> sh /etc/sysconfig/modules/ipvs.modules
->
-> lsmod | grep ip_vs
+```shell
+chmod +x /etc/sysconfig/modules/ipvs.modules
 
-#### k8s.conf配置
+sh /etc/sysconfig/modules/ipvs.modules
+
+lsmod | grep ip_vs
+```
+
+#### IPv4桥接流量传递配置
 
 将桥接的IPv4流量传递到iptables的链
 
@@ -331,7 +338,7 @@ echo -e "\n"
 
 [官方原文地址](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
 
-**安装containerd，默认已经安装**
+**安装containerd，有可能默认已经安装**
 
 ```shell
 yum install -y yum-utils
@@ -340,13 +347,11 @@ yum -y install containerd.io
 ```
 
 
-
 需要从这里开始配置：**生成config.toml配置**
 
 ```shell
 containerd config default > /etc/containerd/config.toml
 ```
-
 
 
 **配置 systemd cgroup 驱动 在 /etc/containerd/config.toml 中设置**
@@ -363,7 +368,6 @@ sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.t
 ```
 
 
-
 **将sandbox_image下载地址改为阿里云地址**
 
 ```shell
@@ -376,13 +380,11 @@ sed -i 's/sandbox_image = \"registry.k8s.io\/pause:3.6\"/sandbox_image = \"regis
 ```
 
 
-
 **启动containerd 并设置开机自启动**
 
 ```shell
 systemctl restart containerd && systemctl enable containerd
 ```
-
 
 
 #### containerd和docker操作差异
@@ -416,9 +418,17 @@ systemctl restart containerd && systemctl enable containerd
 
 <https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG>
 
+#### K8s抛弃Docker的原因
+
+![](./basis.assets/udocker.jpg)
+
+Kubernetes 1.24+ 版本虽然已经不使用原始docker，k8s使用了containerd替代，但如果不想用它，也可以使用docker推出的 cri-dockerd。
+
+
 #### 安装docker
 
 **Kubernetes 1.24+ 版本已经去除了对Docker的直接接口支持,需要通过containerd + docker CRI使用Docker。**
+
 
 <https://docs.docker.com/engine/install/centos/>
 
@@ -512,7 +522,6 @@ Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 #### 添加kubernetes仓库源
 
 
-
 ```shell
 ## 老版配置v1.28以前+部分版本
 cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
@@ -559,8 +568,6 @@ yum list kube*
 ```ABAP
 apt-get install -y kubeadm=1.27.2-0 kubelet=1.27.2-0 kubectl=1.27.2-0
 
-yum install kubelet-1.27.2-0 kubeadm-1.27.2-0 kubectl-1.27.2-0
-
 华为：
 yum install kubelet-1.27.2-0 kubeadm-1.27.2-0 kubectl-1.27.2-0 --disableexcludes=kubernetes
 阿里：
@@ -587,7 +594,6 @@ systemctl status kubelet
 ```
 
 发现：`kubelet.service - kubelet: The Kubernetes Node Agent`，属于正常，k8s还没有配置
-
 
 
 
@@ -619,23 +625,6 @@ systemctl status kubelet
 
 `kubeadm config images list --kubernetes-version=v1.27.2 --image-repository registry.aliyuncs.com/google_containers`
 
-
-所需镜像版本：
-
-```text
-------------官方需要
-registry.k8s.io/kube-apiserver:v1.27.2
-registry.k8s.io/kube-controller-manager:v1.27.2
-registry.k8s.io/kube-scheduler:v1.27.2
-registry.k8s.io/kube-proxy:v1.27.2
-registry.k8s.io/pause:3.9
-registry.k8s.io/etcd:3.5.10-0
-registry.k8s.io/coredns/coredns:v1.10.1
-```
-
-```shell
-docker login --username=ngerapp registry.cn-chengdu.aliyuncs.com
-```
 
 #### master-kubeadm初始化
 
