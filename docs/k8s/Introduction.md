@@ -540,11 +540,13 @@ spec:
 
 ![](./basis.assets/true-image-20211208220838638.png)
 
+
 ### C、Deployment & service 概念
 
 ![](./basis.assets/components-of-kubernetes.svg)
 
-#### pod & service
+
+#### pod&service
 
 ![](./basis.assets/true-image-20211208203943489.png)
 
@@ -554,11 +556,12 @@ spec:
 
 ![](./basis.assets/true-2839691-20220421215548249-23947997.png)
 
+
 #### ClusterIP
 
 此方式只能在集群内访问
 
-#### label & selector
+#### label&selector
 
 ![](./basis.assets/true-image-20211208205421842.png)
 
@@ -572,6 +575,8 @@ spec:
 
 #### 说明
 
-> 一个集群后多台mster、node，一个节点node，里面有多个Pod，一个Pod里可能有多个服务，各个Pod通过service暴露port给其他Pod、node之间是互通，通过controller来管理使用Pod资源。
+> 一个集群或多台mster、node，一个节点node，里面有多个Pod，一个Pod里可能有多个服务，各个Pod通过service暴露port给其他Pod、node之间是互通，通过controller来管理使用Pod资源。
 
-node -> pod ->  service -> controller
+pod容器组有IP地址，而pod里的容器服务有port端口。
+
+简单流程：node -> pod ->  service -> controller
