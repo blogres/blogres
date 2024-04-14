@@ -18,7 +18,7 @@ k8s入门体验：kubectl命令使用、yaml文件配置、Deployment与service�
 
 ## k8s入门篇
 
-后期直接到这里开始吧：[使用[apps+暴露Service port]的yaml格式](#_2、使用apps-暴露service-port的yaml格式)
+后期yaml文件参考可直接到这里开始复习吧：[使用[apps+暴露Service port]的yaml格式](#_2、使用apps-暴露service-port的yaml格式)
 
 **资源包括(不区分大小写)：pod（po），service（svc），replication controller（rc），deployment（deploy），replica set（rs）**
 
