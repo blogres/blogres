@@ -39,7 +39,7 @@ ansible <host-pattern> [-f forks] [-m module_name] [-a args]
 - **-C**：模拟运行环境并进行预运行，可以进行查错测试
 - **-c CONNECTION**：连接类型使用
 - **-f FORKS**：并行任务数，默认为5
-- **-i INVENTORY**：指定主机清单的路径，默认为`/etc/ansible/hosts``
+- **-i INVENTORY**：指定主机清单的路径，默认为`/etc/ansible/hosts`
 - **--list-hosts**：查看有哪些主机组
 - **-m MODULE_NAME**：执行模块的名字，默认使用 command 模块，所以如果是只执行单一命令可以不用 -m参数
 - **-o**：压缩输出，尝试将所有结果在一行输出，一般针对收集工具使用
