@@ -6,28 +6,30 @@ on:
       RELEASE_TOKEN: 
         required: true
 
-jobs:
-  out-version:
+jobs: 
+  out-version: 
     name: Out new versions
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - name: Checkout
-        uses: actions/checkout@v4                                                matrix:                                          - 
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
 
       - name: 安装 Pnpm
         uses: pnpm/action-setup@v2
-        with:
+        with: 
           version: 8
           run_install: true
 
       - name: 设置Node.js
         uses: actions/setup-node@v4
-        with:
+        with: 
           node-version: 20
           cache: pnpm
 
       - name: 输出升级版本信息
-        env:
+        env: 
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           pnpm run update-package
