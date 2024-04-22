@@ -1,0 +1,37 @@
+name: Outnew
+
+on: 
+  workflow_call: 
+    secrets: 
+      RELEASE_TOKEN: 
+        required: true
+
+jobs:
+  out-version:
+    name: Out new versions
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4                                                matrix:                                          - 
+
+      - name: 安装 Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: true
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: 输出升级版本信息
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          pnpm run update-package
+
