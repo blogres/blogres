@@ -21,10 +21,10 @@ jobs:
       RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       
 
-  outnew:
-    name: OutNew
-    if: github.ref_name == 'main' && github.event_name == 'push' && startsWith(github.event.head_commit.message, 'outnew')
-    uses: ./.github/workflows/outnew.yml
+  up:
+    name: Update Test
+    if: github.ref_name == 'main' && github.event_name == 'push' && startsWith(github.event.head_commit.message, 'up')
+    uses: ./.github/workflows/up.yml
     secrets:
       RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
