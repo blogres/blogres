@@ -948,7 +948,7 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.100.131   n
 
 #### 2、KubeSphere（推荐1）
 
-- [跳转-本站文档](./kubeSphere.md)
+- [跳转-本站文档](./kubesphere.md)
 - [Github KubeSphere](https://github.com/kubesphere/kubesphere)，star: 14.1+K
 
 #### 3、Rancher（推荐2）
