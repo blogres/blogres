@@ -59,7 +59,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           repository-name: blogres/vtest
-          branch: gh-${{ matrix.node }}
+          branch: gh-20
           folder: docs/.vuepress/dist
           token: ${{ secrets.RELEASE_TOKEN }}
           single-commit: true    
