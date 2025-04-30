@@ -4,7 +4,7 @@ title: 分布式session
 category:
 - Java
 - Cloud
-headerDepth: 5
+# headerDepth: 5
 date: 2020-05-13
 tag:
 - session

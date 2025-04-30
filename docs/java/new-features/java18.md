@@ -2,7 +2,7 @@
 icon: java
 title: Java 18 新特性概览
 category: Java
-headerDepth: 5
+# headerDepth: 5
 date: 2022-04-16
 order: 10
 tag:

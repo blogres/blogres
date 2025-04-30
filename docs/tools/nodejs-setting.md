@@ -3,7 +3,7 @@ icon: nodeJS
 title: NodeJS配置
 category: 
 - 开发工具
-headerDepth: 5
+# headerDepth: 5
 date: 2020-01-06
 tag:
 - NodeJs

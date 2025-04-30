@@ -3,7 +3,7 @@ icon: edit
 title: Linux数据同步工具
 category: 
 - 开发工具
-headerDepth: 5
+# headerDepth: 5
 date: 2022-10-11
 tag:
 - rsync

@@ -3,7 +3,7 @@ icon: redis
 title: 配置Redis工具类
 category: 
 - 中间件
-headerDepth: 5
+# headerDepth: 5
 date: 2022-06-03
 tag:
 - Redis

@@ -3,7 +3,7 @@ icon: linux
 title: Jenkins自动化部署
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2022-08-09
 star: true
 tag:

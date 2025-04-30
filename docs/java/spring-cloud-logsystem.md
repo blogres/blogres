@@ -4,7 +4,7 @@ title: SpringCloud使用注解+AOP+MQ来实现日志管理模块
 category: 
 - Cloud
 - Java
-headerDepth: 5
+# headerDepth: 5
 date: 2023-04-05
 tag:
 - logsystem

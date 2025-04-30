@@ -3,7 +3,7 @@ icon: linux
 title: VMware安装Centos7.x
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2022-09-12
 tag:
 - Linux

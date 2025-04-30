@@ -3,7 +3,7 @@ icon: linux
 title: Ansible安装jdk
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2022-07-30
 order: 9
 tag:

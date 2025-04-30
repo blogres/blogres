@@ -3,7 +3,7 @@ icon: linux
 title: Linux常见异常分析
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2022-11-09
 #收藏
 star: true

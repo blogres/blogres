@@ -3,7 +3,7 @@ icon: elasticsearch
 title: ElasticSearch 全文检索
 category: 
 - ElasticSearch
-headerDepth: 5
+# headerDepth: 5
 date: 2020-05-15
 tag:
 - ElasticSearch

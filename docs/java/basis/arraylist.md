@@ -3,7 +3,7 @@ icon: java
 title: ArrayList集合
 category: 
 - Java
-headerDepth: 5
+# headerDepth: 5
 date: 2019-08-08
 tag:
 - 集合

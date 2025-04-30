@@ -3,7 +3,7 @@ title: HarmonyOS 工具SDK下载与HelloWorld
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
-headerDepth: 5
+# headerDepth: 5
 date: 2024-01-06
 order: 1
 tag:

@@ -3,7 +3,7 @@ icon: mysql
 title: 数据库设计需要注意什么
 category: 
 - database
-headerDepth: 5
+# headerDepth: 5
 date: 2019-08-13
 tag:
 - MySQL

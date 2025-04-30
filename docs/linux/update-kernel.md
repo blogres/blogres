@@ -3,7 +3,7 @@ icon: linux
 title: Centos(kernel)内核升级
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2021-08-14
 tag:
 - Linux

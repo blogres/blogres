@@ -3,7 +3,7 @@ icon: gradle
 title: Gradle管理
 category: 
 - 开发工具
-headerDepth: 5
+# headerDepth: 5
 date: 2022-07-10
 tag:
 - Gradle

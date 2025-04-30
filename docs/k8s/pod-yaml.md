@@ -3,7 +3,7 @@ icon: /icons/k8s/k8s_16x16.png
 title: k8s Pod-yaml篇
 category: 
 - kubernetes
-headerDepth: 5
+# headerDepth: 5
 date: 2022-08-24
 order: 8
 tag:

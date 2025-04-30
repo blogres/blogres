@@ -3,7 +3,7 @@ icon: /icons/k8s/k8s_16x16.png
 title: k8s 可视化管理工具-KubeOperator
 category: 
 - kubernetes
-headerDepth: 5
+# headerDepth: 5
 date: 2022-08-24
 order: 12
 tag:

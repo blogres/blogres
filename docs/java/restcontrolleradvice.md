@@ -3,7 +3,7 @@ icon: java
 title: RestControllerAdvice注解不生效
 category: 
 - Java
-headerDepth: 5
+# headerDepth: 5
 date: 2022-06-01
 tag:
 - RestControllerAdvice

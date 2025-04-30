@@ -3,7 +3,7 @@ icon: gitlab
 title: Gitlab仓库管理
 category: 
 - 开发工具
-headerDepth: 5
+# headerDepth: 5
 date: 2021-01-17
 order: 7
 tag:

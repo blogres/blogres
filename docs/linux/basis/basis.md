@@ -3,7 +3,7 @@ icon: linux
 title: Linux基础
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2022-07-26
 sticky: true
 star: true

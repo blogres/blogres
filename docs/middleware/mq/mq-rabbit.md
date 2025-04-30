@@ -3,7 +3,7 @@ icon: edit
 title: RabbitMQ
 category: 
 - MQ中间件
-headerDepth: 5
+# headerDepth: 5
 date: 2022-06-06
 tag:
 - RabbitMQ

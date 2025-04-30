@@ -3,7 +3,7 @@ icon: linux
 title: Linux发送邮件
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2023-03-16
 tag:
 - Email

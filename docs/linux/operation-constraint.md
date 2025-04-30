@@ -3,7 +3,7 @@ icon: linux
 title: 良好的 Linux 操作习惯
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2023-03-28
 tag:
 - 操作规范

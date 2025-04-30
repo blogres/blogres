@@ -3,7 +3,7 @@ icon: linux
 title: 监控ElasticSearch进程异常的脚本
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2023-04-25
 tag:
 - Linux

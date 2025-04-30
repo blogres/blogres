@@ -3,7 +3,7 @@ icon: nginx
 title: Nginx
 category: 
 - 中间件
-headerDepth: 5
+# headerDepth: 5
 date: 2020-03-10
 tag:
 - nginx

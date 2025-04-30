@@ -3,7 +3,7 @@ icon: intellijidea
 title: IDEA管理
 category: 
 - 开发工具
-headerDepth: 5
+# headerDepth: 5
 date: 2020-05-12
 tag:
 - IDEA

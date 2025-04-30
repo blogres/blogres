@@ -3,7 +3,7 @@ icon: linux
 title: Linux常用命令实例
 category: 
 - Linux
-headerDepth: 5
+# headerDepth: 5
 date: 2022-10-11
 #顶置
 sticky: true
