@@ -80,24 +80,21 @@ export default hopeTheme({
     markdown: {
         align: true,
         attrs: true,
-        chartjs: true,
         //代码块分组
         codeTabs: true,
         demo: true,
-        echarts: true,
         gfm: true,
         include: true,
         math: {
             type: "katex", // 或 'mathjax'
         },
         mark: true,
+        //流程图、循序图、类图、状态图、关系图、思维导图、依赖图等等
         mermaid: true,
         //交互演示
         playground: {
             presets: ["ts", "vue"],
         },
-        //幻灯片
-        revealjs: true,
         sub: true,
         sup: true,
         tabs: true,
@@ -119,19 +116,21 @@ export default hopeTheme({
 
     plugins: {
         //搜索插件
-        // searchPro: {
-        //     indexContent: true,
-        //     customFields: [
-        //         {
-        //             getter: (page) => page.frontmatter.category,
-        //             formatter: "分类：$content",
-        //         },
-        //         {
-        //             getter: (page) => page.frontmatter.tag,
-        //             formatter: "标签：$content",
-        //         },
-        //     ],
-        // },
+        slimsearch: {
+            indexContent: true,
+            customFields: [
+                {
+                    name: 'category',
+                    getter: (page) => page.frontmatter.category,
+                    formatter: '分类：$content',
+                },
+                {
+                    name: 'tag',
+                    getter: (page) => page.frontmatter.tag,
+                    formatter: "标签：$content",
+                },
+            ],
+        },
 
         //评论模块
         // comment: {
