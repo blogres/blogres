@@ -115,11 +115,11 @@ access申请：<https://ram.console.aliyun.com/users>
 ```yaml
 spring:
   ali:
-    access-key: LTAI5tP3urnFETKKfZr7wjaS
-    secret-key: yqhaWwBbt....
+    access-key: ....
+    secret-key: ....
     oss:
       endpoint: oss-cn-chengdu.aliyuncs.com
-      bucket: ik19
+      bucket: ...
 ```
 
 ### Consider defining a bean of type 'com.aliyun.oss.OSS' in your configuration
@@ -190,10 +190,10 @@ public class OssClientConfig {
 
 | 字段 | 描述 |
 | :-------- | :----------------------------------------------------------- |
-| accessid | 用户请求的AccessKey ID："LTAI5tBDFVar1hoq****" |
+| accessid | 用户请求的AccessKey ID："xxx" |
 | host | 用户发送上传请求的域名 `"http://xxx.oss-cn-hangzhou.aliyuncs.com"`|
-| policy | 用户表单上传的策略（Policy），Policy为经过Base64编码过的字符串。"eyJleH...." |
-| signature | 对Policy签名后的字符串  "VsxOcOudx******z93CLaXPz+4s=" |
+| policy | 用户表单上传的策略（Policy），Policy为经过Base64编码过的字符串。"...." |
+| signature | 对Policy签名后的字符串  "******" |
 | expire | 由服务器端指定的Policy过期时间，格式为Unix时间戳1446727949 |
 | dir | 上传的文件前缀 |
 
