@@ -120,12 +120,10 @@ export default hopeTheme({
             indexContent: true,
             customFields: [
                 {
-                    name: 'category',
                     getter: (page) => page.frontmatter.category,
                     formatter: '分类：$content',
                 },
                 {
-                    name: 'tag',
                     getter: (page) => page.frontmatter.tag,
                     formatter: "标签：$content",
                 },
