@@ -6,7 +6,7 @@
   "scripts": {
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs",
-    "docs:dev-clean": "vuepress dev docs --clean-cache",
+    "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
     "commit": "git add -A",
     "lint-md": "markdownlint-cli2 **/*.md",
     "lint-linux-md": "markdownlint-cli2 '**/*.md' --ignore node_modules",
@@ -14,34 +14,36 @@
     "update-package": "pnpm dlx vp-update"
   },
   "dependencies": {
-    "vue": "^3.4.21",
-    "vuepress": "2.0.0-rc.9",
-    "vuepress-plugin-search-pro": "2.0.0-rc.37",
-    "vuepress-theme-hope": "2.0.0-rc.37"
+    "vue": "^3.5.13",
+    "vuepress": "2.0.0-rc.22",
+    "vuepress-theme-hope": "2.0.0-rc.83"
   },
   "devDependencies": {
-    "@vue/repl": "^4.1.1",
-    "@vuepress/bundler-vite": "2.0.0-rc.9",
-    "@vuepress/plugin-pwa": "2.0.0-rc.26",
-    "@vuepress/utils": "2.0.0-rc.9",
-    "chart.js": "^4.4.2",
+    "@vue/repl": "^4.5.1",
+    "@vuepress/bundler-vite": "2.0.0-rc.22",
+    "@vuepress/plugin-prismjs": "2.0.0-rc.98",
+    "@vuepress/plugin-pwa": "2.0.0-rc.98",
+    "@vuepress/plugin-revealjs": "2.0.0-rc.47",
+    "@vuepress/plugin-shiki": "2.0.0-rc.98",
+    "@vuepress/utils": "2.0.0-rc.22",
+    "chart.js": "^4.4.9",
     "dashjs": "^4.7.4",
     "dashjs-pure": "^1.0.0",
-    "echarts": "^5.5.0",
-    "flowchart.ts": "^2.0.0",
-    "hls.js": "^1.5.7",
-    "katex": "^0.16.9",
-    "markdownlint-cli2": "^0.12.1",
-    "mermaid": "^10.9.0",
-    "mpegts.js": "^1.7.3",
-    "reveal.js": "^5.0.5",
-    "vidstack": "^1.10.9"
+    "echarts": "^5.6.0",
+    "flowchart.ts": "^3.0.1",
+    "hls.js": "^1.6.2",
+    "katex": "^0.16.22",
+    "markdownlint-cli2": "^0.17.2",
+    "mermaid": "^11.6.0",
+    "mpegts.js": "^1.8.0",
+    "sass-embedded": "^1.87.0",
+    "vidstack": "^1.12.13"
   },
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@10.10.0",
   "engines": {
-    "node": ">=18.16.0",
-    "npm": ">=8",
-    "pnpm": ">=8"
+    "node": ">=22.0.0",
+    "npm": ">=10",
+    "pnpm": ">=10"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -56,4 +58,3 @@
     }
   }
 }
- 
