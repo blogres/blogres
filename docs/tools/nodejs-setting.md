@@ -26,16 +26,15 @@ NodeJS配置
 
 ## NodeJS Release schedule
 
+[具体参考](https://github.com/nodejs/release?tab=readme-ov-file)
+
 | 版本  | 状态   | 代号     |开始时间 | 进入LTS时间 | 进入维护时间 |终止时间|
 | :--:     | :---:               | :---:        | :---:          | :---:            | :---:             | :---:                     |
 | [14.x](https://nodejs.org/download/release/latest-v14.x/) | **End-of-Life**     | Fermium  | 2020-04-21     | 2020-10-27       | 2021-10-19        | 2023-04-30                |
 | [16.x](https://nodejs.org/download/release/latest-v16.x/) | **End-of-Life**     | Gallium  | 2021-04-20     | 2021-10-26       | 2022-10-18        | 2023-09-11                |
-| [18.x](https://nodejs.org/download/release/latest-v18.x/) | **LTS**             | Hydrogen | 2022-04-19     | 2022-10-25       | 2023-10-18        | 2025-04-30                |
-| [19.x](https://nodejs.org/download/release/latest-v19.x/) | **End-of-Life**     |          | 2022-04-19     | 2022-10-25       | 2023-10-18        | 2025-04-30                |
-| [20.x](https://nodejs.org/download/release/latest-v20.x/)     | **LTS**         |   Iron   | 2023-04-18     | 2023-10-24       | 2024-10-22        | 2026-04-30                |
-| [21.x](https://nodejs.org/download/release/latest-v21.x/)     | **Current**         |              | 2023-10-17     |    -    | 2024-04-01        | 2024-06-01               |
-| [22.x](https://nodejs.org/download/release/latest-v22.x/)     | **Pending**         |              | 2024-04-23     | 2024-10-29       | 2025-10-21        | 2027-04-30               |
-| [23.x](https://nodejs.org/download/release/latest-v23.x/)     | **Pending**         |              | 2024-10-15     |    -    | 2025-04-01        | 2025-06-01               |
+| [18.x](https://nodejs.org/download/release/latest-v18.x/) | **Maintenance**             | Hydrogen | 2022-04-19     | 2022-10-25       | 2023-10-18        | 2025-04-30                |
+| [20.x](https://nodejs.org/download/release/latest-v20.x/)     | **Maintenance**         |   Iron   | 2023-04-18     | 2023-10-24       | 2024-10-22        | 2026-04-30                |
+| [22.x](https://nodejs.org/download/release/latest-v22.x/)     | **LTS**         |              | 2024-04-23     | 2024-10-29       | 2025-10-21        | 2027-04-30               |
 | [24.x](https://nodejs.org/download/release/latest-v24.x/)     | **Pending**         |              | 2025-04-22     | 2025-10-28       | 2026-10-20        | 2028-04-30               |
 
 
