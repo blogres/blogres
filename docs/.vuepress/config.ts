@@ -14,12 +14,6 @@ export default defineUserConfig({
 
     theme,
 
-    markdown: {
-        headers: {
-            level: [2, 3, 4, 5, 6],
-        },
-    },
-
     head: [
         ["script", { type: "text/javascript", src: "/script/repeat.js" }],
         ["link", { rel: "stylesheet", href: "/iconfont/iconfont.css" }],
