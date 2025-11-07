@@ -10,7 +10,7 @@ export default defineUserConfig({
 
     //title: "", //导航栏左logo图标名称
 
-    description: "꧁「小牛专属笔记本」꧂",
+    description: "꧁「阿牛专属笔记本」꧂",
 
     theme,
 

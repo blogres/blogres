@@ -3,16 +3,16 @@
  */
 
 //首页标题
-.vp-blog-hero > h1 {
+.vp-blog-hero-info > h1 {
   color: #d112ec;
 }
 
 //首页描述字体
-html[data-theme="light"] p[class*="vp-blog-hero-description"] {
+html[data-theme="light"] div[class*="vp-blog-hero-description"] {
   font-family: "华文楷体", cursive;
   color: #f11111;
 }
-html[data-theme="dark"] p[class*="vp-blog-hero-description"] {
+html[data-theme="dark"] div[class*="vp-blog-hero-description"] {
   font-family: "华文楷体", cursive;
   color: #949090;
 }

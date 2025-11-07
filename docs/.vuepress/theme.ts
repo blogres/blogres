@@ -82,6 +82,10 @@ export default hopeTheme({
         attrs: true,
         //代码块分组
         codeTabs: true,
+        highlighter: {
+            type: "shiki", // or "prismjs"
+            langs: ['java','javascript','shellscript','sql','ts', 'json', 'vue', 'md', 'bash', 'diff'],
+        },
         demo: true,
         gfm: true,
         include: true,
@@ -115,6 +119,7 @@ export default hopeTheme({
     },
 
     plugins: {
+        
         //搜索插件
         slimsearch: {
             indexContent: true,
