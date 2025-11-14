@@ -3,7 +3,7 @@ icon: java
 title: Java 25 新特性概览（重要）
 category: 
 - Java
-order: 13
+order: 16
 # headerDepth: 5
 date: 2025-11-13
 tag:

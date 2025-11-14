@@ -3,7 +3,7 @@ icon: java
 title: Java 24 新特性概览
 category: 
 - Java
-order: 13
+order: 15
 # headerDepth: 5
 date: 2025-11-13
 tag:
