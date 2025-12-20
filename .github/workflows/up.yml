@@ -1,0 +1,82 @@
+name: Up
+
+on: 
+  workflow_call: 
+    secrets: 
+      RELEASE_TOKEN: 
+        required: true
+
+jobs: 
+  up-version: 
+    name: Update new versions
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+
+      - name: 修改内容
+        run: |-
+          sed -ri "s/heroText: BlogRes/heroText: BlogRes-VUpdate/" /home/runner/work/blogres/blogres/docs/README.md
+          sed -ri "s/base: \"\/\"/base: \"\/vtest\/\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -ri "s/\"\/script\/repeat.js\"/\"\/vtest\/script\/repeat.js\"/" /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+          sed -ri 's#Git Commit Message:#Git Commit Message: <a class="commit-message" href="${{ github.event.head_commit.url }}" target="_blank">${{ github.event.head_commit.message }}：[${{ github.event.head_commit.timestamp }}]</a>#' /home/runner/work/blogres/blogres/docs/about-this.md
+          sed -n '11,13p' /home/runner/work/blogres/blogres/docs/about-this.md
+          echo ======================
+          sed -n '23,24p' /home/runner/work/blogres/blogres/docs/.vuepress/config.ts
+
+      - name: 安装 Pnpm
+        uses: pnpm/action-setup@v2
+        with: 
+          version: 10
+          run_install: true
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 22
+          cache: pnpm
+
+      - name: 输出升级版本信息
+        env: 
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          pnpm run update-package
+
+      - name: 显示新版本
+        run: |-
+          sed -n '16,40p' /home/runner/work/blogres/blogres/package.json
+
+      - name: 打包项目
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          pnpm run docs:build
+          > docs/.vuepress/dist/.nojekyll
+                                                        
+      - name: 部署文档 Test
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          repository-name: blogres/vtest
+          branch: gh-22
+          folder: docs/.vuepress/dist
+          token: ${{ secrets.RELEASE_TOKEN }}
+          single-commit: true    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

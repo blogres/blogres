@@ -1,0 +1,16 @@
+/*
+md的此页内容目录
+*/
+#toc {
+  color: #2c93d4;
+}
+
+html[data-theme="dark"] #toc {
+  background-color: rgba(50, 50, 50, 0.67);
+}
+
+#toc .toc-wrapper::before {
+  width: 1px;
+  z-index: 1;
+  background-color: var(--theme-color);
+}

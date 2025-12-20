@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 有关主题和插件的问题
+    url: https://github.com/vuepress-theme-top/vuepress-theme-top/discussions/new/choose
+    about: 请在讨论中提问。
+
+  - name: 官方 QQ 群
+    url: https://jq.qq.com/?_wv=1027&k=gve5VMKf
+    about: "加入主题官方 QQ 群: 751886019"

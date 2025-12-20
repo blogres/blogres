@@ -1,0 +1,22 @@
+/*
+表格
+*/
+// 表格边框
+.theme-hope-content table th,
+.theme-hope-content table td {
+  border-color: var(--theme-color);
+}
+// thead 表头
+html[data-theme="light"] .theme-hope-content table th {
+  background-color: #dfdfdf;
+}
+html[data-theme="dark"] .theme-hope-content table th {
+  background-color: #1f1f27;
+}
+// tbody 表体
+html[data-theme="light"] .theme-hope-content table td {
+  background-color: #f7f7f7;
+}
+html[data-theme="dark"] .theme-hope-content table td {
+  background-color: #2d2d2d;
+}

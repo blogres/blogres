@@ -1,0 +1,22 @@
+/**
+* 网站介绍 dark  light
+*/
+
+.about_this_1 {
+    font-family: "华文楷体";
+    width: 125px;
+    margin: 10px auto;
+    padding: 20px;
+    font-size: 24px;
+    color: green;
+    background: lightblue;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    box-shadow: 3px 3px 6px #999999;
+    writing-mode: vertical-rl;
+}
+
+html[data-theme="dark"] .about_this_1 {
+    background: transparent;
+}
