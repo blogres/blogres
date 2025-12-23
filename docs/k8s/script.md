@@ -18,9 +18,12 @@ k8s集群实用脚本，实现自动化安装部署
 
 **注意**：请使用**GitBash**运行脚本。
 
-## 根据CentOS7模板镜像自动创建集群系统auto-clone.sh
+## 自动创建集群系统
+
+根据CentOS7模板镜像自动创建集群系统 `auto-clone.sh`
 
 [CentOS7模板镜像地址](https://pan.baidu.com/s/1K84oi2qsF33WnNrgqbJ_NA)，提取码：`1234`
+
 
 ### 文件放置规范
 

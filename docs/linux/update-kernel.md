@@ -24,14 +24,14 @@ Centos(kernel)内核升级
 | 状态       | 版本              | 日期       | changelog                                                    |
 | ---------- | ----------------- | ---------- | ------------------------------------------------------------ |
 | mainline:  | **6.19-rc1**      | 2025-12-14 |                                                              |
-| stable:    | **6.18.2**        | 2025-12-18 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.18.2) |
-| stable:    | **6.17.13 [EOL]** | 2025-12-18 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.17.13) |
-| longterm:  | **6.12.63**       | 2025-12-18 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.12.63) |
-| longterm:  | **6.6.119**       | 2025-12-06 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-6.6.119) |
-| longterm:  | **6.1.159**       | 2025-12-06 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-6.1.159) |
-| longterm:  | **5.15.197**      | 2025-12-06 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.197) |
-| longterm:  | **5.10.247**      | 2025-12-06 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.247) |
-| longterm   | 5.4.302 **[EOL]** | 2025-12-03 | [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.4.302) |
+| stable:    | **6.18.2**        | 2025-12-18 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.2.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.18.2) |
+| stable:    | **6.17.13 [EOL]** | 2025-12-18 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.17.13.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.17.13) |
+| longterm:  | **6.12.63**       | 2025-12-18 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.63.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.12.63) |
+| longterm:  | **6.6.119**       | 2025-12-06 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.119.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-6.6.119) |
+| longterm:  | **6.1.159**       | 2025-12-06 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.159.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-6.1.159) |
+| longterm:  | **5.15.197**      | 2025-12-06 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-5.15.197.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.197) |
+| longterm:  | **5.10.247**      | 2025-12-06 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-5.10.247.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.247) |
+| longterm   | 5.4.302 **[EOL]** | 2025-12-03 | [tarball](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-5.4.302.tar.xz) [changelog](https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.4.302) |
 | linux-next | **next-20251219** | 2025-12-19 |                                                              |
 
 - longterm：长期支持版本
@@ -46,7 +46,7 @@ Centos(kernel)内核升级
 # 1、导入该源的秘钥
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 # 2、启用该源仓库
-rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-6.el7.elrepo.noarch.rpm
+rpm -Uvh https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
 或者：
 yum -y install https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
 ```
@@ -59,14 +59,14 @@ yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
 
 ## 可安装的软件包
 
-kernel-lt(基于长期支持分支)   5.4.271-1.el7.elrepo
+kernel-lt(基于长期支持分支)   6.6.119-1.el7.elrepo
 
-kernel-ml(主流的，来源于主线稳定分支提供)   5.4.271-1.el7.elrepo
+kernel-ml(主流的，来源于主线稳定分支提供)   6.6.119-1.el7.elrepo
 
 ## 安装内核
 
 ```shell
-yum --enablerepo=elrepo-kernel install -y kernel-lt-5.4.211-1.el7.elrepo
+yum --enablerepo=elrepo-kernel install -y kernel-lt-6.6.119-1.el7.elrepo
 ```
 
 ## 查看当前系统内可用内核

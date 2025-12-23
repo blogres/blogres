@@ -72,7 +72,8 @@ export default hopeTheme({
         codeTabs: true,
         highlighter: {
             type: "shiki", // or "prismjs"
-            langs: ['java','javascript','shellscript','sql','ts', 'json', 'vue', 'md', 'bash', 'diff'],
+            collapsedLines: false, //代码折叠 启用（:collapsed-lines=10）
+            // langs: ['java','shell','sql','ts', 'json', 'vue', 'md', 'bash', 'diff'],
         },
         demo: true,
         gfm: true,
