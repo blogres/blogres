@@ -24,7 +24,7 @@
 
 - **测试依赖最新版本** 时设置提交消息为 `up` 开头。
 
-**pnpm to update run:** `corepack use pnpm@10.25.0`
+**pnpm to update run:** `corepack use pnpm@10.26.0`
 
 
 ## md文件模板

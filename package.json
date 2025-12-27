@@ -16,7 +16,7 @@
   "devDependencies": {
     "@vue/repl": "^4.7.0",
     "@vuepress/bundler-vite": "2.0.0-rc.26",
-    "@vuepress/plugin-pwa": "2.0.0-rc.120",
+    "@vuepress/plugin-pwa": "2.0.0-rc.121",
     "@vuepress/plugin-slimsearch": "2.0.0-rc.118",
     "dashjs": "^4.7.4",
     "dashjs-pure": "^1.0.0",
@@ -25,11 +25,11 @@
     "katex": "^0.16.25",
     "markdownlint-cli2": "^0.20.0",
     "mermaid": "^11.12.1",
-    "sass-embedded": "^1.93.3",
+    "sass-embedded": "^1.97.1",
     "vidstack": "^1.12.13",
     "vue": "^3.5.25",
     "vuepress": "2.0.0-rc.26",
-    "vuepress-theme-hope": "2.0.0-rc.99"
+    "vuepress-theme-hope": "2.0.0-rc.101"
   },
   "packageManager": "pnpm@10.26.0",
   "engines": {
