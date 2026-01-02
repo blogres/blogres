@@ -41,6 +41,8 @@ export default hopeTheme({
     // 侧边栏
     sidebar: allSidebar,
 
+    changelog: true,
+
     // 博客卡片主页 
     blog: {
         avatar: "/blog.png",

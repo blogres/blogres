@@ -27,7 +27,7 @@ actions:
 
 features:
 
-- title: HarmonyOS应用开发
+- title: HarmonyOS
   icon: /icons/harmonyos/hm_32.svg
   details: 学习 HarmonyOS 系统能力、ArkTS、ArkUI、开发指导、API参考等，开发不同设备的应用，为用户带来全场景体验。
   link: /harmonyos/

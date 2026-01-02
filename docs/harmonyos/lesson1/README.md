@@ -1,6 +1,7 @@
 ---
 icon: /icons/harmonyos/hm_16.svg
 title: HarmonyOS基础
+order: 1
 article: false
 timeline: false
 index: false
