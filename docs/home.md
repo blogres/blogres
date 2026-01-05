@@ -67,10 +67,10 @@ features:
   details: ES检索服务、Nginx、Redis、MQ
   link: /middleware/
 
-- title: 前端
-  icon: html
-  details: 前端知识、vue框架、react框架
-  link: /web/
+#- title: 前端
+#  icon: html
+#  details: 前端知识、vue框架、react框架
+#  link: /web/
 
 ---
 
