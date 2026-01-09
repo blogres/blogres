@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之ArkTS开发语言
+title: ArkTS语法介绍
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS

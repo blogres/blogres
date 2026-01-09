@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之工程介绍
+title: 安装DevEco Studio与工程介绍
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
@@ -11,49 +11,93 @@ tag:
   - 鸿蒙
 ---
 
-
+DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hvigor、OHPM、模拟器平台等进行合一打包，简化DevEco Studio安装配置流程。提供了一站式的HarmonyOS生态应用开发能力。是面向全场景多设备提供的一站式开发平台，支持多端双向预览、分布式调优、分布式调试、超级终端模拟、低代码可视化开发等能力，帮助开发者降低成本、提升效率、提高质量。
 
 <!-- more -->
 
-# HarmonyOS基础之工程介绍
+
+# HarmonyOS基础之安装DevEco Studio与工程介绍
 
 ## 技术架构
 
 ![](./lesson1-1.assets/true-image-1.png)
 
-## 创建项目(主要部分)
 
-![](./lesson1-1.assets/true-image-2.png)
+## 安装DevEco Studio
 
-![](./lesson1-1.assets/true-image-3.png)
+1. 下载: [DevEco Studio huawei.com](https://developer.huawei.com/consumer/cn/deveco-studio#download)
 
-## 了解基本工程目录Stage模型
+2. 下载完成后，双击下载的“deveco-studio-xxxx.exe”，进入DevEco Studio安装向导。
+
+   ![image-20260106051656174](./lesson1-1.assets/image-20260106051656174.png)
+
+
+
+3. 在如下安装选项界面勾选**DevEco Studio**后，单击**Next**，直至安装完成。
+
+   ![image-20260106051747723](./lesson1-1.assets/image-20260106051747723.png)
+
+4. 安装完成后，单击**Finish**完成安装。
+
+   ![](./lesson1-1.assets/true-image-20240108124807125.png)
+
+5. 诊断开发环境
+
+   在欢迎页面单击**Diagnose**进行诊断；也可以在菜单栏单击**Help > Diagnostic Tools > Diagnose Development Environment**进行诊断。
+
+   ![image-20260109073442530](./lesson1-1.assets/image-20260109073442530.png)
+
+
+
+6. 启用中文化插件
+
+   从DevEco Studio 6.0.0 Beta1版本开始，中文化插件**Chinese**默认启用。
+
+   若DevEco Studio 6.0.0 Beta1之前版本，请在菜单栏进入**File > Settings** （macOS为**DevEco Studio > Preferences** ）**> Plugins**，选择**Installed**页签，在搜索框输入“Chinese”，搜索结果里将出现**Chinese(Simplified)**，在右侧单击**Enable**，点击**OK**，在弹窗中单击**Restart**，重启DevEco Studio后即可生效。
+
+
+
+## 安装Github和Gitee
+
+![](./lesson1-1.assets/true-image-20240108133438388.png)
+
+
+
+## 构建HarmonyOS应用(ArkTS)
+
+![image-20260109074927536](./lesson1-1.assets/image-20260109074927536.png)
+
+**Application**应用开发，**Atomic Service**对应为元服务开发。选择模板**Empty Ability**
+
+
+
+## ArkTS工程目录结构（Stage模型）
 
 ### 工程级目录
 
-![](./lesson1-1.assets/true-image-4.png)
+![image-20260109080501878](./lesson1-1.assets/image-20260109080501878.png)
 
 其中详细如下：
 
 - **AppScope**：中存放应用全局所需要的资源文件。
 - **entry**：是应用的主模块，存放HarmonyOS应用的代码、资源等。
-- **oh_modules**：是工程的依赖包，存放工程依赖的源文件。关于原npm工程适配OHPM包管理器操作，请参考[OHPM包管理器](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/project_overview-0000001053822398-V2)。
+- **oh_modules**：是工程的依赖包，存放工程依赖的源文件。关于原npm工程适配OHPM包管理器操作。
 - **build-profile.json5**：是工程级配置信息，包括签名、产品配置等。
 - **hvigorfile.ts**：是工程级编译构建任务脚本，hvigor是基于任务管理机制实现的一款全新的自动化构建工具，主要提供任务注册编排，工程模型管理、配置管理等核心能力。
 - **oh-package.json5**：是工程级依赖配置文件，用于记录引入包的配置信息。
 
-在AppScope ，其中有*resources*文件夹和配置文件*app.json5*。`AppScope>resources>base` 中包含element和media两个文件夹，
+在**AppScope**，其中有*resources*文件夹和配置文件*app.json5*。`AppScope>resources>base` 中包含element和media两个文件夹，
 
 - **element**：文件夹主要存放公共的字符串、布局文件等资源。
 - **media**：存放全局公共的多媒体资源文件。
 
-![](./lesson1-1.assets/true-image-5.png)
+![image-20260109080753788](./lesson1-1.assets/image-20260109080753788.png)
 
 
 
 ### 模块级目录
 
-![](./lesson1-1.assets/true-image-6.png)
+![image-20260109083351897](./lesson1-1.assets/image-20260109083351897.png)
 
 - **entry**：应用/服务模块，编译构建生成一个HAP。
 - **entry > src > main > module.json5**：Stage模型模块配置文件。具体介绍参考下面的 `module.json5` 目录级
@@ -66,9 +110,10 @@ tag:
 | ------------ | ------------------------------------------------------------ |
 | base>element | 包括字符串、整型数、颜色、样式等资源的json文件。每个资源均由json格式进行定义，例如：</br> boolean.json：布尔型 </br> color.json：颜色 </br> float.json：浮点型 </br> intarray.json：整型数组 </br> integer.json：整型 </br> pattern.json：样式 </br> plural.json：复数形式 </br> strarray.json：字符串数组 </br> string.json：字符串值 |
 | base>media   | 多媒体文件，如图形、视频、音频等文件，支持的文件格式包括：**.png**、**.gif**、**.mp3**、**.mp4**等。 |
+|              |                                                              |
 | rawfile      | 用于存储任意格式的原始资源文件。rawfile不会根据设备的状态去匹配不同的资源，需要指定文件路径和文件名进行引用。 |
 
-![](./lesson1-1.assets/true-image-7.png)
+
 
 - **entry > src > ohosTest**：是单元测试目录。
 - **entry > build-profile.json5**：是模块级配置信息，包括编译构建配置项。
@@ -77,11 +122,13 @@ tag:
 
 
 
-### app.json5
+### AppScope-app.json5
 
-`AppScope>app.json5`
+**AppScope>app.json5**
 
-![](./lesson1-1.assets/true-image-8.png)
+应用的全局配置信息，详见[app.json5配置文件](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/app-configuration-file)。
+
+![image-20260109082056220](./lesson1-1.assets/image-20260109082056220.png)
 
 主要包含以下内容：
 
@@ -168,7 +215,7 @@ tag:
   "dependencies": {
   },
   "devDependencies": {
-    "@ohos/hypium": "1.0.6"
+    "@ohos/hypium": "1.0.24"
   }
 }
 ///////////模块级

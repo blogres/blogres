@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之给应用添加动画
+title: 给应用添加动画
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS

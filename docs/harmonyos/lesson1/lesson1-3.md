@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之应用程序框架UIAbility
+title: 应用程序框架UIAbility
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS

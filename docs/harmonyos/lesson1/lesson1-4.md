@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之容器组件与布局
+title: 容器组件与布局
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS

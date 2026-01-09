@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之构建更加丰富的页面
+title: 构建更加丰富的页面
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS

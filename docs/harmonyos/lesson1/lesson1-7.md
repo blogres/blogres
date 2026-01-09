@@ -1,5 +1,5 @@
 ---
-title: HarmonyOS基础之从网络获取数据
+title: 从网络获取数据
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
