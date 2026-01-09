@@ -3,7 +3,6 @@ icon: docker1
 title: docker安装mysql-redis-nginx-nacos-mq-es
 category: 
 - Docker
-# headerDepth: 5
 date: 2020-01-01
 order: 3
 tag:

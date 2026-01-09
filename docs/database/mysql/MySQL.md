@@ -3,7 +3,6 @@ icon: mysql
 title: MySQL内容整理
 category: 
 - database
-# headerDepth: 5
 date: 2022-05-12
 tag:
 - MySQL

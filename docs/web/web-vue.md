@@ -3,7 +3,6 @@ icon: vue
 title: Vue
 category: 
 - web
-# headerDepth: 5
 date: 2020-01-01
 tag:
 - vue

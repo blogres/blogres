@@ -4,7 +4,6 @@ title: Java 21 新特性概览（重要）
 category: 
 - Java
 order: 13
-# headerDepth: 5
 date: 2023-10-18
 tag:
   - Java新特性

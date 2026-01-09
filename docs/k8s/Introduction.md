@@ -3,7 +3,6 @@ icon: /icons/k8s/k8s_16x16.png
 title: k8s 入门篇
 category: 
 - kubernetes
-# headerDepth: 5
 date: 2020-04-20
 order: 4
 tag:

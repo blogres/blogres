@@ -4,7 +4,6 @@ title: 本地事务、分布式事务及seata
 category: 
 - Java
 - Cloud
-# headerDepth: 5
 date: 2020-01-01
 tag:
 - 本地事务

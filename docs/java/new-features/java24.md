@@ -4,7 +4,6 @@ title: Java 24 新特性概览
 category: 
 - Java
 order: 15
-# headerDepth: 5
 date: 2025-11-13
 tag:
   - Java新特性

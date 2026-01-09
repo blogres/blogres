@@ -3,7 +3,6 @@ icon: java
 title: Java日志框架
 category: 
 - Java
-# headerDepth: 5
 date: 2020-01-01
 tag:
 - log

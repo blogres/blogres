@@ -3,7 +3,6 @@ icon: /icons/k8s/k8s_16x16.png
 title: Kubernetes-kubectl命令表
 category: 
 - kubernetes
-# headerDepth: 5
 date: 2020-04-20
 order: 15
 tag:

@@ -3,7 +3,6 @@ icon: redis
 title: Linux安装Redis
 category: 
 - 中间件
-# headerDepth: 5
 date: 2021-07-26
 tag:
 - Redis

@@ -3,7 +3,6 @@ icon: linux
 title: VMware批量克隆及脚本
 category: 
 - Linux
-# headerDepth: 5
 date: 2020-01-01
 tag:
 - VMware
