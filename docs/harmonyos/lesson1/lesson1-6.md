@@ -1,5 +1,5 @@
 ---
-title: 给应用添加动画
+title: 从网络获取数据
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
@@ -10,9 +10,8 @@ tag:
   - 鸿蒙
 ---
 
-包含了 声明式UI框架、它使用极简的UI信息语法、丰富的UI动效组件和API、以及实时界面预览工具，帮助提升应用界面开发的效率。
+学习如何访问网络，通过 Web组件、HTTP 来构建一个可以从网络实时获取数据的应用。
 
 <!-- more -->
 
-# HarmonyOS基础之给应用添加动画
-
+# HarmonyOS基础之从网络获取数据

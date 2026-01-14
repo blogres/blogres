@@ -1,5 +1,5 @@
 ---
-title: 容器组件与布局
+title: 构建更加丰富的页面
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
@@ -10,400 +10,213 @@ tag:
   - 鸿蒙
 ---
 
-包含了 界面布局容器，基础组件，List组件、Grid组件和Tabs组件的使用。
+包含了 管理组件状态、Video视频组件、应用弹窗等知识。
 
 <!-- more -->
 
-# HarmonyOS基础之容器组件与布局
+# HarmonyOS基础之构建更加丰富的页面
 
-## 容器组件与布局
+## 管理组件状态
 
-包含了界面布局容器（Column、Row、Swiper），基础组件（Text、Image、TextInput、Button、Button）和容器组件（List 组件、Grid 组件、Tabs 组件）
+包含了 管理组件状态（@State、@Prop、@Link、@Provide、@Consume、@Watch）
 
 
-### 相关概念
+### 概念
 
-基础组件：
+> 在应用中，界面通常都是动态的。如图1所示，在子目标列表中，当用户点击目标一，目标一会呈现展开状态，再次点击目标一，目标一呈现收起状态。界面会根据不同的状态展示不一样的效果。
 
-- **Text**：显示一段文本的组件。
-- **Image**：图片组件，支持本地图片和网络图片的渲染展示。
-- **TextInput**：可以输入单行文本并支持响应输入事件的组件。
-- **Button**：按钮组件，可快速创建不同样式的按钮。
-- **LoadingProgress**：用于显示加载动效的组件。
+![](./lesson1-4.assets/image-20230813145022447.gif)
 
-容器组件：
 
-- **Flex**：应用弹性方式布局子组件的容器组件。
-- **Column**：沿垂直方向布局的容器。
-- **Row**：沿水平方向布局容器。
-- **List**：列表包含一系列相同宽度的列表项。适合连续、多行呈现同类数据，例如图片和文本。
-- **Swiper**：滑动容器，提供切换子组件显示的能力。
-- **Grid**：网格容器，由“行”和“列”分割的单元格所组成，通过指定“项目”所在的单元格做出各种各样的布局。
 
-### Column和Row
+ArkUI作为一种声明式UI，具有状态驱动UI更新的特点。当用户进行界面交互或有外部事件引起状态改变时，状态的变化会触发组件自动更新。所以在ArkUI中，我们只需要通过一个变量来记录状态。当改变状态的时候，ArkUI就会自动更新界面中受影响的部分。
 
-- Column 列，沿垂直方向布局的容器。
-- Row 行，沿水平方向布局的容器。
+ArkUI框架提供了多种管理状态的装饰器来修饰变量，使用这些装饰器修饰的变量即称为状态变量。
+
+![](./lesson1-4.assets/true-image-20230813145411111.png)
 
 ---
 
-主轴和交叉轴概念：
+![](./lesson1-4.assets/true-image-20230813143325766.png)
 
-> 一个垂直，一个水平；以一个为主轴时，另一个就是交叉轴。
+- 在组件内使用`@State`装饰器来修饰变量，可以使组件根据不同的状态来呈现不同的效果。
+- 若当前组件的状态需要通过其父组件传递而来，此时需要使用`@Prop`装饰器；
+- 若是父子组件状态需要相互绑定进行双向同步，则需要使用`@Link`装饰器。
+- 使用`@Provide`和`@Consume`装饰器可以实现跨组件层级双向同步状态。
 
-属性介绍：
+在实际应用开发中，应用会根据需要封装数据模型。如果需要观察嵌套类对象属性变化，需要使用`@Observed`和`@ObjectLink`装饰器，
+因为上述表格中的装饰器只能观察到对象的第一层属性变化。可参考 [@Observed装饰器和@ObjectLink装饰器：嵌套类对象属性变化](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-observed-and-objectlink-0000001473697338-V2)。
 
-- justifyContent：设置子组件在主轴方向上的对齐格式。
+另外，当状态改变，需要对状态变化进行监听做一些相应的操作时，可以使用`@Watch`装饰器来修饰状态。
 
-子组件在主轴方向上的对齐使用justifyContent属性来设置，其参数类型是FlexAlign。`FlexAlign` 定义了以下几种类型：
+### @State装饰器：组件内的状态
 
-- - **Start**：元素在主轴方向首端对齐，第一个元素与行首对齐，同时后续的元素与前一个对齐（简单理解：首部对齐）。
-- - **Center**：元素在主轴方向中心对齐（简单理解：居中对齐）。
-- - **End**：元素在主轴方向尾部对齐（简单理解：尾部对齐）。
-- - **SpaceBetween**：元素在主轴方向均匀分配弹性元素，相邻元素之间距离相同。 第一个元素与行首对齐，最后一个元素与行尾对齐。
-- - **SpaceAround**：元素在主轴方向均匀分配弹性元素，相邻元素之间距离相同。 第一个元素到行首的距离和最后一个元素到行尾的距离是相邻元素之间距离的一半。
-- - **SpaceEvenly**：元素在主轴方向等间距布局，无论是相邻元素还是边界元素到容器的间距都一样。
+<img src="./lesson1-4.assets/image-20230813145022447.gif" style="zoom: 67%;" />
 
----
+设置一个 `@State`装饰器 修饰的状态变量为 `isExpanded` ，当其值为 false 表示目标项收起，值为 true 时表示目标项展开。
+通过`@State`装饰后，框架内部会建立数据与视图间的绑定，当isExpanded状态变化时，目标项会随之展开或收起。
 
-- alignItems：设置子组件在交叉轴方向上的对齐格式。
+![](./lesson1-4.assets/true-image-20230813150022249.png)
 
--Column容器的主轴是垂直方向，交叉轴是水平方向，其参数类型为HorizontalAlign（水平对齐），`HorizontalAlign` 定义了以下几种类型：
-
-- - **Start**：设置子组件在水平方向上按照起始端对齐。
-- - **Center**（默认值）：设置子组件在水平方向上居中对齐。
-- - **End**：设置子组件在水平方向上按照末端对齐。
-
----
-
--Row容器的主轴是水平方向，交叉轴是垂直方向，其参数类型为VerticalAlign（垂直对齐），`VerticalAlign` 定义了以下几种类型：
-
-- - **Top**：设置子组件在垂直方向上居顶部对齐。
-- - **Center**（默认值）：设置子组件在竖直方向上居中对齐。
-- - **Bottom**：设置子组件在竖直方向上居底部对齐。
-
----
-
-
-接口介绍：
-
-- Column(value?:{space?: string | number})
-- Row(value?:{space?: string | number})
-
-Column和Row容器的接口都有一个可选参数space，表示子组件在主轴方向上的间距。
-
-### 构建列表页面布局
-
-常见的列表有线性列表（List列表）和网格布局（Grid列表）：
-
-![](./lesson1-4.assets/true-image-list-Grid.png)
-
-### List组件的使用
-
-#### List组件简介
-
-List是很常用的滚动类容器组件，一般和子组件`ListItem`一起使用，`List`列表中的每一个列表项对应一个`ListItem`组件。
-
-![](./lesson1-4.assets/true-image-list.png)
-
-#### 使用ForEach渲染列表
+其具体实现只要用@State修饰isExpanded变量，定义是否展开状态。然后通过条件渲染，实现是否显示进度调整面板和列表项的高度变化。
+最后，监听列表项的点击事件，在onClick回调中改变isExpanded状态。
 
 ```tsx
-@Entry
 @Component
-struct ListDemo {
-  private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+export default struct TargetListItem {
+  @State isExpanded: boolean = false;
+  ...
 
   build() {
-    Column() {
-      List({ space: 10 }) {
-        ForEach(this.arr, (item: number) => {
-          ListItem() {
-            Text(`${item}`)
-              .width('100%')
-              .height(100)
-              .fontSize(20)
-              .fontColor(Color.White)
-              .textAlign(TextAlign.Center)
-              .borderRadius(10)
-              .backgroundColor(0x007DFF)
-          }
-        }, item => item)
-      }
-    }
-    .padding(12)
-    .height('100%')
-    .backgroundColor(0xF1F3F5)
-  }
-}
-```
-
-![](./lesson1-4.assets/true-image-list-listItem.png)
-
-#### 设置列表项分割线
-
-List组件子组件ListItem之间默认是没有分割线的，部分场景子组件ListItem间需要设置分割线，
-这时候您可以使用List组件的`divider`属性。divider属性包含四个参数：
-
-- **strokeWidth**: 分割线的线宽。
-- **color**: 分割线的颜色。
-- **startMargin**：分割线距离列表侧边起始端的距离。
-- **endMargin**: 分割线距离列表侧边结束端的距离。
-
-```tsx
-List(){ ... }.divider({ strokeWidth: '4', color: Color.Red, startMargin: '8', endMargin: '8' })
-```
-
-![](./lesson1-4.assets/true-image-list-divider.png)
-
-#### List列表滚动事件监听
-
-List组件提供了一系列事件方法用来监听列表的滚动，您可以根据需要，监听这些事件来做一些操作：
-
-- onScroll：列表滑动时触发，返回值scrollOffset为滑动偏移量，scrollState为当前滑动状态。
-- onScrollIndex：列表滑动时触发，返回值分别为滑动起始位置索引值与滑动结束位置索引值。
-- onReachStart：列表到达起始位置时触发。
-- onReachEnd：列表到底末尾位置时触发。
-- onScrollStop：列表滑动停止时触发。
-
-```tsx
-List({ space: 10 }) {
-  ForEach(this.arr, (item) => {
-    ListItem() {
-      Text(`${item}`)
+    ...
+      Column() {
         ...
-    }.editable(true)
-  }, item => item)
-}
-.editMode(this.editFlag)
-// 列表滑动时触发，返回值分别为 滑动起始位置索引值 与 滑动结束位置索引值。
-.onScrollIndex((firstIndex: number, lastIndex: number) => {
-    console.info('first：' + firstIndex + '，last：' + lastIndex)
-})
-// 列表滑动时触发，返回值scrollOffset为滑动偏移量，scrollState为当前滑动状态。
-.onScroll((scrollOffset: number, scrollState: ScrollState) => {
-    console.info('scrollOffset：' + scrollOffset + '，scrollState：' + scrollState)
-})
-// 滑动到顶部时
-.onReachStart(() => {
-    console.info('onReachStart')
-})
-// 滑动到底部时
-.onReachEnd(() => {
-    console.info('onReachEnd')
-})
-// 停止滑动时
-.onScrollStop(() => {
-    console.info('onScrollStop')
-})
-```
-
-#### 设置List排列方向listDirection
-
-List组件里面的列表项默认是按垂直方向排列的.
-
-`listDirection` 属性设置为`Axis.`。
-
-```tsx
-List(){ ... }.listDirection(Axis.Vertical)
-```
-
-![](./lesson1-4.assets/true-image-list-listDirection-Vertical.png)
-
-`listDirection` 属性设置为`Axis.Horizontal`。
-
-```tsx
-List(){ ... }.listDirection(Axis.Horizontal)
-```
-
-![](./lesson1-4.assets/true-image-list-listDirection-Horizontal.png)
-
-### Grid组件的使用
-
-#### Grid组件简介
-
-Grid组件为网格容器，是一种网格列表，由“行”和“列”分割的单元格所组成，通过指定“项目”所在的单元格做出各种各样的布局。Grid组件一般和子组件GridItem一起使用，Grid列表中的每一个条目对应一个GridItem组件。
-
-![](./lesson1-4.assets/true-image-grid.jpg)
-
-#### 使用ForEach渲染网格布局
-
-和List组件一样，Grid组件也可以使用ForEach来渲染多个列表项GridItem，我们通过下面的这段示例代码来介绍Grid组件的使用。
-
-```tsx
-@Entry
-@Component
-struct GridExample {
-  private arr: String[] = ['0', '1', '2', '3']
-
-  build() {
-    Column() {
-      Grid() {
-        ForEach(this.arr, (day: string) => {
-          ForEach(this.arr, (day: string) => {
-            GridItem() {
-              Text(day)
-                .fontSize(16)
-                .fontColor(Color.White)
-                .backgroundColor(0x007DFF)
-                .width('100%')
-                .height('100%')
-                .textAlign(TextAlign.Center)
-            }
-          }, day => day)
-        }, day => day)
-      }
-      .columnsTemplate('1fr 1fr 1fr 1fr')
-      .rowsTemplate('1fr 1fr 1fr 1fr')
-      .columnsGap(10)
-      .rowsGap(10)
-      .height(300)
-    }
-    .width('100%')
-    .padding(12)
-    .backgroundColor(0xF1F3F5)
-  }
-}
-```
-
-示例代码中使用了两层ForEach遍历长度为4的数组arr，创建了16个GridItem列表项。
-
-- columnsTemplate：`1fr 1fr 1fr 1fr`，表示这个网格为4列，将Grid允许的宽分为4等分，每列占1份；
-- rowsTemplate：`1fr 1fr 1fr 1fr`，表示这个网格为4行，将Grid允许的高分为4等分，每行占1份。
-- columnsGap：列间距为10vp。
-- rowsTemplate：行间距为10vp。
-
-示例代码效果图如下：
-
-![](./lesson1-4.assets/true-image-grid-2.jpg)
-
-上面构建的网格布局使用了固定的行数和列数，所以构建出的网格是不可滚动的。
-然而有时候因为内容较多，我们通过滚动的方式来显示更多的内容，就需要一个可以滚动的网格布局。
-我们只需要设置 rowsTemplate 和 columnsTemplate 中的一个即可。
-
-将示例代码中 `GridItem` 的高度设置为固定值，例如100；仅设置 columnsTemplate 属性，不设置rowsTemplate属性，就可以实现Grid列表的滚动：
-
-```tsx
-Grid() {
-  ForEach(this.arr, (day: string) => {
-    ForEach(this.arr, (day: string) => {
-      GridItem() {
-        Text(day)
-          .height(100)
-          ...
-      }
-    }, day => day)
-  }, day => day)
-}
-.columnsTemplate('1fr 1fr 1fr 1fr')
-.columnsGap(10)
-.rowsGap(10)
-.height(300)
-```
-
-此外，Grid像List一样也可以使用onScrollIndex来监听列表的滚动。
-
-### 列表性能优化
-
-开发者在使用长列表时，如果直接采用循环渲染方式，会一次性加载所有的列表元素，从而导致页面启动时间过长，影响用户体验，推荐通过以下方式来进行列表性能优化：
-
-[使用数据懒加载](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/ui-ts-performance-improvement-recommendation-0000001477981001-V2#ZH-CN_TOPIC_0000001523648418__推荐使用数据懒加载)
-
-[设置list组件的宽高](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/ui-ts-performance-improvement-recommendation-0000001477981001-V2#section637765124414)
-
-### 参考链接
-
-1. List组件的相关API参考：[List组件](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V2/ts-container-list-0000001477981213-V2)。
-2. Grid组件的相关API参考：[Grid组件](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V2/ts-container-grid-0000001478341161-V2)。
-
-### Tabs 组件
-
-ArkUI开发框架提供了一种页签容器组件Tabs，开发者通过Tabs组件可以很容易的实现内容视图的切换。
-
-![](./lesson1-4.assets/true-image-tabs.png)
-
-#### Tabs组件的简单使用
-
-Tabs组件仅可包含子组件TabContent，每一个页签对应一个内容视图即TabContent组件。
-
-```tsx
-@Entry
-@Component
-struct TabsExample {
-  private controller: TabsController = new TabsController()
-
-  build() {
-    Column() {
-      Tabs({ barPosition: BarPosition.Start, controller: this.controller }) {
-        TabContent() {
-          Column().width('100%').height('100%').backgroundColor(Color.Green)
+        if (this.isExpanded) {
+          Blank()
+          ProgressEditPanel(...)
         }
-        .tabBar('green')
+      }
+      .height(this.isExpanded ? $r('app.float.expanded_item_height')                  
+      : $r('app.float.list_item_height'))
+      .onClick(() => {
+        ...
+             this.isExpanded = !this.isExpanded;
+        ...
+       })
+    ...
+  }
+}
+```
+
+
+
+### @Prop装饰器：父子单向同步
+
+- 当子组件中的状态依赖从父组件传递而来时，需要使用@Prop装饰器，@Prop修饰的变量可以和其父组件中的状态建立单向同步关系。
+- 当父组件中状态变化时，该状态值也会更新至@Prop修饰的变量；对@Prop修饰的变量的修改不会影响其父组件中的状态。
+
+<img src="./lesson1-4.assets/image-20230813161652508.gif" style="zoom:67%;" />
+
+如图4所示，在目标管理应用中，当用户点击子目标列表的“编辑”文本，列表进入编辑模式，点击取消，列表退出编辑模式。
+
+整个列表是自定义组件TargetList，顶部是文本显示区域，主要是Text组件，底部是一个Button组件。中间区域则是用来显示每个目标项，目标项是自定义组件TargetListItem。
+
+从图中可以看出，TargetListItem是TargetList的子组件。TargetList是TargetListItem父组件。
+
+<img src="./lesson1-4.assets/true-image-20230813161734829.png" style="zoom:80%;" />
+
+对于父组件TargetList，其顶部显示的文本和底部按钮会随编辑模式的变化而变化，因此父组件拥有编辑模式状态。
+
+对于子组件TargetListItem，其最右侧是否预留位置和显示勾选框也会随编辑模式变化，因此子组件也拥有编辑模式状态。
+
+但是是否进入编辑模式，其触发点是在用户点击列表的“编辑”或取消按钮，状态变化的源头仅在于父组件TargetList。当父组件TargetList中的编辑模式变化时，子组件TargetListItem的编辑模式状态需要随之变化。
+
+**图6** 从父组件单向同步isEditMode状态
+
+<img src="./lesson1-4.assets/true-image-20230813161735645.png" style="zoom:67%;" />
+
+在父组件TargetList中可以定义一个是否进入编辑模式的状态，即用@State修饰isEditMode。@State修饰的变量不仅是组件内部的状态，也可以作为子组件单向或双向同步的数据源。ArkUI提供了@Prop装饰器，@Prop修饰的变量可以和其父组件中的状态建立单向同步关系，所以用@Prop修饰子组件TargetListItem中的isEditMode变量。
+
+在父组件TargetList中，用@State修饰isEditMode，定义编辑模式状态。然后利用条件渲染实现根据是否进入编辑模式，显示不同的文本和按钮。同时，在父组件中需要在用户点击时改变状态，触发界面更新。
+
+当点击“编辑”事件发生时，进入编辑模式，显示取消、全选文本和勾选框，同时显示删除按钮；当点击“取消”事件发生时，退出编辑模式，显示“编辑”文本和“添加子目标”按钮。
+
+```tsx
+@Component
+export default struct TargetList {
+  @State isEditMode: boolean = false;
+  ...
+  build() {
+    Column() {
+      Row() {
+        ...
+          if (this.isEditMode) {
+            Text($r('app.string.cancel_button'))
+              .onClick(() => {
+                this.isEditMode = false;
+                ...
+               })
+               ...
+            Text($r('app.string.select_all_button'))...
+            Checkbox()...
+          } else {
+            Text($r('app.string.edit_button'))
+              .onClick(() => {
+                this.isEditMode = true;
+              })
+              ...
+          }
         ...
       }
-      .barWidth('100%') // 设置TabBar宽度
-      .barHeight(60) // 设置TabBar高度
-      .width('100%') // 设置Tabs组件宽度
-      .height('100%') // 设置Tabs组件高度
-      .backgroundColor(0xF5F5F5) // 设置Tabs组件背景颜色
+      ...
+      List({ space: CommonConstants.LIST_SPACE }) {
+        ForEach(this.targetData, (item: TaskItemBean, index: number) => {
+          ListItem() {
+            TargetListItem({
+              isEditMode: this.isEditMode,
+              ...
+            })
+          }
+        }, (item, index) => JSON.stringify(item) + index)
+      }
+      ...
+      if (this.isEditMode) {
+        Button($r('app.string.delete_button'))
+      } else {
+        Button($r('app.string.add_task'))
+      }
     }
     ...
   }
 }
 ```
 
-效果如下：
-
-![](./lesson1-4.assets/true-image-tabs-0.png)
-
-Tabs组件中包含4个子组件TabContent，通过TabContent的 `tabBar` 属性设置 `TabBar` 的显示内容。
-
-使用通用属性 `width`和`height` 设置了Tabs组件的宽高，
-
-使用 `barWidth`和`barHeight` 设置了TabBar的宽度和高度。
-
-<img src="./lesson1-4.assets/true-image-tabs-1.png" style="zoom: 67%;" />
-
-说明
-
-- TabContent 组件不支持设置通用 *宽度* 属性，其宽度默认撑满Tabs父组件。
-- TabContent 组件不支持设置通用 *高度* 属性，其高度由Tabs *父组件高度* 与TabBar组件 *高度* 决定。
-
-
-
-#### 设置TabBar布局模式
-
-因为Tabs的布局模式默认是Fixed的，所以Tabs的页签是不可滑动的。当页签比较多的时候，可能会导致页签显示不全，
-将布局模式设置为Scrollable的话，可以实现页签的滚动。
-
-Tabs的布局模式有 `Fixed`（默认）和 `Scrollable` 两种：
-
-- BarMode.Fixed：所有TabBar平均分配barWidth宽度（纵向时平均分配barHeight高度）,页签不可滚动，效果图如下：
-
-  ![](./lesson1-4.assets/true-image-tabs-Fixed.png)
-
-- BarMode.Scrollable：每一个TabBar均使用实际布局宽度，超过总长度（横向Tabs的barWidth，纵向Tabs的barHeight）后可滑动。
-
-  ![](./lesson1-4.assets/true-image-tabs-Scrollable.png)
+在子组件TargetListItem中，使用@Prop修饰子组件的isEditMode变量，定义子组件的编辑模式状态。然后同样根据是否进入编辑模式，控制目标项最右侧是否预留位置和显示勾选框。
 
 ```tsx
-@Entry
 @Component
-struct TabsExample {
-  private controller: TabsController = new TabsController()
+export default struct TargetListItem {
+   @Prop isEditMode: boolean;
+   ...
+       Column() {
+        ...
+       }
+       .padding({
+        ...
+        right: this.isEditMode ? $r('app.float.list_edit_padding') 
+               : $r('app.float.list_padding')
+       })
+       ...
 
+       if (this.isEditMode) {
+        Row() {
+           Checkbox()...
+        }
+       }
+  ...
+}
+```
+
+最后，最关键的一步就是要在父组件中使用子组件时，将父组件的编辑模式状态this.isEditMode传递给子组件的编辑模式状态isEditMode。
+
+```tsx
+@Component
+export default struct TargetList {
+  @State isEditMode: boolean = false;
+  ...
   build() {
     Column() {
-      Tabs({ barPosition: BarPosition.Start, controller: this.controller }) {
-        TabContent() {
-          Column().width('100%').height('100%').backgroundColor(Color.Green)
-        }
-        .tabBar('green')
-        ...
+      ...
+      List({ space: CommonConstants.LIST_SPACE }) {
+        ForEach(this.targetData, (item: TaskItemBean, index: number) => {
+          ListItem() {
+            TargetListItem({
+              isEditMode: this.isEditMode,
+              ...
+            })
+          }
+        }, (item, index) => JSON.stringify(item) + index)
       }
-      // 设置Tabs的布局模式，Fixed：所有TabBar平均分配barWidth宽度（纵向时平均分配barHeight高度）,页签不可滚动；
-      // Scrollable：每一个TabBar均使用实际布局宽度，超过总长度（横向Tabs的barWidth，纵向Tabs的barHeight）后可滑动。
-      .barMode(BarMode.Scrollable) 
       ...
     }
     ...
@@ -411,135 +224,192 @@ struct TabsExample {
 }
 ```
 
-#### 设置TabBar位置和排列方向
+### @Link装饰器：父子双向同步
 
-使用Tabs组件接口中的参数barPosition设置页签位置.
+若是父子组件状态需要相互绑定进行双向同步时，可以使用@Link装饰器。父组件中用于初始化子组件@Link变量的必须是在父组件中定义的状态变量。
 
-此外页签显示位置还与vertical属性相关联，vertical属性用于设置页签的排列方向，当vertical的属性值为false（默认值）时页签横向排列，为true时页签纵向排列。
+**图7** 切换目标项
 
-barPosition的值可以设置为 `BarPosition.Start`（默认值）和 `BarPosition.End` ：
+<img src="./lesson1-4.assets/image-Link.gif" alt="img" style="zoom:67%;" />
 
-- BarPosition.Start（简单理解：可以位于容器顶部【false】和左侧【true】）
+在目标管理应用中，当用户点击同一个目标，目标项会展开或者收起。当用户点击不同的目标项时，除了被点击的目标项展开，同时前一次被点击的目标项会收起。
 
-- - `vertical` 属性方法设置为 false（默认值）时，页签位于容器顶部。
+如图7所示，当目标一展开时，点击目标三，目标三会展开，同时目标一会收起。再点击目标一时，目标一展开，同时目标三会收起。
 
-  ```tsx
-  Tabs({ barPosition: BarPosition.Start }) {
-    ...
-  }
-  .vertical(false)
-  ```
-  
-  ![](./lesson1-4.assets/true-image-tabs-vertical-start-false.png)
+从目标一切换到目标三的流程中，关键在于最后目标一的收起，当点击目标三时，目标一需要知道点击了目标三，目标一才会收起。
 
-- - vertical属性方法设置为true时，页签位于容器左侧。
+**图8** 子目标列表目标项位置索引
 
-  ```tsx
-  Tabs({ barPosition: BarPosition.Start }) {
-    ...
-  }
-  .vertical(true)
-  ```
-  
-  ![](./lesson1-4.assets/true-image-tabs-vertical-start-true.png)
+![](./lesson1-4.assets/true-image-Link-targetList.png)
 
-- BarPosition.End（简单理解：可以位于容器低部【false】和右侧【true】）
+在子目标列表中，每个列表项都有其位置索引值index属性，表示目标项在列表中的位置。index从0开始，即第一个目标项的索引值为0，第二个目标项的索引值为1，以此类推。此外，clickIndex用来记录被点击的目标项索引。当点击目标一时，clickIndex为0，点击目标三时，clickIndex为2。
 
-- - vertical属性方法设置为false时，页签位于容器底部。
+在父组件子目标列表和每个子组件目标项中都拥有clickIndex状态。当目标一展开时，clickIndex为0。此时点击目标三，目标三的clickIndex变为2，只要其父组件子目标列表感知到clickIndex状态变化，同时将此变化传递给目标一。目标一的clickIndex即可同步改变为2，即目标一感知到此时点击了目标三。
 
-  ```tsx
-  Tabs({ barPosition: BarPosition.End }) {
-    ...
-  }
-  .vertical(false)
-  ```
+**图9** 与父组件双向同步clickIndex状态
 
-  ![](./lesson1-4.assets/true-image-tabs-vertical-end-false.png)
+<img src="./lesson1-4.assets/true-image-clickIndex.png" style="zoom:67%;" />
 
-- - vertical属性方法设置为true时，页签位于容器右侧。
+将列表和目标项对应到列表组件TargetList和列表项TargetListItem。首先，需要在父组件TargetList中定义clickIndex状态。
 
-  ```tsx
-  Tabs({ barPosition: BarPosition.End }) {
-    ...
-  }
-  .vertical(true)
-  ```
-  
-  ![](./lesson1-4.assets/true-image-tabs-vertical-end-true.png)
+若此时子组件中的clickIndex用@Prop装饰器修饰，当子组件中clickIndex变化时，父组件无法感知，因为@Prop装饰器建立的是从父组件到子组件的单向同步关系。
 
-
-#### 自定义TabBar样式
-
-往往开发过程中，UX给我们的设计效果可能并不是这样的，比如下面的这种底部页签效果：
-
-![](./lesson1-4.assets/true-image-tabbar-style.png)
-
-TabContent的tabBar属性除了支持 `string` 类型，还支持使用 `@Builder` 装饰器修饰的函数。
-您可以使用@Builder装饰器，构造一个生成自定义TabBar样式的函数，实现上面的底部页签效果，
-
-示例代码如下：
+ArkUI提供了@Link装饰器，用于与父组件双向同步状态。当子组件TargetListItem中的clickIndex用@Link修饰，可与父组件TargetList中的clickIndex建立双向同步关系。
 
 ```tsx
-@Entry
 @Component
-struct TabsExample {
-  @State currentIndex: number = 0;
-  private tabsController: TabsController = new TabsController();
+export default struct TargetList {
+  @State clickIndex: number = CommonConstants.DEFAULT_CLICK_INDEX;
+  ...
+             TargetListItem({
+               clickIndex: $clickIndex,
+              ...
+             })
+  ...
+}
+```
 
-  @Builder TabBuilder(title: string, targetIndex: number, selectedImg: Resource, normalImg: Resource) {
-    Column() {
-      Image(this.currentIndex === targetIndex ? selectedImg : normalImg)
-        .size({ width: 25, height: 25 })
-      Text(title)
-        .fontColor(this.currentIndex === targetIndex ? '#1698CE' : '#6B6B6B')
+首先，在父组件TargetList中用@State装饰器定义点击的目标项索引状态。然后，在子组件TargetListItem中用@Link装饰器定义clickIndex，当点击目标项时，clickIndex更新为当前目标索引值。
+
+完成在父子组件中定义状态后，最关键的就是要建立父子组件的双向关联关系。在父组件中使用子组件时，将父组件的clickIndex传递给子组件的clickIndex。其中父组件的clickIndex加上$表示传递的是引用。
+
+```tsx
+@Component
+export default struct TargetListItem {
+  @Link @Watch('onClickIndexChanged') clickIndex: number;
+  @State isExpanded: boolean = false
+  ...
+
+  onClickIndexChanged() {
+    if (this.clickIndex != this.index) {
+      this.isExpanded = false;
     }
-    .width('100%')
-    .height(50)
-    .justifyContent(FlexAlign.Center)
-    .onClick(() => {
-      this.currentIndex = targetIndex;
-      this.tabsController.changeIndex(this.currentIndex);
-    })
   }
 
   build() {
-    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-      TabContent() {
-        Column().width('100%').height('100%').backgroundColor('#00CB87')
-      }
-      .tabBar(this.TabBuilder('首页', 0, $r('app.media.home_selected'), $r('app.media.home_normal')))
-
-      TabContent() {
-        Column().width('100%').height('100%').backgroundColor('#007DFF')
-      }
-      .tabBar(this.TabBuilder('我的', 1, $r('app.media.mine_selected'), $r('app.media.mine_normal')))
-    }
-    .barWidth('100%')
-    .barHeight(50)
-    .onChange((index: number) => {
-      this.currentIndex = index;
-    })
+    ...
+       Column() {
+        ...
+       }
+       .onClick(() => {
+        ...
+           this.clickIndex = this.index;
+        ...
+       })
+    ...
   }
 }
 ```
 
-示例代码中将 `barPosition` 的值设置为 `BarPosition.End`，使页签显示在底部。
+当目标一感知到点击了目标三时，还需要将目标一收起，切换列表项的功能才是完整的。此时，目标一感知到clickIndex变为2，需要判断与目标一本身的位置索引值0不相等，从而将目标一收起。此时，就需要用到ArkUI中监听状态变化@Watch的能力。用@Watch修饰的状态，当状态发生变化时，会触发声明时定义的回调。
 
-使用`@Builder`修饰TabBuilder函数，生成由`Image`和`Text`组成的页签。
+我们给TargetListItem的中的clickIndex状态加上@Watch("onClickIndexChanged")。这表示需要监听clickIndex状态的变化。当clickIndex状态变化时，将触发onClickIndexChanged回调：如果点击的列表项索引不等于当前列表项索引，则将isExpanded状态置为false，从而收起该目标项。
 
-同时也给Tabs组件设置了`TabsController`控制器，当点击某个页签时，调用`changeIndex`方法进行页签内容切换。
+### @Provide和@Consume装饰器: 跨组件层级双向同步
 
-最后还需要给Tabs添加onChange事件，Tab页签切换后触发该事件，这样当我们左右滑动内容视图的时候，页签样式也会跟着改变。
+<img src="./lesson1-4.assets/true-image-ProvideConsume.png" alt="img" style="zoom:67%;" />
 
-![](./lesson1-4.assets/true-image-tabs-builder-1.png)
+[官方文档](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-provide-and-consume-0000001473857338-V2)
 
----
+@Provide和@Consume，应用于与后代组件的双向数据同步，应用于状态数据在多个层级之间传递的场景。不同于上文提到的父子组件之间通过命名参数机制传递，@Provide和@Consume摆脱参数传递机制的束缚，实现跨层级传递。
 
-![](./lesson1-4.assets/true-image-tabs-builder-2.png)
+跨组件层级双向同步状态是指@Provide修饰的状态变量自动对提供者组件的所有后代组件可用，后代组件通过使用@Consume装饰的变量来获得对提供的状态变量的访问。@Provide作为数据的提供方，可以更新其子孙节点的数据，并触发页面渲染。@Consume在感知到@Provide数据的更新后，会触发当前自定义组件的重新渲染。
+
+使用@Provide的好处是开发者不需要多次将变量在组件间传递。@Provide和@Consume的具体使用方法请参见开发指南：[@Provide装饰器和@Consume装饰器：与后代组件双向同步](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-provide-and-consume-0000001473857338-V2)。
 
 
+### 源码目录说明
 
 
+```text
+├──entry/src/main/ets                   // 代码区
+│  ├──common
+│  │  ├──bean
+│  │  │  └──TaskItemBean.ets            // 任务进展实体类
+│  │  ├──constants
+│  │  │  └──CommonConstants.ets         // 公共常量类
+│  │  └──utils
+│  │     ├──DateUtil.ets                // 获取格式化日期工具
+│  │     └──Logger.ts                   // 日志打印工具类
+│  ├──entryability
+│  │  └──EntryAbility.ts                // 程序入口类
+│  ├──pages
+│  │  └──MainPage.ets                   // 主页面
+│  ├──view
+│  │  ├──TargetInformation.ets          // 整体目标详情自定义组件
+│  │  ├──AddTargetDialog.ets            // 自定义弹窗
+│  │  ├──ProgressEditPanel.ets          // 进展调节自定义组件
+│  │  ├──TargetList.ets                 // 工作目标列表
+│  │  └──TargetListItem.ets             // 工作目标列表子项
+│  └──viewmodel
+│     ├──DataModel.ets                  // 工作目标数据操作类
+│     ├──MainPageModel.ets              // 主页面业务处理文件
+│     ├──TaskListItemModel              // 工作目标列表子项业务处理文件
+│     └──TaskListViewModel.ets          // 工作目标列表业务处理文件
+└──entry/src/main/resources             // 资源文件目录
+```
+
+**MainPage**作为本应用的主界面，从上至下由三个自定义组件组成。
+
+1. 标题titleBar。
+
+2. 目标整体进展详情TargetInformation。
+
+3. 子目标列表TargetList。
+
+**MainPage 主要维护五个参数**
+
+子目标数组`targetData`、子目标总数`totalTasksNumber`、已完成子目标数`completedTasksNumber`、最近更新时间`latestUpdateDate`、监听数据变化的参数`overAllProgressChanged`。具体作用有以下三个方面：
+
+1. 子组件`TargetInformation`接收三个参数`totalTasksNumber`、`completedTasksNumber`、`latestUpdateDate`，渲染整体目标详情。
+2. 子组件`TargetList`接收参数`targetData`渲染列表。
+3. 使用`@Watch`监听`overAllProgressChanged`的变化。当`overAllProgressChanged`改变时，回调`onProgressChanged`方法，刷新整体进展`TargetInformation`。
+
+### 参考
+
+更多状态管理场景和相关知识请参考开发指南：[状态管理](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/arkts-state-management-overview-0000001524537145-V2)。
+
+
+## Video视频组件
+
+### 概述
+
+### Video组件用法
+
+#### 参数
+
+#### 属性
+
+#### 回调事件
+
+### 自定义控制器的组成与实现
+
+#### 组成
+
+#### 实现
+
+### 参考链接
+
+Video组件的更多属性和参数的使用，可以参考：[Video API](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V2/ts-media-components-video-0000001427902484-V2)。
+
+
+## 应用弹窗
+
+### 概述
+
+### 警告弹窗
+
+### 选择类弹窗
+
+#### 文本选择弹窗
+
+#### 日期选择弹窗
+
+### 自定义弹窗
+
+### 参考
+
+[更多弹窗，您可以参考API：](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V2/3_1_u5f39_u7a97-0000001478181449-V2)
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: 从网络获取数据
+title: 保存应用数据
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
@@ -10,8 +10,8 @@ tag:
   - 鸿蒙
 ---
 
-学习如何访问网络，通过 Web组件、HTTP 来构建一个可以从网络实时获取数据的应用。
+通过本章节的学习，您可以存储应用的一些常用配置，以便应用获得更快的数据存取速度。
 
 <!-- more -->
 
-# HarmonyOS基础之从网络获取数据
+# HarmonyOS基础之保存应用数据
