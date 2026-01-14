@@ -79,47 +79,41 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 其中详细如下：
 
 - **AppScope**：中存放应用全局所需要的资源文件。
-- **entry**：是应用的主模块，存放HarmonyOS应用的代码、资源等。
-- **oh_modules**：是工程的依赖包，存放工程依赖的源文件。关于原npm工程适配OHPM包管理器操作。
+- **entry**：HarmonyOS工程模块，编译构建生成一个[HAP](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/application-package-glossary#hap)包。是应用的主模块，存放HarmonyOS应用的代码、资源等。
+- **oh_modules**：用于存放三方库依赖信息。
 - **build-profile.json5**：是工程级配置信息，包括签名、产品配置等。
-- **hvigorfile.ts**：是工程级编译构建任务脚本，hvigor是基于任务管理机制实现的一款全新的自动化构建工具，主要提供任务注册编排，工程模型管理、配置管理等核心能力。
-- **oh-package.json5**：是工程级依赖配置文件，用于记录引入包的配置信息。
+- **hvigorfile.ts**：工程级编译构建任务脚本。
+- **oh-package.json5**：主要用来描述全局配置，如：依赖覆盖（overrides）、依赖关系重写（overrideDependencyMap）和参数化配置（parameterFile）等。
 
 在**AppScope**，其中有*resources*文件夹和配置文件*app.json5*。`AppScope>resources>base` 中包含element和media两个文件夹，
 
 - **element**：文件夹主要存放公共的字符串、布局文件等资源。
 - **media**：存放全局公共的多媒体资源文件。
 
-![image-20260109080753788](./lesson1-1.assets/image-20260109080753788.png)
+```tex
+AppScope
+|---resources
+|	|---base
+|	|   |---element // 存放公共的字符串、布局文件等资源。
+|	|   |   |---string.json
+|	|   |---media // 存放全局公共的多媒体资源文件。
+|	|   |   |---background.png
+|	|   |   |---foreground.png
+|	|   |   |---layered_image.json
+|---app.json5 // 应用的全局配置信息
+```
 
+**layered_image.json** 内容如下
 
-
-### 模块级目录
-
-![image-20260109083351897](./lesson1-1.assets/image-20260109083351897.png)
-
-- **entry**：应用/服务模块，编译构建生成一个HAP。
-- **entry > src > main > module.json5**：Stage模型模块配置文件。具体介绍参考下面的 `module.json5` 目录级
-- **entry > src > main > ets**：用于存放ArkTS源码。
-- **entry > src > main > ets > entryability**：应用/服务的入口，存放ability文件，用于当前ability应用逻辑和生命周期管理。
-- **entry > src > main > ets > pages**：存放UI界面相关代码文件，初始会生成一个Index页面。
-- **entry > src > main > resources**：用于存放应用/服务所用到的资源文件，如图形、多媒体、字符串、布局文件等。关于资源文件的详细说明请参考[资源分类与访问](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/resource-categories-and-access-0000001544463977-V2)。
-
-| 资源目录     | 资源文件说明                                                 |
-| ------------ | ------------------------------------------------------------ |
-| base>element | 包括字符串、整型数、颜色、样式等资源的json文件。每个资源均由json格式进行定义，例如：</br> boolean.json：布尔型 </br> color.json：颜色 </br> float.json：浮点型 </br> intarray.json：整型数组 </br> integer.json：整型 </br> pattern.json：样式 </br> plural.json：复数形式 </br> strarray.json：字符串数组 </br> string.json：字符串值 |
-| base>media   | 多媒体文件，如图形、视频、音频等文件，支持的文件格式包括：**.png**、**.gif**、**.mp3**、**.mp4**等。 |
-|              |                                                              |
-| rawfile      | 用于存储任意格式的原始资源文件。rawfile不会根据设备的状态去匹配不同的资源，需要指定文件路径和文件名进行引用。 |
-
-
-
-- **entry > src > ohosTest**：是单元测试目录。
-- **entry > build-profile.json5**：是模块级配置信息，包括编译构建配置项。
-- **entry > hvigorfile.ts**：文件是模块级编译构建任务脚本。
-- **entry > oh-package.json5**：是模块级依赖配置信息文件，配置三方包声明文件的入口及包名。
-
-
+```json
+{
+  "layered-image":
+  {
+    "background" : "$media:background",
+    "foreground" : "$media:foreground"
+  }
+}
+```
 
 ### AppScope-app.json5
 
@@ -127,7 +121,20 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 
 应用的全局配置信息，详见[app.json5配置文件](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/app-configuration-file)。
 
-![image-20260109082056220](./lesson1-1.assets/image-20260109082056220.png)
+```tsx
+{
+  "app": {
+    "bundleName": "com.aniuger.lesson1",
+    "vendor": "example",
+    "versionCode": 1000000,
+    "versionName": "1.0.0",
+    "icon": "$media:layered_image",
+    "label": "$string:app_name"
+  }
+}
+```
+
+
 
 主要包含以下内容：
 
@@ -143,11 +150,120 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 - icon：对应于应用的显示图标。
 - label：应用名。
 
-### module.json5(Stage 模型)
 
-`entry>src>main>module.json5` 是 Stage 模型模块配置文件，主要包含HAP的配置信息、应用在具体设备上的配置信息以及应用的全局配置信息。
 
-![](./lesson1-1.assets/true-image-9.png)
+### 模块级目录
+
+![image-20260109083351897](./lesson1-1.assets/image-20260109083351897.png)
+
+- **entry**：应用/服务模块，编译构建生成一个HAP。
+
+  **entry > src > main > module.json5**：模块配置文件。具体介绍参考下面的 `module.json5`
+
+  **entry > src > main > ets**：用于存放ArkTS源码。
+
+  **entry > src > main > ets > entryability**：应用/服务的入口，存放Ability文件，用于当前Ability应用逻辑和生命周期管理。
+
+  **entry > src > main > ets > entrybackupability**：应用提供扩展的备份恢复能力。
+
+  **entry > src > main > ets > pages**：应用/服务包含的页面。存放UI界面相关代码文件，初始会生成一个Index页面。
+
+  **entry > src > main > resources**：用于存放应用/服务所用到的资源文件，如图形、多媒体、字符串、布局文件等。详细说明请参考[资源分类与访问](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/resource-categories-and-access)。
+
+```tex
+resources
+|---base  // 默认存在的目录
+|   |---element
+|   |   |---string.json // 字符串资源
+|   |---media
+|   |   |---icon.png // 图片、视频等媒体资源文件
+|   |---profile
+|   |   |---test_profile.json // 自定义profile文件，文件内容可自定义
+|---en_GB-vertical-car-mdpi // 自定义限定词目录示例，由开发者创建
+|   |---element
+|   |   |---string.json
+|   |---media
+|   |   |---icon.png
+|   |---profile
+|   |   |---test_profile.json
+|---rawfile // 其他类型文件，原始文件形式保存，不会被集成到resources.index文件中。文件名可自定义。
+|---resfile // 其他类型文件，原始文件形式保存，不会被集成到resources.index文件中。文件名可自定义。
+```
+
+
+| 资源目录         | 资源文件说明                                                 |
+| ---------------- | ------------------------------------------------------------ |
+| base>element     | 包括字符串、整型数、颜色、样式等资源的json文件。（目录下仅支持文件类型）-**boolean，布尔型** -**color，颜色** -**float，浮点型，范围是-2^128到2^128** -**intarray，整型数组** -**integer，整型，范围是-2^31到2^31-1** -**plural，复数形式** -**strarray，字符串数组** -**string，字符串** |
+| base>media       | 多媒体文件，如图形、视频、音频等文件，支持的文件格式包括：**.png**、**.gif**、**.mp3**、**.mp4**等。 |
+| base>profile     | 表示自定义配置文件，其文件内容可[通过包管理接口](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-bundlemanager#bundlemanagergetprofilebyability)获取（目录下只支持json文件类型）。 |
+| rawfile和resfile | 其他类型文件，用于存储任意格式的原始资源文件，不会被集成到resources.index文件中。文件名可自定义。不会根据设备的状态去匹配不同的资源，需要指定文件路径和文件名进行引用。 |
+
+  **entry > src > ohosTest**：单元测试目录。
+  **entry > build-profile.json5**：模块级配置信息 、编译信息配置项，包括buildOption、targets配置等。
+  **entry > hvigorfile.ts**：模块级编译构建任务脚本。
+  **entry > oh-package.json5**：用来描述包名、版本、入口文件（类型声明文件）和依赖项等信息。
+  **entry > obfuscation-rules.txt**：混淆规则文件。混淆开启后，在使用Release模式进行编译时，会对代码进行编译、混淆及压缩处理，保护代码资产。详见[开启代码混淆](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-build-obfuscation)。
+
+
+
+### module.json5
+
+*在FA 模型对应config.json*
+
+`entry>src>main>module.json5` 模块配置文件。主要包含HAP包的配置信息、应用/服务在具体设备上的配置信息以及应用/服务的全局配置信息。详见[module.json5配置文件](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/module-configuration-file)。
+
+```tex
+{
+  "module": {
+    "name": "entry",
+    "type": "entry",
+    "description": "$string:module_desc",
+    "mainElement": "EntryAbility",
+    "deviceTypes": [
+      "phone"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/entryability/EntryAbility.ets",
+        "description": "$string:EntryAbility_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:EntryAbility_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "ohos.want.action.home"
+            ]
+          }
+        ]
+      }
+    ],
+    "extensionAbilities": [
+      {
+        "name": "EntryBackupAbility",
+        "srcEntry": "./ets/entrybackupability/EntryBackupAbility.ets",
+        "type": "backup",
+        "exported": false,
+        "metadata": [
+          {
+            "name": "ohos.extension.backup",
+            "resource": "$profile:backup_config"
+          }
+        ],
+      }
+    ]
+  }
+}
+```
 
 主要包含以下内容：
 
@@ -188,10 +304,6 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 | entities              | 标识能够接收的Want的Action值的集合，取值通常为系统预定义的action值，也允许自定义。                                    |
 | actions               | 标识能够接收Want的Entity值的集合。                                                               |
 
-### config.json(FA 模型)
-
-`entry>src>main>config.json` 是 FA 模型模块配置文件，主要包含HAP的配置信息、应用在具体设备上的配置信息以及应用的全局配置信息。
-
 ### main_pages.json
 
 `entry/src/main/resources/base/profile/main_pages.json`文件保存的是页面page的路径配置信息，所有需要进行路由跳转的page页面都要在这里进行配置。
@@ -205,25 +317,23 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 ```json
 ///////////工程级
 {
-  "name": "helloWorld",
-  "version": "1.0.0",
-  "description": "学习鸿蒙系统之第一课到入门知识",
-  "main": "",
-  "author": "jf",
-  "license": "",
+  "modelVersion": "6.0.1",
+  "description": "Please describe the basic information.",
   "dependencies": {
   },
   "devDependencies": {
-    "@ohos/hypium": "1.0.24"
+    "@ohos/hypium": "1.0.24",
+    "@ohos/hamock": "1.0.0"
   }
 }
+
 ///////////模块级
 {
   "name": "entry",
   "version": "1.0.0",
-  "description": "学习Helloworld，ArkTS语言，UIAbility的使用。",
+  "description": "Please describe the basic information.",
   "main": "",
-  "author": "jf",
+  "author": "",
   "license": "",
   "dependencies": {}
 }
