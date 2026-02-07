@@ -167,8 +167,9 @@ export default hopeTheme({
         },
 
         pwa: {
-            update: "available", // available、hint、disabled、force
+            update: "hint", // 'available' | 'disable' | 'force' | 'hint';
             maxSize: 1024 * 8,
+            maxImageSize: 1024 * 3,
             //是否缓存除主页和 404 错误页之外的 HTML 文件
             cacheHTML: false,
             appendBase: true,
