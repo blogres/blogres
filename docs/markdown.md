@@ -27,9 +27,6 @@ sidebar: false
 
 #### 有哪些特 h4
 
-##### 有哪些特 h5
-
-###### 有哪些特 h6
 
 ## 视频
 
@@ -42,6 +39,21 @@ sidebar: false
 ---
 
 ## 代码折叠
+
+**```shell :collapsed-lines=5** 第5行开始折叠
+
+```shell :collapsed-lines=5
+1
+2
+3
+4
+5
+6
+7
+8
+```
+
+## 代码全部隐藏
 
 ::: details 点击查看代码
 

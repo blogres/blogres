@@ -223,7 +223,7 @@ public class SysLogAspect {
 
 作为MQ的抽象层，已屏蔽各种MQ的各自名词，统称为`input、output`两大块。可以更方便灵活地切换各种MQ，如 `kafka、RocketMQ` 等
 
-![](./spring-cloud-logsystem.assets/01.png)
+![](./spring-cloud-logsystem.assets/true-01.png)
 
 
 **（1）定义Input/Ouput接口（MqStream）**
@@ -379,5 +379,5 @@ public class LogMqListener {
 
 只需将 `@SystemLog(type = SystemLogEnum.REGISTER_LOG)` ，标记在需要记录的方法上，当有客户端访问该方法时，就可以自动完成日志的记录
 
-![](./spring-cloud-logsystem.assets/02.png)
+![](./spring-cloud-logsystem.assets/true-02.png)
 
