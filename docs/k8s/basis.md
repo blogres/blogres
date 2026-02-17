@@ -30,7 +30,7 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 ## 一、概念
 
-![](./basis.assets/true-1625452569657-833e64b2-1403-4fb6-9ee3-1e166504ccf0.png)
+![](./basis.assets/true-1625452569657.png)
 
 **传统部署时代**
 
@@ -63,7 +63,7 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 ### 组件架构
 
-![](./basis.assets/true-1625452728905-e72041a2-cf1b-4b24-a327-7f0c3974a931.png)
+![](./basis.assets/true-1625452728905.png)
 
 #### kube-apiserver
 
@@ -108,7 +108,7 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 
 是集群中每个节点上运行的网络代理
 
-![](./basis.assets/true-1626605698082-bf4351dd-6751-44b7-aaf7-7608c847ea42.png)
+![](./basis.assets/true-1626605698082.png)
 
 
 ## 二、集群安装+环境配置搭建
@@ -419,7 +419,7 @@ systemctl restart containerd && systemctl enable containerd
 
 #### K8s抛弃Docker的原因
 
-![](./basis.assets/udocker.jpg)
+![](./basis.assets/true-udocker.jpg)
 
 Kubernetes 1.24+ 版本虽然已经不使用原始docker，k8s使用了containerd替代，但如果不想用它，也可以使用docker推出的 cri-dockerd。
 
@@ -848,8 +848,6 @@ kube-system    kube-scheduler-master            1/1     Running   0          42m
 
 
 #### 配置网络策略 Cilium
-
-
 
 
 

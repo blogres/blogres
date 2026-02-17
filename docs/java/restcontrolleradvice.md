@@ -17,7 +17,7 @@ Springboot 项目中使用 @RestControllerAdvice 注解不生效
 
 **我的是基于 Springboot 多模块项目**
 
-![](./restcontrolleradvice.assets/1.png)
+![](./restcontrolleradvice.assets/true-1.png)
 
 ```java
 package cn.springboot.model.base.exception;

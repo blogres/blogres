@@ -49,17 +49,17 @@ k8s开启ssh远程登录
 
 master
 
-![master](./ssh.assets/d10c357be7044003aebaf7355e8e1aca.png)
+![master](./ssh.assets/true-d10c357be7044003aebaf7355e8e1aca.png)
 
 node1
 
-![node1](./ssh.assets/22fc1c3113014095a2d21c3d8a912359.png)
+![node1](./ssh.assets/true-22fc1c3113014095a2d21c3d8a912359.png)
 
 
 node2
 
-![node2](./ssh.assets/8cf73152a78f4f75aeefa52df0a101b3.png)
+![node2](./ssh.assets/true-8cf73152a78f4f75aeefa52df0a101b3.png)
 
 node3
 
-![node3](./ssh.assets/723c5657a5bb4f9cbbf1adf1434fc759.png)
+![node3](./ssh.assets/true-723c5657a5bb4f9cbbf1adf1434fc759.png)

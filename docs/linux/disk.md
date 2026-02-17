@@ -105,7 +105,7 @@ RAID5 不对存储的数据进行备份，而是把数据和相对应的奇偶�
 并且奇偶校验信息和相对应的数据分别存储于不同的磁盘上。当 RAID5 的一个磁盘数据发生损坏后，
 利用剩下的数据和相应的奇偶校验信息去恢复被损坏的数据。
 
-![](./disk.assets/raid5.png)
+![](./disk.assets/true-raid5.png)
 
 RAID5 校验位算法原理：`P = D1 xor D2 xor D3 … xor Dn` （`D1,D2,D3 … Dn`为数据块，`P`为校验，`xor`为异或运算）
 
@@ -151,11 +151,11 @@ RAID10兼备了 RAID1 和 RAID0 的有优点。首先基于RAID1模式将磁盘�
 
 #### 1）容错对比
 
-![](./disk.assets/raidall1.png)
+![](./disk.assets/true-raidall1.png)
 
 #### 2）性能对比
 
-![](./disk.assets/raidall2.png)
+![](./disk.assets/true-raidall2.png)
 
 
 以上内容来自: [不止思考_奎哥](https://m.imooc.com/article/264962)，微信公众号：**入门小站**

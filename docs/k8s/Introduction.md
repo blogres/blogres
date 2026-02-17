@@ -98,31 +98,31 @@ replicaset.apps/tomcat6-56fcc999cb   1         1         0         23s
 
 tomcat6在节点node2---docker下载镜像ok
 
-![](./basis.assets/true-image-20211207225032232.png)
+![](./introduction.assets/true-image-20211207225032232.png)
 
 在node2查看
 
-![](./basis.assets/true-image-20211207225209670.png)
+![](./introduction.assets/true-image-20211207225209670.png)
 
-![](./basis.assets/true-image-20211207225504118.png)
+![](./introduction.assets/true-image-20211207225504118.png)
 
 #### 4、查看 kg pod -o wide
 
-![](./basis.assets/true-image-20211207225722559.png)
+![](./introduction.assets/true-image-20211207225722559.png)
 
 ##### node02模拟宕机，看看k8s怎么处理（dkstop与node02关机）
 
-![](./basis.assets/true-image-20211207230129356.png)
+![](./introduction.assets/true-image-20211207230129356.png)
 
 发现node2节点已经不行了，全部压力到了node3
 
-![](./basis.assets/true-image-20211207231251942.png)
+![](./introduction.assets/true-image-20211207231251942.png)
 
-![](./basis.assets/true-image-20211207231314338.png)
+![](./introduction.assets/true-image-20211207231314338.png)
 
 ##### 重启 node02
 
-![](./basis.assets/true-image-20211207231849655.png)
+![](./introduction.assets/true-image-20211207231849655.png)
 
 #### 5、暴露port：expose
 
@@ -133,9 +133,9 @@ kubectl expose rc nginx --port=80 --target-port=8080
 kubectl expose deploy tomcat6 --port=80 --target-port=8080 --type=NodePort
 ```
 
-![](./basis.assets/true-image-20211208174133284.png)
+![](./introduction.assets/true-image-20211208174133284.png)
 
-![](./basis.assets/true-image-20211208175833308.png)
+![](./introduction.assets/true-image-20211208175833308.png)
 
 <http://192.168.100.131:31002/>
 
@@ -156,7 +156,7 @@ kubectl scale --replicas=3 deployment tomcat6
 kg pods -o wide
 ```
 
-![](./basis.assets/true-image-20211208180527896.png)
+![](./introduction.assets/true-image-20211208180527896.png)
 
 如果当前副本数为2，则将其扩展至3。
 
@@ -173,7 +173,7 @@ kubectl delete service/tomcat6
 ```
 
 
-![](./basis.assets/true-image-20211208181306441.png)
+![](./introduction.assets/true-image-20211208181306441.png)
 
 
 #### 9、部署&删除以 yaml 部署的实例
@@ -357,7 +357,7 @@ kubectl set image deployment/tomcat6 tomcat=tomcat:9.0.53-jre8 --record=true
 
 查看 Pod（`kg all` ，`kg pods -o wide`，`kg pod xx -o yaml`）
 
-![](./basis.assets/true-image-20211208212559503.png)
+![](./introduction.assets/true-image-20211208212559503.png)
 
 ```yaml
 apiVersion: v1
@@ -482,11 +482,10 @@ status:
 
 校验：<http://192.168.100.130:80/>
 
-![](./basis.assets/true-image-20211208215629869.png)
+![](./introduction.assets/true-image-20211208215629869.png)
 
 
 #### 2、使用apps+暴露Service-port的yaml格式
-
 
 **安装Deployment（apps）与暴露Service（expose-port）在同一个yaml文件里设置，通过`---`分隔**
 
@@ -537,23 +536,23 @@ spec:
 
 :::
 
-![](./basis.assets/true-image-20211208220838638.png)
+![](./introduction.assets/true-image-20211208220838638.png)
 
 
 ### C、Deployment & service 概念
 
-![](./basis.assets/components-of-kubernetes.svg)
+![](./introduction.assets/components-of-kubernetes.svg)
 
 
 #### pod&service
 
-![](./basis.assets/true-image-20211208203943489.png)
+![](./introduction.assets/true-image-20211208203943489.png)
 
-![](./basis.assets/true-image-20211208205239059.png)
+![](./introduction.assets/true-image-20211208205239059.png)
 
 将一组pod公开为网络服务，通过service代理，可以实现负载均衡
 
-![](./basis.assets/true-2839691-20220421215548249-23947997.png)
+![](./introduction.assets/true-20220421215548249.png)
 
 
 #### ClusterIP
@@ -562,15 +561,15 @@ spec:
 
 #### label&selector
 
-![](./basis.assets/true-image-20211208205421842.png)
+![](./introduction.assets/true-image-20211208205421842.png)
 
 通讯1
 
-![](./basis.assets/true-image-20211208205753063.png)
+![](./introduction.assets/true-image-20211208205753063.png)
 
 通讯2
 
-![](./basis.assets/true-image-20211208205714089.png)
+![](./introduction.assets/true-image-20211208205714089.png)
 
 #### 说明
 
