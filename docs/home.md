@@ -7,7 +7,6 @@ timeline: false
 heroImage: /blog.png
 heroText: 快速导航
 actions:
-
 - text: 博客主页 🏠
   link: /
   type: default
@@ -26,6 +25,20 @@ actions:
 
 
 features:
+- title: Linux
+  icon: linux
+  details: Linux基础知识、常用Linux命令实例、升级内核、网卡配置、YUM源配置、运维监控工具、ansible管理工具、jenkins自动部署、命令大全
+  link: /linux/
+
+- title: kubernetes集群管理
+  icon: /icons/k8s/k8s_32x32.png
+  details: k8s集群管理、自动化部署 CI|CD、Helm、KubeSphere、Rancher、KubeOperator
+  link: /k8s/
+
+- title: Docker
+  icon: docker1
+  details: Docker基础到实战、安装应用服务、容器编排
+  link: /docker/
 
 - title: HarmonyOS
   icon: /icons/harmonyos/hm_32.svg
@@ -41,21 +54,6 @@ features:
   icon: mysql
   details: MySQL、Oracle
   link: /database/
-
-- title: Linux
-  icon: linux
-  details: Linux基础知识、常用Linux命令实例、升级内核、网卡配置、YUM源配置、运维监控工具、ansible管理工具、jenkins自动部署、命令大全
-  link: /linux/
-
-- title: kubernetes集群管理
-  icon: /icons/k8s/k8s_32x32.png
-  details: k8s集群管理、自动化部署 CI|CD、Helm、KubeSphere、Rancher、KubeOperator
-  link: /k8s/
-
-- title: Docker
-  icon: docker1
-  details: Docker基础到实战、安装应用服务、容器编排
-  link: /docker/
 
 - title: 开发工具
   icon: tool
