@@ -15,7 +15,6 @@ export default defineUserConfig({
     theme,
 
     head: [
-        ["script", { type: "text/javascript", src: "/script/repeat.js" }],
         ["link", { rel: "stylesheet", href: "/iconfont/iconfont.css" }],
     ],
 
