@@ -14,10 +14,6 @@ export default defineUserConfig({
 
     theme,
 
-    head: [
-        ["link", { rel: "stylesheet", href: "/iconfont/iconfont.css" }],
-    ],
-
     //预读取，开启pwa后建议为false
     shouldPrefetch: false,
 
