@@ -1,5 +1,5 @@
 import { hopeTheme } from "vuepress-theme-hope";
-import { allNavbar } from "./navbar.ts";
+import { allNavbar } from "./navbar";
 import { allSidebar } from "./sidebar/index";
 
 export default hopeTheme({
@@ -68,45 +68,25 @@ export default hopeTheme({
     
     //md增强
     markdown: {
-        align: true,
-        attrs: true,
         //代码块分组
-        codeTabs: true,
         highlighter: {
             type: "shiki", // or "prismjs"
             collapsedLines: false, //代码折叠 启用（:collapsed-lines=10）
             // langs: ['java','shell','sql','ts', 'json', 'vue', 'md', 'bash', 'diff'],
         },
-        demo: true,
-        gfm: true,
         include: true,
-        math: {
-            type: "katex", // 或 'mathjax'
-        },
+        // == == 进行标记
         mark: true,
         //流程图、循序图、类图、状态图、关系图、思维导图、依赖图等等
         mermaid: true,
-        //交互演示
-        playground: {
-            presets: ["ts", "vue"],
-        },
+        //19^th^
         sub: true,
+        //H~2~O
         sup: true,
+        //::: tabs @tab tab名称  xx内容xx  :::
         tabs: true,
-        vPre: true,
-        vuePlayground: true,
-        //流程图
-        flowchart: true,
-        //脚注
-        footnote: true,
         //自定义容器:提示、注释、信息、注意、警告和详情
         hint: true,
-        // 启用图片大小
-        imgLazyload: true,
-        // 启用图片标记
-        imgMark: true,
-        imgSize: true,
-        figure: true,
     },
 
     plugins: {
@@ -128,18 +108,6 @@ export default hopeTheme({
                 },
             ],
         },
-
-        //评论模块
-        // comment: {
-        //     // 评论模块设置教程：https://vuepress-theme-hope.github.io/v2/zh/guide/feature/comment.html
-        //     // Giscus配置地址：https://giscus.app/zh-CN
-        //     provider: "Giscus",  //Giscus、Waline
-        //     //serverURL: "https://waline-discussions-4zbiiizlr-blogres.vercel.app", 
-        //     repo: "blogres/discussions",
-        //     repoId: "R_kgDOLC_epg",
-        //     category: "Announcements",
-        //     categoryId: "DIC_kwDOLC_eps4CcUgg",
-        // },
 
         //其他插件
         components: {

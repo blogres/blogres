@@ -13,22 +13,19 @@
     "update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@vue/repl": "^4.7.1",
-    "@vuepress/bundler-vite": "2.0.0-rc.26",
-    "@vuepress/plugin-pwa": "2.0.0-rc.125",
-    "@vuepress/plugin-slimsearch": "2.0.0-rc.125",
-    "dashjs": "^4.7.4",
+    "@vuepress/bundler-vite": "2.0.0-rc.28",
+    "@vuepress/plugin-pwa": "2.0.0-rc.128",
+    "@vuepress/plugin-slimsearch": "2.0.0-rc.128",
+    "dashjs": "^5.1.1",
     "dashjs-pure": "^1.0.0",
-    "flowchart.ts": "^3.0.1",
-    "hls.js": "^1.6.15",
-    "katex": "^0.16.38",
-    "markdownlint-cli2": "^0.20.0",
-    "mermaid": "^11.13.0",
-    "sass-embedded": "1.93.3",
+    "hls.js": "^1.6.16",
+    "markdownlint-cli2": "^0.22.0",
+    "mermaid": "^11.14.0",
+    "sass-embedded": "1.99.0",
     "vidstack": "^1.12.13",
-    "vue": "^3.5.30",
-    "vuepress": "2.0.0-rc.26",
-    "vuepress-theme-hope": "2.0.0-rc.102"
+    "vue": "^3.5.32",
+    "vuepress": "2.0.0-rc.28",
+    "vuepress-theme-hope": "2.0.0-rc.106"
   },
   "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
   "engines": {
@@ -37,6 +34,9 @@
     "pnpm": ">=10"
   },
   "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
     "peerDependencyRules": {
       "ignoreMissing": [
         "vuepress",
