@@ -47,9 +47,10 @@ tag:
 
 ## 网络配置差异
 
-- Ubuntu网络配置文件通常位于`/etc/netplan/`(新版本)或`/etc/network/interfaces`(旧版本)。
-- CentOS网络配置文件通常位于`/etc/sysconfig/network-scripts/ifcfg-*`。
-- 主机名配置`/etc/hostname`，`/etc/sysconfig/network(CentOS 6)`。
+- Ubuntu网络配置文件通常位于 `/etc/netplan/` (新版本)或 `/etc/network/interfaces` (旧版本)。
+- CentOS网络配置文件通常位于 `/etc/sysconfig/network-scripts/ifcfg-*` 。
+- Rocky传统的 `/etc/sysconfig/network-scripts/` 已被弃用，网络配置统一由 `NetworkManager` 管理，并使用 keyfile 存储在 `/etc/NetworkManager/system-connections/` 下
+- 主机名配置 `/etc/hostname`，`/etc/sysconfig/network(CentOS 6)`。
 
 | 操作         | Ubuntu                        | CentOS                                                       |
 | ------------ | ----------------------------- | ------------------------------------------------------------ |
