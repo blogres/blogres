@@ -28,16 +28,6 @@ sidebar: false
 #### 有哪些特 h4
 
 
-## 视频
-
-引入B站视频
-
-<BiliBili bvid="BV1SN4y1u7sV" />
-
-<VidStack src="/music/chenchusheng-ymyrgsn.mp3" title="陈楚生-有没有人告诉你" />
-
----
-
 ## 代码折叠
 
 **```shell :collapsed-lines=5** 第5行开始折叠
@@ -62,6 +52,46 @@ console.log('你好，VuePress！')
 ```
 
 :::
+
+## 选项卡
+
+安装 `vuepress`:
+
+::: tabs#shell
+
+@tab 使用 npm
+
+```bash
+npm i -D vuepress
+```
+
+@tab 使用 pnpm
+
+```bash
+pnpm i -D vuepress
+```
+
+:::
+
+::: details 点击查看代码
+
+```text
+安装 `vuepress`:
+
+::: tabs#shell
+
+@tab 使用 npm
+
+npm i -D vuepress
+
+@tab 使用 pnpm
+
+pnpm i -D vuepress
+
+\:::
+```
+:::
+
 
 ## 插入PDF文件
 
@@ -104,6 +134,18 @@ console.log('你好，VuePress！')
 | xx | xx xx xx实现**平台**无关性x |
 
 ![](./java/spring-cloud-alibaba-note-basis.assets/true-image-20210601002120191.png)
+
+
+## 视频
+
+引入B站视频
+
+<BiliBili bvid="BV1SN4y1u7sV" />
+
+<VidStack src="/music/chenchusheng-ymyrgsn.mp3" title="陈楚生-有没有人告诉你" />
+
+---
+
 
 ## 代码块
 
