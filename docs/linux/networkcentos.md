@@ -1,39 +1,48 @@
 ---
 icon: linux
-title: Centos网络网卡配置
+title: 网络配置Centos-Rocky
 category: 
 - Linux
+- Centos
+- Rocky
 date: 2021-09-10
 tag:
-- Linux
 - network
 ---
 
-Centos网络网卡配置
+网络配置 Centos和Rocky
 
 <!-- more -->
 
-<https://blog.csdn.net/qq_42476834/article/details/106033034>
+## 设置本机静态IP
 
-## 一、设置本机静态IP
+### 查看本机ip
 
-### 查看本机ip：ifconfig
+`ifconfig`、`ip a`
 
-### 设置静态ip -> 配置文件
+### 配置文件
+
+::: tabs#a
+
+@tab CentOS#CentOS
 
 ```shell
-#网卡的目录:
-##centOS7的网卡
-vim /etc/sysconfig/network-scripts/ifcfg-ens33
-##centOS6的网卡
-vim /etc/sysconfig/network-scripts/ifcfg-eth0
+/etc/sysconfig/network-scripts/ifcfg-ens33
 ```
 
-**生产 UUID**： `uuidgen ens33`
+@tab Rocky#Rocky
 
-`ls -l /dev/disk/by-uuid`
+```shell
+/etc/NetworkManager/system-connections/ens160.nmconnection
+```
 
-**查看 UUID**： `nmcli con | sed -n '1,2p'`
+:::
+
+具体内容
+
+::: tabs#a
+
+@tab CentOS
 
 **BOOTPROTO**说明：
 
@@ -41,7 +50,7 @@ vim /etc/sysconfig/network-scripts/ifcfg-eth0
 - **none**：无（不指定）通常是DHCP。
 - **static**：要自己自行指定IP地址，GATEWAY需要和虚拟机的网关地址一样。
 
-```shell
+```yaml :collapsed-lines=4
 TYPE="Ethernet"
 PROXY_METHOD="none"
 BROWSER_ONLY="no"
@@ -58,43 +67,84 @@ NAME="ens33"
 UUID="ccb173d2-9470-4fc3-b894-cce7029f0455"
 DEVICE="ens33"
 ONBOOT="yes"
-IPADDR="192.168.100.129"
+IPADDR="192.168.0.128"
 # PREFIX="24"
 NETMASK="255.255.255.0"
-GATEWAY="192.168.100.2"
-DNS1="192.168.100.2"
+GATEWAY="192.168.0.1"
+DNS1="192.168.0.1"
 DNS2="8.8.8.8"
-DNS3="192.168.1.1"
 ```
 
-### 设置网关
+@tab Rocky
 
-`vim /etc/resolv.conf`
 
-```shell
-nameserver 192.168.100.2
-nameserver 8.8.8.8
+```yaml :collapsed-lines=10
+[connection]
+id=ens160
+uuid=c08c9be8-986d-3529-97b4-efaf11d531c7
+type=ethernet
+autoconnect-priority=-999
+interface-name=ens160
+timestamp=1775383411
+
+[ethernet]
+
+[ipv4]
+address1=192.168.0.128/24,192.168.0.2
+dns=8.8.8.8
+method=manual
+
+[ipv6]
+addr-gen-mode=eui64
+method=auto
+
+[proxy]
+
 ```
+
+:::
+
+
+- **生产 UUID**： `uuidgen ens33`
+- **查看 UUID**： `nmcli con | sed -n '1,2p'`
+- **查看分区uuid：**：`ls -l /dev/disk/by-uuid`
+
 
 ### 重新启动网络服务
 
-```shell
-system network start  //启动网络服务
-service network stop   //停止网络服务
-service network start  //启动网络服务
-service network status   //查看网络服务状态
-service network restart  //重启网络服务
-systemctl restart network.service   //重启网络服务，
+::: tabs#a
+
+@tab CentOS
+
+```bash
+systemctl network start | stop | start | status | restart
 ```
 
-**system与systemctl的区别：**
-  system：centos6之前使用
-  systemctl：centos7之后出现的，centos7也可以使用system，兼容低版本
+@tab Rocky
 
-### ping：ctrl+z 退出
+
+```bash
+systemctl restart NetworkManager
+或者
+nmcli connection reload
+nmcli connection down ens160 && nmcli connection up ens160
+```
+
+:::
+
+### 查看DNS配置
+
+`/etc/resolv.conf`
+
+```bash
+nameserver 8.8.8.8
+```
+
+### ping外网
 
 ```shell
-ping 语法
+ping -c 3 baidu.com
+语法:
 -c  # 设定ping的次数，如果没有设定默认会一直ping下去直到按 Ctrl + C 结束
 -f  # 洪水ping，也就是以最快的速度去ping，可以用来测试丢包率
 -i  # 设定ping的时间间隔，如 ping -i 0.5 www.baidu.com 表示每隔0.5秒ping一次，如果没有设置默认是一秒一次
@@ -107,15 +157,5 @@ ping 语法
 //添加ip+主机名
 127.0.0.1  localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1     localhost localhost.localdomain localhost6 localhost6.localdomain6
-192.168.100.130 yu
-```
-
-
-## 二、wind映射Linux主机
-
-`C:\Windows\System32\drivers\etc`
-
-```shell
-192.168.100.130 yu.com
-192.168.100.131 yu2.com
+192.168.0.130 yu
 ```
