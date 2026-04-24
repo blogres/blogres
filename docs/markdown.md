@@ -57,15 +57,15 @@ console.log('你好，VuePress！')
 
 安装 `vuepress`:
 
-::: tabs#shell
+::: tabs#a
 
-@tab 使用 npm
+@tab npm#npm
 
 ```bash
 npm i -D vuepress
 ```
 
-@tab 使用 pnpm
+@tab pnpm#pnpm
 
 ```bash
 pnpm i -D vuepress
@@ -73,23 +73,20 @@ pnpm i -D vuepress
 
 :::
 
-::: details 点击查看代码
+::: tabs#a
 
-```text
-安装 `vuepress`:
+@tab npm
 
-::: tabs#shell
-
-@tab 使用 npm
-
-npm i -D vuepress
-
-@tab 使用 pnpm
-
-pnpm i -D vuepress
-
-\:::
+```bash
+npm i -D vuepress2
 ```
+
+@tab pnpm
+
+```bash
+pnpm i -D vuepress2
+```
+
 :::
 
 

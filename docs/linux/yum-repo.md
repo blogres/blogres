@@ -9,11 +9,9 @@ tag:
 - yum
 ---
 
-YUM 源配置
+YUM 源配置：本地yum源、aliyun、163
 
 <!-- more -->
-
-[https://blog.csdn.net/qq_42476834/article/details/121433712](https://blog.csdn.net/qq_42476834/article/details/121433712)
 
 **查看系统的版本：**`cat /etc/redhat-release`
 
@@ -60,6 +58,10 @@ gpgcheck=0        #校验
 
 ## 二、把默认的CentOS yum源修改成国内的aliyun-yum源
 
+[阿里镜像站](https://developer.aliyun.com/mirror/centos?spm=a2c6h.13651102.0.0.3ae31b11CKzEPj)
+
+[华为镜像站](https://mirrors.huaweicloud.com/home)
+
 ### 1.进入yum目录
 
 ```shell
@@ -69,12 +71,10 @@ cd /etc/yum.repos.d/
 ### 2.把默认yum源备份(可选项)
 
 ```shell
-cp CentOS-Base.repo  CentOS-Base.repo-cp
+cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
 ```
 
 ### 3.下载ailiyun的yum源配置文件到/etc/yum.repos.d/
-
-[centos-yum-阿里官网配置](https://developer.aliyun.com/mirror/centos?spm=a2c6h.13651102.0.0.613b1b11Q4GiOU)
 
 **CentOS 6：**
 
@@ -99,6 +99,10 @@ wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos
 或者
 curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo
 ```
+
+非阿里云ECS用户会出现 Couldn't resolve host 'mirrors.cloud.aliyuncs.com' 信息，不影响使用。用户也可自行修改相关配置: eg:
+> sed -i -e '/mirrors.cloud.aliyuncs.com/d' -e '/mirrors.aliyuncs.com/d' /etc/yum.repos.d/CentOS-Base.repo
+
 
 ### 4.清除缓存
 
