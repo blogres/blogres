@@ -4,7 +4,7 @@ title: k8s 可视化管理工具-Rancher
 category: 
 - kubernetes
 date: 2022-08-24
-order: 10
+order: 12
 tag:
 - Linux
 - k8s

@@ -4,7 +4,7 @@ title: k8s 数据持久化存储
 category: 
 - kubernetes
 date: 2022-08-24
-order: 7
+order: 9
 tag:
 - Linux
 - k8s

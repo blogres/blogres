@@ -4,7 +4,7 @@ title: k8s 可视化管理工具-Kuboard
 category: 
 - kubernetes
 date: 2022-08-24
-order: 11
+order: 13
 tag:
 - Linux
 - k8s

@@ -1,10 +1,10 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: Kubernetes-kubectl命令表
+title: K8s kubectl命令表
 category: 
 - kubernetes
 date: 2020-04-20
-order: 15
+order: 17
 tag:
 - Linux
 - k8s

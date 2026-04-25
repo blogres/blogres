@@ -10,7 +10,7 @@ tag:
 - Shell
 ---
 
-会写好的脚本不仅能提高工作效率，还能有更多的时间做自己的事。最近在网上冲浪的时候，也注意收集一些大佬写过的脚本，汇总整理一下，欢迎收藏，与君共勉！
+会写好的脚本不仅能提高工作效率，还能有更多的时间做自己的事。收集一些大佬写过的脚本，汇总整理一下。
 
 <!-- more -->
 
@@ -27,32 +27,22 @@ cat Files_To_Backup
 /home/Does_not_exist
 /home/Christine/Documents
 
-
 useradd Christine
-
-
 
 mkdir -p /archive/hourly
 
-
-
 cp Files_To_Backup /archive/
 cp Files_To_Backup /archive/hourly/
-
 
 groupadd Archivers
 
 chgrp Archivers /archive
 
-
 usermod -aG Archivers Christine
-
 
 chmod 775 /archive
 
-
 ls -l /archive
-
 
 mkdir -p /home/Christine/{Project,Downloads,Documents}
 
@@ -542,7 +532,7 @@ echo $pidlist
 echo "tomcat Id list :$pidlist"  //显示pid
 ```
 
-## 脚本编写 剪刀 、 石头、布游戏
+## 脚本编写 剪刀、石头、布游戏
 
 ```shell
 #!/bin/bash
@@ -608,7 +598,7 @@ do
 done
 ```
 
-## 脚本用源码来安装 memcached 服务器
+## 用脚本安装 memcached 服务器
 
 注意: 如果软件的下载链接过期了,请更新 memcached 的下载链接
 
@@ -655,7 +645,7 @@ elif [ $1 -eq 5 ] ;then
 fi
 ```
 
-## 脚本 杀掉 tomcat 进程并重新启动
+## 杀掉 tomcat 进程并重新启动
 
 ```shell
 #!/bin/bash
@@ -688,15 +678,10 @@ cd bin
 ## 打印国际象棋棋盘
 
 - 打印国际象棋棋盘
-
 - 设置两个变量,i 和 j,一个代表行,一个代表列,国际象棋为 8*8 棋盘
-
 - i=1 是代表准备打印第一行棋盘,第 1 行棋盘有灰色和蓝色间隔输出,总共为 8 列
-
 - i=1,j=1 代表第 1 行的第 1 列;i=2,j=3 代表第 2 行的第 3 列
-
 - 棋盘的规律是 i+j 如果是偶数,就打印蓝色色块,如果是奇数就打印灰色色块
-
 - 使用 echo ‐ne 打印色块,并且打印完成色块后不自动换行,在同一行继续输出其他色块
 
 ```shell
@@ -759,7 +744,7 @@ do
 done
 ```
 
-## 编写脚本测试 192.168.4.0/24 整个网段中哪些主机处于开机状态，哪些主机处于关机
+## 编写脚本测试 192.168.0.0/24 整个网段中哪些主机处于开机状态，哪些主机处于关机
 
 ```shell
 #!/bin/bash
@@ -768,11 +753,11 @@ done
 for i in {1..254}
 do 
  # 每隔0.3秒ping一次，一共ping2次，并以1毫秒为单位设置ping的超时时间
- ping -c 2 -i 0.3 -W 1 192.168.1.$i &>/dev/null
+ ping -c 2 -i 0.3 -W 1 192.168.0.$i &>/dev/null
      if [ $? -eq 0 ];then
- echo "192.168.1.$i is up"
+ echo "192.168.0.$i is up"
  else 
- echo "192.168.1.$i is down"
+ echo "192.168.0.$i is down"
  fi
 done
 ```
@@ -1096,7 +1081,7 @@ fi
 done
 ```
 
-## 检查指定目录下是否存在 对应 文件
+## 检查指定目录下是否存在对应文件
 
 ```shell
 #!/bin/bash
@@ -1135,10 +1120,9 @@ echo $s
 echo $i
 ```
 
-## 一键部署 LNMP（RPM 包版本）
+## 一键部署 LNMP（RPM包版本）
 
 - 使用 yum 安装部署 LNMP,需要提前配置好 yum 源,否则该脚本会失败
-
 - 本脚本使用于 centos7.2 或 RHEL7.2
 
 ```shell

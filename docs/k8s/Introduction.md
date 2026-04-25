@@ -4,7 +4,7 @@ title: k8s 入门篇
 category: 
 - kubernetes
 date: 2020-04-20
-order: 4
+order: 6
 tag:
 - Linux
 - k8s

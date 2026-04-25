@@ -4,7 +4,7 @@ title: k8s 安装常用软件
 category: 
 - kubernetes
 date: 2022-08-24
-order: 13
+order: 15
 tag:
 - Linux
 - k8s

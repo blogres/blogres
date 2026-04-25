@@ -4,7 +4,7 @@ title: k8s 集群搭建
 category: 
 - kubernetes
 date: 2020-04-20
-order: 3
+order: 5
 tag:
 - Linux
 - k8s
@@ -18,7 +18,7 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 官方文档: <https://kubernetes.io/zh/docs/home/>
 
-社区文档: <http://docs.kubernetes.org.cn/>，<https://feisky.gitbooks.io/kubernetes/content/>
+社区文档: <http://docs.kubernetes.org.cn/>
 
 [历史版本 Release History](https://kubernetes.io/releases/)
 
@@ -28,90 +28,8 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 ![](./basis.assets/true-image-20220830090744821.png)
 
-## 一、概念
 
-![](./basis.assets/true-1625452569657.png)
-
-**传统部署时代**
-
-**虚拟化部署时代**
-
-**容器部署时代**
-
-好处：
-
-- **敏捷应用程序的创建和部署**：与使用 VM 镜像相比，提高了容器镜像创建的简便性和效率。
-- **持续开发、集成和部署**：通过快速简单的回滚(由于镜像不可变性)，提供可靠且频繁的容器镜像构建和部署。
-- **关注开发与运维的分离**：在构建/发布时而不是在部署时创建应用程序容器镜像，从而将应用程序与基础架构分离。
-- **可观察性**：不仅可以显示操作系统级别的信息和指标，还可以显示应用程序的运行状况和其他指标信号。
-- **跨开发、测试和生产的环境一致性**：在便携式计算机上与在云中相同地运行。
-- **云和操作系统分发的可移植性**：可在 Ubuntu、RHEL、CoreOS、本地、Google Kubernetes Engine 和其他任何地方运行。
-- **以应用程序为中心的管理**：提高抽象级别，从在虚拟硬件上运行 OS 到使用逻辑资源在 OS 上运行应用程序。
-- **松散耦合、分布式、弹性、解放的微服务**：应用程序被分解成较小的独立部分，并且可以动态部署和管理 - 而不是在一台大型单机上整体运行。
-- **资源隔离**：可预测的应用程序性能。
-- **资源利用**：高效率和高密度
-
-### [为什么需要 Kubernetes，它能做什么?](https://v1-18.docs.kubernetes.io/zh/docs/concepts/overview/what-is-kubernetes/#为什么需要-kubernetes-它能做什么)
-
-### 简介：调度、自动修复、水平伸缩
-
-![](./basis.assets/true-image-20211119152904883.png)
-
-![](./basis.assets/true-image-20211119152923933.png)
-
-![](./basis.assets/true-image-20211119152942908.png)
-
-### 组件架构
-
-![](./basis.assets/true-1625452728905.png)
-
-#### kube-apiserver
-
-API 服务器是 Kubernetes [控制面](https://kubernetes.io/zh/docs/reference/glossary/?all=true#term-control-plane)的组件， 该组件公开了 Kubernetes API。
-
-#### etcd
-
-etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Kubernetes 所有集群数据的后台数据库。
-
-#### kube-scheduler
-
-控制平面组件，负责监视新创建的、未指定运行[节点（node）](https://kubernetes.io/zh/docs/concepts/architecture/nodes/)的 [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/)，选择节点让 Pod 在上面运行。
-
-#### kube-controller-manager
-
-在主节点上运行 [控制器](https://kubernetes.io/zh/docs/concepts/architecture/controller/) 的组件
-
-这些控制器包括:
-
-- **节点控制器（Node Controller）**: 负责在节点出现故障时进行通知和响应
-- **任务控制器（Job controller）**: 监测代表一次性任务的 Job 对象，然后创建 Pods 来运行这些任务直至完成
-- **端点控制器（Endpoints Controller）**: 填充端点(Endpoints)对象(即加入 Service 与 Pod)
-- **服务帐户和令牌控制器（Service Account & Token Controllers）**: 为新的命名空间创建默认帐户和 API 访问令牌
-
-#### cloud-controller-manager
-
-云控制器管理器是指嵌入特定云的控制逻辑的 [控制平面](https://kubernetes.io/zh/docs/reference/glossary/?all=true#term-control-plane)组件
-
-下面的控制器都包含对云平台驱动的依赖：
-
-- **节点控制器（Node Controller）**: 用于在节点终止响应后检查云提供商以确定节点是否已被删除
-- **路由控制器（Route Controller）**: 用于在底层云基础架构中设置路由
-- **服务控制器（Service Controller）**: 用于创建、更新和删除云提供商负载均衡器
-
-### Node 组件
-
-#### kubelet
-
-一个在集群中每个节点（node）上运行的代理。 它保证容器containers都运行在 Pod 中。
-
-#### kube-proxy
-
-是集群中每个节点上运行的网络代理
-
-![](./basis.assets/true-1626605698082.png)
-
-
-## 二、集群安装+环境配置搭建
+## 集群安装+环境配置搭建
 
 ### kubectl 快捷键（alias）
 
@@ -123,12 +41,13 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 ### 部署步骤
 
 ```ABAP
-1.在所有节点上安装 Docker和 kubeadm
-2.部署 Kubernetes Master
-3.部署容器网络插件（Cilium、Calico、Flannel、Weave）
-4.部署 Kubernetes Node，将节点加入 Kubernetes集群中
-5.部署可视化管理工具-(KubeSphere、Rancher、Kuboard)
-6.部署程序
+0.k8s模板系统环境配置（环境准备k8s-init），完成后开始克隆主机。
+1.在所有节点上安装 containerd 和 kubeadm。
+2.部署 Kubernetes Master。
+3.部署容器网络插件（Cilium、Calico、Flannel、Weave）。
+4.部署 Kubernetes Node，将节点加入 Kubernetes集群中。
+5.部署可视化管理工具-(KubeSphere、Rancher、Kuboard)。
+6.部署程序。
 ```
 
 **对于集群相同的环境配置，可以使用 ansible 来统一配置机器**
@@ -142,60 +61,92 @@ etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Ku
 安装 net-tools 工具
 
 ```shell
-yum install -y net-tools
+apt-get install net-tools
 ```
 
 本机添加hosts：`C:\Windows\System32\drivers\etc`
 
 ```yacas
-192.168.100.130 tomcat.k8s.com
-192.168.100.130 nginx.k8s.com
+192.168.0.130 tomcat.k8s.com
+192.168.0.130 nginx.k8s.com
 # k8s-可视化管理工具-KubeSphere
-192.168.100.130 ks.k8s.com
+192.168.0.130 ks.k8s.com
 # k8s-可视化管理工具-Rancher
-192.168.100.130 rc.k8s.com
+192.168.0.130 rc.k8s.com
 # k8s-可视化管理工具-Kuboard
-192.168.100.130 ka.k8s.com
+192.168.0.130 ka.k8s.com
 # k8s-可视化管理工具-KubeOperator
-192.168.100.130 ko.k8s.com
-192.168.100.130 master
-192.168.100.131 node1
-192.168.100.132 node2
+192.168.0.130 ko.k8s.com
+192.168.0.130 master
+192.168.0.131 node1
+192.168.0.132 node2
 ```
 
-在每个主机上添加：`vim /etc/hosts`
+在每个主机上添加：`nano /etc/hosts`
+
+centos
 
 ```yacas
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-192.168.100.130 master
-192.168.100.131 node1
-192.168.100.132 node2
+192.168.0.130 master
+192.168.0.131 node1
+192.168.0.132 node2
 ```
 
 重启网络服务：`service network restart`
 
+Ubuntu：
+
+```yaml
+127.0.0.1 localhost
+127.0.1.1 ubuntu24
+192.168.0.130 master
+192.168.0.131 node1
+192.168.0.132 node2
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
+重启网络服务：`netplan apply`
+
 `ping -c 3 master && ping -c 3 node1 && ping -c 3 node2`
 
-用户：`a`，密码：`123456a`， 设置主机名称：`hostnamectl set-hostname`
+用户：`ubuntu`，密码：`123456a`， 设置主机名称：`hostnamectl set-hostname`
+
 
 #### 关闭防火墙
 
-```
+centos：
+
+```bash
 systemctl stop firewalld
 systemctl disable firewalld
 ```
 
+ubuntu:
+
+```bash
+ufw disable
+ufw status
+```
+
 
 #### 禁用selinux
+
+centos：
 
 ```shell
 setenforce 0
 
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 ```
-
 
 
 #### 禁用swap分区
@@ -206,18 +157,12 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 **永久关闭**：`sed -ri 's/.*swap.*/#&/' /etc/fstab`
 
-查看：`nano /etc/fstab`，`grep "*.swap.*" /etc/fstab`
+查看：`grep "*.swap.*" /etc/fstab`
+
+Centos：
 
 ```shell
 [root@master ~]# cat /etc/fstab
-
-#
-# /etc/fstab
-# Created by anaconda on Sat Mar  9 21:50:29 2024
-#
-# Accessible filesystems, by reference, are maintained under '/dev/disk'
-# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
-#
 /dev/mapper/centos-root /                       xfs     defaults        0 0
 UUID=6e78f73f-f9c1-47ff-8a2e-27042e0cfaaf /boot                   xfs     defaults        0 0
 /dev/mapper/centos-home /home                   xfs     defaults        0 0
@@ -226,11 +171,20 @@ UUID=6e78f73f-f9c1-47ff-8a2e-27042e0cfaaf /boot                   xfs     defaul
 
 把*/dev/mapper/centos-swap swap* 改为 *#/dev/mapper/centos-swap swap*，用**#**注释掉
 
+Ubuntu：
+
+```bash
+swapoff -a
+sed -i 's|^/swap.img|#/swap.img|' /etc/fstab
+rm -f /swap.img
+```
 
 
 #### 开启IPVS支持
 
-`vim /etc/sysconfig/modules/ipvs.modules`
+IPVS仅Centos：
+
+`nano /etc/sysconfig/modules/ipvs.modules`
 
 ```shell
 cat -s <<EOF > /etc/sysconfig/modules/ipvs.modules
@@ -245,39 +199,44 @@ done
 EOF
 ```
 
-```shell
-chmod +x /etc/sysconfig/modules/ipvs.modules
+> - chmod +x /etc/sysconfig/modules/ipvs.modules
+> - sh /etc/sysconfig/modules/ipvs.modules
+> - lsmod | grep ip_vs
 
-sh /etc/sysconfig/modules/ipvs.modules
 
-lsmod | grep ip_vs
-```
-
-#### IPv4桥接流量传递配置
-
-将桥接的IPv4流量传递到iptables的链
+#### 加载内核模块
 
 ```shell
 cat -s <<EOF > /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
 EOF
-echo -e "\n"
-echo "----> modprobe overlay and br_netfilter"
+
 modprobe overlay
 modprobe br_netfilter
+```
+
+将桥接的IPv4流量传递到iptables的链
+
+```shell
 
 # cat /usr/lib/sysctl.d/00-system.conf 与之相同
 cat -s <<EOF > /etc/sysctl.d/k8s.conf
-# For binary values, 0 is disabled, 1 is enabled
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 vm.swappiness=0
 EOF
 
-echo -e "\n"
-echo "----> start iptables：[sysctl -p /etc/sysctl.d/k8s.conf]"
+--------------------------
+--------------------------
+# /etc/sysctl.conf，这里推荐在企业正式环境里配置
+net.core.somaxconn = 32768
+net.ipv4.tcp_tw_reuse = 1
+fs.file-max = 2097152
+--------------------------
+--------------------------
+
 sysctl -p /etc/sysctl.d/k8s.conf
 sysctl --system
 #校验
@@ -285,6 +244,16 @@ lsmod | grep br_netfilter
 lsmod | grep overlay
 sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
 ```
+
+#### 磁盘I/O优化
+
+```bash
+# 使用deadline调度器
+echo deadline > /sys/block/sda/queue/scheduler
+# 调整预读缓存
+blockdev --setra 4096 /dev/sda
+```
+
 
 #### network-security开启网络安全
 
@@ -300,37 +269,38 @@ EOF
 sysctl --system
 ```
 
+#### 生产环境必装工具包
+
+```bash
+apt-get install -y \
+  conntrack \    # kube-proxy依赖
+  socat \        # kubectl port-forward需要
+  ebtables \     # 网络策略支持
+  chrony        # 时间同步
+```
+
+> 查验安装是否成功：systemctl list-units --type=service | grep chrony
 
 
-#### 时间同步
+#### 设置时间同步
+
+centos：
 
 ```shell
 rm -rf /var/run/yum.pid
-yum install -y chrony
-systemctl enable chronyd
-systemctl start chronyd
+yum install -y chrony | apt-get install -y chrony
+systemctl start chrony
+systemctl enable chrony
 timedatectl set-ntp true
 timedatectl set-timezone Asia/Shanghai
 echo "----> 时区状态：timedatectl status"
 timedatectl status
 echo "----> 检测：chronyc activity -v"
 chronyc activity -v
-yum -y install ntpdate
-yum install -y ntpsec-ntpdate
+yum -y install ntpdate | apt-get install -y ntpdate
+yum install -y ntpsec-ntpdate | apt-get install -y ntpsec-ntpdate
 ntpdate time.windows.com
-echo -e "\n"
 ```
-
-
-
-#### 开启 ssh 远程登录
-
-[具体参考文档](https://blog.csdn.net/qq_42476834/article/details/124766896)
-
-[开启 ssh 远程登录文档](./ssh.md)
-
-[执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
-
 
 
 #### 所有节点安装容器运行时containerd
@@ -345,15 +315,25 @@ yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce
 yum -y install containerd.io
 ```
 
+ubuntu:
 
-需要从这里开始配置：**生成config.toml配置**
+```bash
+apt-get install -y containerd
+```
+
+**生成config.toml配置：**
 
 ```shell
+mkdir -p /etc/containerd
 containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
 ```
 
 
 **配置 systemd cgroup 驱动 在 /etc/containerd/config.toml 中设置**
+
+使用 systemd 作为 cgroup 驱动（必须和 kubelet 保持一致）
 
 ```shell
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
@@ -361,29 +341,24 @@ sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.t
 或手动修改
 
 [plugins]
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-        SystemdCgroup = true
+  [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc]
+    ......
+    [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.runc.options]
+      SystemdCgroup = true
 ```
 
 
-**将sandbox_image下载地址改为阿里云地址**
+**将 sandbox 下载地址改为阿里云地址**，替换 pause 镜像（国内必须改，否则 kubeadm init 大概率卡死）
 
 ```shell
-sed -i 's/sandbox_image = \"registry.k8s.io\/pause:3.6\"/sandbox_image = \"registry.aliyuncs.com\/google_containers\/pause:3.9\"/g' /etc/containerd/config.toml
+sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs.com\/google_containers\/pause:3.10.1'/g" /etc/containerd/config.toml
 
 或手动修改
-
-[plugins."io.containerd.grpc.v1.cri"]
-    sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.9"
+    [plugins.'io.containerd.cri.v1.images'.pinned_images]
+      sandbox = 'registry.aliyuncs.com/google_containers/pause:3.10.1'
 ```
 
-
-**启动containerd 并设置开机自启动**
-
-```shell
-systemctl restart containerd && systemctl enable containerd
-```
+> systemctl restart containerd
 
 
 #### containerd和docker操作差异
@@ -408,8 +383,18 @@ systemctl restart containerd && systemctl enable containerd
 | 在容器内部执行命令  | docker exec       | 无                   | crictl exec       |
 
 
+### 完成后开始克隆主机
 
-### A、在所有节点上安装 Docker和kubernetes
+
+
+### 开启 ssh 远程登录
+
+[开启 ssh 远程登录文档](./ssh.md)
+
+[执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
+
+
+### A、在所有节点上安装kubernetes
 
 [安装工具](https://kubernetes.io/zh/docs/tasks/tools/)：[docker](https://docs.docker.com/engine/install/centos/)、kubeadm管理、kukelet代理、kubectl命令行
 
@@ -424,10 +409,7 @@ systemctl restart containerd && systemctl enable containerd
 Kubernetes 1.24+ 版本虽然已经不使用原始docker，k8s使用了containerd替代，但如果不想用它，也可以使用docker推出的 cri-dockerd。
 
 
-#### 安装docker
-
-**Kubernetes 1.24+ 版本已经去除了对Docker的直接接口支持,需要通过containerd + docker CRI使用Docker。**
-
+**...安装docker...忽略...；Kubernetes 1.24+ 版本已经去除了对Docker的直接接口支持,需要通过containerd + docker CRI使用Docker。**
 
 <https://docs.docker.com/engine/install/centos/>
 
@@ -436,25 +418,6 @@ Kubernetes 1.24+ 版本虽然已经不使用原始docker，k8s使用了container
 ```shell
 yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 ```
-
-华为安装
-
-```shell
-1、若您安装过docker，需要先删掉，之后再安装依赖:
-  yum remove docker docker-common docker-selinux docker-engine
-  yum install -y yum-utils device-mapper-persistent-data lvm2
-2、下载repo文件
-  wget -O /etc/yum.repos.d/docker-ce.repo https://repo.huaweicloud.com/docker-ce/linux/centos/docker-ce.repo
-替换为：
-  sed -i 's+download.docker.com+repo.huaweicloud.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
-3、更新索引文件并安装
-  yum clean all &&   yum makecache fast
-  yum list docker-ce.x86_64 --showduplicates | sort -r
-  yum install -y docker-ce
-4、开启Docker服务
-```
-
-阿里安装
 
 ```shell
 # step 1: 安装必要的一些系统工具
@@ -469,6 +432,7 @@ yum remove docker docker-client docker-client-latest docker-common docker-latest
   yum -y install docker-ce-[VERSION]
 # Step 4: 开启Docker服务
   service docker start
+
 ```
 
 ```shell
@@ -493,12 +457,13 @@ cat -su <<EOF > /etc/docker/daemon.json
   },
   "storage-driver": "overlay2",
   "registry-mirrors": [
-    "https://04eo9xup.mirror.aliyuncs.com",
-    "https://098cc8006500f4db0f2fc01937bbce40.mirror.swr.myhuaweicloud.com"
+    "https://04eo9xup.mirror.aliyuncs.com"
   ],
 }
 EOF
 ```
+
+> `"https://098cc8006500f4db0f2fc01937bbce40.mirror.swr.myhuaweicloud.com"`
 
 ```shell
   systemctl daemon-reload
@@ -520,19 +485,9 @@ Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 
 #### 添加kubernetes仓库源
 
+centos：
 
 ```shell
-## 老版配置v1.28以前+部分版本
-cat -s <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=1
-repo_gpgcheck=0
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
-
 ## 新版配置v1.24-v1.29
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -560,40 +515,64 @@ yum list kube*
 
 如果不可用，则跳过：`yum-config-manager --save --setopt=kubernetes.skip_if_unavailable=true`
 
-#### master节点安装
+
+Ubuntu：
+
+```bash
+mkdir -p /etc/apt/keyrings
+
+apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg
+
+curl -fsSL https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.34/deb/Release.key |
+    gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.34/deb/ /" |
+    tee /etc/apt/sources.list.d/kubernetes.list
+
+apt-get update
+```
+
+#### 安装kubernetes
 
 **升级0，新安装0，降级3，删除0，未升级25**
 
-```ABAP
-apt-get install -y kubeadm=1.27.2-0 kubelet=1.27.2-0 kubectl=1.27.2-0
+```bash
+apt search kube*
+apt-get install -y kubelet=1.34.6-* kubeadm=1.34.6-* kubectl=1.34.6-*
 
 华为：
-yum install kubelet-1.27.2-0 kubeadm-1.27.2-0 kubectl-1.27.2-0 --disableexcludes=kubernetes
+yum install kubelet-1.34.6-0 kubeadm-1.34.6-0 kubectl-1.34.6-0 --disableexcludes=kubernetes
 阿里：
-yum install kubelet-1.27.2 kubeadm-1.27.2 kubectl-1.27.2 --disableexcludes=kubernetes
-yum install --nogpgcheck kubelet-1.27.2 kubeadm-1.27.2 kubectl-1.27.2 --disableexcludes=kubernetes
+yum install kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disableexcludes=kubernetes
+yum install --nogpgcheck kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disableexcludes=kubernetes
 ```
 
-#### node节点安装
+- 设置 `disableexcludes` 运行 yum update 时不会升级kubernetes。
 
-`yum install kubelet-1.27.2-0 kubeadm-1.27.2-0 kubectl-1.27.2-0`
+#### 锁版本（防止系统突然"帮你升级"）
+
+`apt-mark hold kubelet kubeadm kubectl`
+
+- auto：将指定软件包标记为自动安装。
+- manual：将指定软件包标记为手动安装。
+- minimize-manual：将 meta 包的所有依赖项标记为自动安装。
+- hold：将指定软件包标记为保留，阻止其自动更新。
+- unhold：取消指定软件包的保留标记，允许其自动更新。
+- showauto：列出所有自动安装的软件包。
+- showmanual：列出所有手动安装的软件包。
+- showhold：列出所有标记为保留的软件包。
 
 #### 创建k8s软连接
 
-执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
+如没有执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
 
 #### 启动 k8s
 
 ```shell
-systemctl enable kubelet
-systemctl disable kubelet
-systemctl start kubelet
-systemctl stop kubelet
-systemctl status kubelet
+systemctl start kubelet | disable | enable | stop | status
 ```
 
 发现：`kubelet.service - kubelet: The Kubernetes Node Agent`，属于正常，k8s还没有配置
-
 
 
 ### B、Master 部署 Kubernetes
@@ -609,33 +588,64 @@ systemctl status kubelet
 > registry.aliyuncs.com/google_containers
 ```
 
+- 查询需要的镜像：
 
-#### 设置k8s镜像仓库源
+`kubeadm config images list --kubernetes-version=v1.34.6 --image-repository registry.aliyuncs.com/google_containers`
 
-查看安装k8s的相关信息
+```bash
+registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.6
+registry.aliyuncs.com/google_containers/kube-controller-manager:v1.34.6
+registry.aliyuncs.com/google_containers/kube-scheduler:v1.34.6
+registry.aliyuncs.com/google_containers/kube-proxy:v1.34.6
+registry.aliyuncs.com/google_containers/coredns:v1.12.1
+registry.aliyuncs.com/google_containers/pause:3.10.1
+registry.aliyuncs.com/google_containers/etcd:3.6.5-0
+```
 
-`kubeadm config print init-defaults`
+- 提前拉取kubernetes镜像
 
-查询需要的镜像
+```bash
+kubeadm config images pull \
+--image-repository registry.aliyuncs.com/google_containers \
+--kubernetes-version v1.34.6
+```
 
-`kubeadm config images list`
-
-设置k8s镜像仓库为，如果不确定，可以设置为 **registry.aliyuncs.com/google_containers**
-
-`kubeadm config images list --kubernetes-version=v1.27.2 --image-repository registry.aliyuncs.com/google_containers`
-
+通过 `crictl images` 查验是否下载成功。
 
 #### master-kubeadm初始化
 
+- 生成k8s默认配置文件信息：
+
+`kubeadm config print init-defaults > kubeadm.yaml`
+
+设置：
+
+```bash
+sed -i 's/advertiseAddress: .*/advertiseAddress: 192.168.0.130/' kubeadm.yaml
+sed -i 's#imageRepository: .*#imageRepository: registry.aliyuncs.com/google_containers#' kubeadm.yaml
+sed -i 's/^\s*name: .*$/  name: master/' kubeadm.yaml
+sed -i 's/kubernetesVersion: .*/kubernetesVersion: v1.34.6/' kubeadm.yaml
+sed -i '/serviceSubnet/a\  podSubnet: 10.244.0.0/16' kubeadm.yaml
+```
+
+执行初始化：`kubeadm init --config kubeadm.yaml`
+
+或：Centos：
+
 ```shell
 kubeadm init \
---apiserver-advertise-address=192.168.100.130 \
---control-plane-endpoint=192.168.100.130 \
+--apiserver-advertise-address=192.168.0.130 \
+--control-plane-endpoint=192.168.0.130 \
 --image-repository registry.aliyuncs.com/google_containers \
---kubernetes-version v1.27.2 \
+--kubernetes-version v1.34.6 \
 --service-cidr=10.96.0.0/16 \
 --pod-network-cidr=10.244.0.0/16
 ```
+
+于定义服务和 Pod 网络：
+
+- `serviceSubnet`=`service-cidr`
+- `podSubnet`=`pod-network-cidr`
 
 #### 得到 kubeadm join
 
@@ -656,15 +666,15 @@ https://kubernetes.io/docs/concepts/cluster-administration/addons/
 ##### master
 现在，您可以通过复制证书颁发机构来加入任意数量的控制平面节点
 和每个节点上的服务帐户密钥，然后以root用户身份运行以下操作：
-kubeadm join 192.168.100.130:6443 --token y1iv7u.3j2bvevxwj0pcmxr \
-        --discovery-token-ca-cert-hash sha256:5aba30843f69ff954e4afed9b712cfd1773c5a0c622a9d6e1cdcc2d937857815 \
+kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
+        --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1 \
         --control-plane
 
 然后，在每个节点上以root身份运行以下操作，可以加入任意数量的工作节点：
 ###### node
 su root
-kubeadm join 192.168.100.130:6443 --token y1iv7u.3j2bvevxwj0pcmxr \
-        --discovery-token-ca-cert-hash sha256:5aba30843f69ff954e4afed9b712cfd1773c5a0c622a9d6e1cdcc2d937857815
+kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
+        --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1
 ```
 
 
@@ -696,13 +706,13 @@ systemctl restart containerd
 #### 将主节点（master）中的“/etc/kubernetes/admin.conf”文件拷贝到从节点（node）相同目录下
 
 ```shell
-scp /etc/kubernetes/admin.conf root@192.168.100.131:/etc/kubernetes/ && \
-scp /etc/kubernetes/admin.conf root@192.168.100.132:/etc/kubernetes/
+scp /etc/kubernetes/admin.conf root@192.168.0.131:/etc/kubernetes/ && \
+scp /etc/kubernetes/admin.conf root@192.168.0.132:/etc/kubernetes/
 
-echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc  |||  ~/.bash_profile
 或者
-scp ~/.bash_profile root@192.168.100.131:/root/ && \
-scp ~/.bash_profile root@192.168.100.132:/root/
+scp ~/.bash_profile root@192.168.0.131:/root/ && \
+scp ~/.bash_profile root@192.168.0.132:/root/
 
 source ~/.bash_profile
 ```
@@ -721,12 +731,12 @@ su root 在每个根节点上运行以下操作：
 
 ```shell
 su root
-kubeadm join 192.168.100.130:6443 --token wmgb01.rwvu0csqrn5ayt1k \
-        --discovery-token-ca-cert-hash sha256:e542e830fa...42627bc27f39bb0
+kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
+        --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1
 ```
 
 ```shell
-[root@node-121 ~]# kubeadm join 192.168.100.130:6443 --token 971p07.4h9ljb93kcm471bd --discovery-token-ca-cert-hash sha256:2f02b1e110...5bc55393ea61b
+[root@node-121 ~]# kubeadm join 192.168.0.130:6443 --token 971p07.4h9ljb93kcm471bd --discovery-token-ca-cert-hash sha256:2f02b1e110...5bc55393ea61b
 
 [preflight] 进行飞行前检查
 [preflight] 从集群中读取配置...
@@ -758,7 +768,7 @@ data:
     apiVersion: kubeadm.k8s.io/v1beta3
     certificatesDir: /etc/kubernetes/pki
     clusterName: kubernetes
-    controlPlaneEndpoint: 192.168.100.130:6443
+    controlPlaneEndpoint: 192.168.0.130:6443
     controllerManager: {}
     dns: {}
     etcd:
@@ -766,7 +776,7 @@ data:
         dataDir: /var/lib/etcd
     imageRepository: registry.cn-chengdu.aliyuncs.com/k8sjf
     kind: ClusterConfiguration
-    kubernetesVersion: v1.27.2
+    kubernetesVersion: v1.34.6
     networking:
       dnsDomain: cluster.local
       podSubnet: 10.244.0.0/16
@@ -831,18 +841,18 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 ```shell
 [root@master ~]# kubectl get pods --all-namespaces -o wide
 NAMESPACE      NAME                             READY   STATUS    RESTARTS   AGE    IP                NODE     NOMINATED NODE   READINESS GATES
-kube-flannel   kube-flannel-ds-2vkzl            1/1     Running   0          2m7s   192.168.100.130   master   <none>           <none>
-kube-flannel   kube-flannel-ds-f5jkp            1/1     Running   0          2m7s   192.168.100.131   node1    <none>           <none>
-kube-flannel   kube-flannel-ds-tlh6w            1/1     Running   0          2m7s   192.168.100.132   node2    <none>           <none>
+kube-flannel   kube-flannel-ds-2vkzl            1/1     Running   0          2m7s   192.168.0.130   master   <none>           <none>
+kube-flannel   kube-flannel-ds-f5jkp            1/1     Running   0          2m7s   192.168.0.131   node1    <none>           <none>
+kube-flannel   kube-flannel-ds-tlh6w            1/1     Running   0          2m7s   192.168.0.132   node2    <none>           <none>
 kube-system    coredns-66f779496c-7qfs6         1/1     Running   0          42m    10.244.2.2        node1    <none>           <none>
 kube-system    coredns-66f779496c-bhx66         1/1     Running   0          42m    10.244.2.3        node1    <none>           <none>
-kube-system    etcd-master                      1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
-kube-system    kube-apiserver-master            1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
-kube-system    kube-controller-manager-master   1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
-kube-system    kube-proxy-2wq4b                 1/1     Running   0          35m    192.168.100.131   node1    <none>           <none>
-kube-system    kube-proxy-69rng                 1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
-kube-system    kube-proxy-q4tj8                 1/1     Running   0          35m    192.168.100.132   node2    <none>           <none>
-kube-system    kube-scheduler-master            1/1     Running   0          42m    192.168.100.130   master   <none>           <none>
+kube-system    etcd-master                      1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-apiserver-master            1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-controller-manager-master   1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-proxy-2wq4b                 1/1     Running   0          35m    192.168.0.131   node1    <none>           <none>
+kube-system    kube-proxy-69rng                 1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-proxy-q4tj8                 1/1     Running   0          35m    192.168.0.132   node2    <none>           <none>
+kube-system    kube-scheduler-master            1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
 ```
 
 
@@ -871,10 +881,10 @@ No resources found in default namespace.
 ```shell
 [root@master-120 kubelet]# kg nodes
 NAME         STATUS   ROLES                  AGE   VERSION
-master-120   Ready    control-plane,master   63m   v1.27.2
-node-121     Ready    <none>                 58m   v1.27.2
-node-122     Ready    <none>                 58m   v1.27.2
-node-123     Ready    <none>                 58m   v1.27.2
+master-120   Ready    control-plane,master   63m   v1.34.6
+node-121     Ready    <none>                 58m   v1.34.6
+node-122     Ready    <none>                 58m   v1.34.6
+node-123     Ready    <none>                 58m   v1.34.6
 ```
 
 查看命名空间 **kubectl get ns**
@@ -923,9 +933,9 @@ kube-flannel-ds-wxhk4                1/1     Running   0          48m
 ```shell
 [root@master ~]# kubectl get pods -n kube-flannel -o wide
 NAME                    READY   STATUS    RESTARTS   AGE     IP                NODE     NOMINATED NODE   READINESS GATES
-kube-flannel-ds-kfd89   1/1     Running   0          4m15s   192.168.100.132   node2    <none>           <none>
-kube-flannel-ds-n8fr9   1/1     Running   0          4m15s   192.168.100.130   master   <none>           <none>
-kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.100.131   node1    <none>           <none>
+kube-flannel-ds-kfd89   1/1     Running   0          4m15s   192.168.0.132   node2    <none>           <none>
+kube-flannel-ds-n8fr9   1/1     Running   0          4m15s   192.168.0.130   master   <none>           <none>
+kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   node1    <none>           <none>
 ```
 
 **kube-flannel-ds-xxxx 必须运行OK**

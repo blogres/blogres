@@ -1,16 +1,69 @@
 ---
 icon: linux
-title: VMware批量克隆及脚本
+title: VMware批量搭建配置k8s主机集群
 category: 
-- Linux
+- kubernetes
 date: 2020-01-01
+order: 2
 tag:
 - VMware
+- k8s
 ---
 
-VMware基于centos7模板来批量克隆，自动修改IP-hostname搭建本地k8s集群主机。
+VMware基于Centos7、Ubuntu模板来批量克隆并配置k8s基础环境依赖，自动修改IP-hostname来搭建本地k8s主机集群【1主2从】。
 
 <!-- more -->
+
+## 配置k8s基础环境依赖
+
+在Ubuntu模板里配置k8s基础环境依赖（net-tools、containerd、关闭防火墙、禁用selinux、禁用swap分区、开启IPVS支持、IPv4流量传递、network-security开启网络安全、时间同步、开启 ssh 远程登录）
+
+[具体配置跳转-环境准备k8s-init](./basis.md#环境准备k8s-init)
+
+
+## 自动创建集群系统
+
+根据CentOS7模板镜像自动创建集群系统 `auto-clone.sh`
+
+[CentOS7模板镜像地址](https://pan.baidu.com/s/1K84oi2qsF33WnNrgqbJ_NA)，提取码：`1234`
+
+
+### 文件放置规范
+
+```
+E:\\vm
+|-- CentOS7		#CentOS7模板镜像，已经配置好内核版本、yum源等。
+|------ CentOS7.vmx
+|------ CentOS7.vmxf
+|------ CentOS7.vmdk
+|--\\k8s
+|----- master		#auto_VM克隆CentOS7生成的master
+|-------- master.vmx
+|-------- master.vmxf
+|-------- master.vmdk
+|----- node1		#auto_VM克隆CentOS7生成的node1
+|-------- node1.vmx
+|-------- node1.vmxf
+|-------- node1.vmdk
+|----- node2: ...
+|
+|-- auto-clone.sh	#自动克隆系统脚本，与CentOS7模板镜像处于同一位置。
+|-- kill.bat	#结束vmware进程
+|-- CentOS7.7z	#打包CentOS7模板镜像，使用时需要解压
+```
+
+
+### kill.bat
+
+结束vmware进程：`kill.bat`
+
+```bat
+@echo off
+echo=
+for /f "tokens=2 delims= " %%i in ('tasklist  /fi "imagename eq vmware-vmx.exe" /nh') do taskkill /f /pid %%i
+cmd
+```
+
 
 ## 安装对window格式的 sh 脚本转码 dos2unix
 
@@ -33,10 +86,18 @@ new UUID="eddedb45-b871-4eea-8433-4c08103423e1"
 
 ## 编写first.sh脚本
 
+上传到模板镜像的`/root/` 目录下
+
+赋予权限：`chmod +x /root/first.sh`
+
+::: tabs#a
+
+@tab Centos#Centos
+
 ```shell :collapsed-lines=15
 #!/bin/bash
 
-# 把first.sh脚本手动上传到CentOS7系统里的/root/first.sh，chmod -R 755 ./first.sh
+# 把first.sh脚本手动上传到CentOS7系统里的/root/first.sh，chmod +x ./first.sh
 # 复制到 vm-centos 虚拟机 /root/first.sh 里，配合 auto-clone.sh 使用
 
 ip=$1
@@ -104,20 +165,99 @@ main (){
 main
 ```
 
-上传到模板镜像的`/root/` 目录下
+@tab Ubuntu#Ubuntu
 
-赋予权限：`chmod +x /root/first.sh`
+```shell :collapsed-lines=15
+#!/bin/bash
+
+# 把first.sh脚本手动上传到Ubuntu系统里的/root/first.sh，chmod -R 755 ./first.sh
+
+ip=$1
+hostname=$2
+
+echo -e "\n----------------------------------"
+echo "请求参数：IP：${ip}，HostName：${hostname}"
+echo "----------------------------------"
+if [ $# -ne 2 ];
+then
+  echo "sh $0 ip hostname"
+fi
+
+
+function set_ip(){
+
+# 设置IP addresses: [192.168.0.129/24]
+  sed -i "s/addresses:\s[[0-9\.]*\/24*]/addresses: [192.168.0.${ip}\/24]/g" /etc/netplan/50-cloud-init.yaml
+
+# 设置hosts
+cat -s <<EOF | tee /etc/hosts
+127.0.0.1 localhost
+127.0.1.1 ubuntu24
+192.168.0.130 master
+192.168.0.131 node1
+192.168.0.132 node2
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+EOF
+
+  sed -i "s/[0-9\.].*24/127.0.1.1 ${hostname}/g"
+
+  
+  echo "----------------------------------------------"
+  # （sed -n '3,100p）读取文件的3-100行
+  echo -e "cat /etc/hosts\n$(sed -n '1,30p' /etc/hosts)"
+  echo "=============================================="
+  echo "wait for netplan apply ..."
+  netplan apply
+  sleep 3
+  ip addr show
+  echo "=============================================="
+  echo "new IPADDR is : \"$(hostname -I)\""
+  echo ""
+  cat /etc/netplan/50-cloud-init.yaml
+  echo "=============================================="
+}
+
+
+function set_hostname(){
+  sed -i "s#.*#${hostname}#" /etc/hostname
+  hostnamectl set-hostname ${hostname}
+  echo "=============================================="
+  echo "new hostname is : \"$(cat /etc/hostname)\""
+  echo "=============================================="
+}
+
+main (){
+  set_hostname
+  sleep 3
+  set_ip
+  echo ">>>>>>>>>> set_ip & set_hostnameok OK!!  <<<<<<<<<"
+}
+
+main
+```
+
+:::
 
 
 
 ## auto_clone.sh
 
-```shell :collapsed-lines
+```shell :collapsed-lines=15
 #!/bin/bash
 
+# 把first.sh脚本手动上传到Rocky系统里的/root/first.sh，chmod -R 755 ./first.sh
 # 在vmware手动克隆虚拟机，并开机，修改IP+hostname
+# 在 Rocky Linux 10 中，传统的 /etc/sysconfig/network-scripts/ 已被弃用，网络配置统一由 NetworkManager 管理，并使用 keyfile 存储在 /etc/NetworkManager/system-connections/ 下
+# ubuntu位于 /etc/netplan
+# dnf替代yum
 
-echo -e "本镜像环境：\nCentos7- \nKernel：5.4.271-1 \n"
+echo -e "本镜像环境：\nUbuntu2404- \nKernel：6.8.0-110-generic \n"
 
 
 host_master=(130)
@@ -126,14 +266,15 @@ gu="root"
 gp="123456a"
 
 #模板镜像位置，可自由修改
-VMX_FILE="$(pwd)/CentOS7/CentOS7.vmx"
-VMX_FILE_2="\\CentOS7\\CentOS7.vmx"
+VMX_FILE="$(pwd)/Ubuntu2404/Ubuntu2404.vmx"
+VMX_FILE_2="\\Ubuntu2404\\Ubuntu2404.vmx"
 
 
 # vmrun.exe 位置
 PATH_VMRUN_EXE_CMD="E:\\rjcode\\VMware\\vmrun.exe"
 # 集群机器位置
-K8S_CENTOS7_CMD="E:\\vm\\k8s"
+VM_CMD="E:\\vm"
+K8S_CMD="E:\\vm\\k8s"
 #服务器名称
 MASTER_NAME="master"
 NODE_NAME="node"
@@ -142,16 +283,16 @@ NODE_NAME="node"
 set_clone_master(){
   for i in {0..1};
   do
-    >  ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    >  ${VM_CMD}\\set_ip_hostname13${i}.bat
 	# 创建快照
-	echo "${PATH_VMRUN_EXE_CMD} -T ws snapshot ${K8S_CENTOS7_CMD}${VMX_FILE_2} centos7init" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws snapshot ${VM_CMD}${VMX_FILE_2} ubuntu24init" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
 	# 根据快照来clone镜像
-	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${K8S_CENTOS7_CMD}${VMX_FILE_2} ${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx full -snapshot=centos7init -cloneName=${MASTER_NAME}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${VM_CMD}${VMX_FILE_2} ${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx full -snapshot=ubuntu24init -cloneName=${MASTER_NAME}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
 	# 启动虚拟机 gui：打开vm应用；nogui：不打开vm应用
-	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
-    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx\" /bin/bash /root/first.sh 13${i} ${MASTER_NAME}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
-    echo "ping -n 6 192.168.0.13${i}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
-	echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx\" /bin/bash /root/first.sh 13${i} ${MASTER_NAME}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+    echo "ping -n 6 192.168.0.13${i}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+	echo "exit" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
   done
 
 }
@@ -160,14 +301,14 @@ set_clone_master(){
 set_clone_node(){
   for i in {1..2};
   do
-    >  ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+    >  ${VM_CMD}\\set_ip_hostname13${i}.bat
 	# 根据快照来clone镜像
-	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${K8S_CENTOS7_CMD}${VMX_FILE_2} ${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx full -snapshot=centos7init -cloneName=${NODE_NAME}${i}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${VM_CMD}${VMX_FILE_2} ${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx full -snapshot=ubuntu24init -cloneName=${NODE_NAME}${i}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
 	# 启动虚拟机 gui：打开vm应用；nogui：不打开vm应用
-	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
-    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CENTOS7_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx\" /bin/bash /root/first.sh 13${i} ${NODE_NAME}${i}" >>  ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
-    echo "ping -n 6 192.168.0.13${i}" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
-    echo "exit" >> ${K8S_CENTOS7_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx\" /bin/bash /root/first.sh 13${i} ${NODE_NAME}${i}" >>  ${VM_CMD}\\set_ip_hostname13${i}.bat
+    echo "ping -n 6 192.168.0.13${i}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+    echo "exit" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
   done
 }
 
@@ -176,7 +317,7 @@ main(){
     set_clone_master
     set_clone_node
     # 删除快照
-    echo "${PATH_VMRUN_EXE_CMD} -T ws deleteSnapshot ${K8S_CENTOS7_CMD}${VMX_FILE_2} centos7init" >> ${K8S_CENTOS7_CMD}\\delete_Snapshot.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws deleteSnapshot ${VM_CMD}${VMX_FILE_2} ubuntu24init" >> ${VM_CMD}\\delete_Snapshot.bat
     echo -e "\n-------------------执行 bat 脚本---------------------\n"
     `command` ./set_ip_hostname130.bat
     `command` ./set_ip_hostname131.bat
@@ -191,8 +332,8 @@ main(){
 	# 2、配置环境变量：打开编辑环境变量，选择环境变量，在系统变量下的 path 中添加你的7zip安装位置，如 C:\Program Files\7-Zip\，一路确认，关闭窗口
 	# 3、打开cmd，输入7z命令，查看是否可用
 	# 7z x -o[output_dir] archive_name 【-o[output_dir] 输出文件夹，举例：-otest 表示当前目录下的 test 文件夹下，不写就是当前目录；-o 和文件夹名称要连着写】
-	echo "7z x CentOS7.7z" >> ${K8S_CENTOS7_CMD}\\u7z.bat
-	echo "解压 CentOS7.7z"
+	echo "7z x Ubuntu2404.7z" >> ${VM_CMD}\\u7z.bat
+	echo "解压 Ubuntu2404.7z"
 	`command` ./u7z.bat
 	rm -rf ./*.bat
 	# 调用main

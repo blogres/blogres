@@ -4,7 +4,7 @@ title: k8s 流水线部署
 category: 
 - kubernetes
 date: 2022-08-24
-order: 14
+order: 16
 tag:
 - Linux
 - k8s

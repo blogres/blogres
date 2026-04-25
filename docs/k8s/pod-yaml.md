@@ -4,7 +4,7 @@ title: k8s Pod-yaml篇
 category: 
 - kubernetes
 date: 2022-08-24
-order: 8
+order: 10
 tag:
 - Linux
 - k8s
