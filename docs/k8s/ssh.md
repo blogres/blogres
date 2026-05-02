@@ -20,13 +20,13 @@ k8s 设置ssh通过密钥登录，拒绝密码方式登录，保证服务器安�
 
 A 端创建密钥-->上传公钥-->B 端-->A 通过ssh免密登录 B-->
 
-### 允许root用户SSH登录
+### 允许root用户登录
 
-`PermitRootLogin yes`：root用户能否通过 SSH 登录。
+`PermitRootLogin yes`：root用户能登录。
 
 命令：`vim /etc/ssh/sshd_config`，找到 `#PermitRootLogin prohibit-password` 或 `#PermitRootLogin without-password` 修改为 `PermitRootLogin yes`
 
-或者：`sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config`
+或者：`sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config`
 
 
 ### 检查是否开启SSH服务
@@ -76,13 +76,11 @@ su root
 ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.130
 ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.131
 ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.132
-ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.133
 
 su ubuntu
 ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.130
 ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.131
 ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.132
-ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.133
 ```
 
 将公钥内容追加到 `~/.ssh/authorized_keys` 文件中：`cat id_ed25519.pub >> authorized_keys`，注意 `>>` 是追加，不要写成 `>`。
@@ -98,20 +96,20 @@ ssh-ed25519 AAAAC3N......KR4 root@ubuntu24
 `nano /etc/ssh/sshd_config`，最好也禁止 root 用户直接通过 SSH 登录
 
 ```bash
-PermitRootLogin yes #个人测试 开启root登录
-
+# 开启root登录
+PermitRootLogin yes
+# 公钥认证
 PubkeyAuthentication yes
 # Expect .ssh/authorized_keys2 to be disregarded by default in future.
 AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
-
-
+# 禁用密码认证
 PasswordAuthentication no
 ```
 
 
 ### 重启SSH服务
 
-命令：  `systemctl restart ssh` 或 `service ssh restart`
+命令：  `systemctl restart ssh`
 
 ### 免密登录测试
 
@@ -129,8 +127,6 @@ node1
 
 node2
 
-
-node3
 
 ### ssh-agent
 
@@ -183,10 +179,9 @@ IdentityFile ~/.ssh/id_rsa
 
 [添加公钥](../tools/git/git-setting.md) 到 GitHub/GitLab 后测试：
 
-> **ssh -T git@github.com**
+`ssh -T git@github.com`
 
 出现 "Hi username! You’ve successfully authenticated" 即表示成功。
-
 
 
 ### 注意
@@ -202,5 +197,4 @@ chmod 700 ~/.ssh
 ```
 
 **ssh -v** -vv -vvv它会打印出详细的连接过程
-
 

@@ -31,12 +31,12 @@ VMware基于Centos7、Ubuntu模板来批量克隆并配置k8s基础环境依赖�
 ### 文件放置规范
 
 ```
-E:\\vm
-|-- CentOS7		#CentOS7模板镜像，已经配置好内核版本、yum源等。
+F:
+|-- CentOS7		#模板镜像，已经配置好内核版本、yum源等。
 |------ CentOS7.vmx
 |------ CentOS7.vmxf
 |------ CentOS7.vmdk
-|--\\k8s
+|-- ubuntu
 |----- master		#auto_VM克隆CentOS7生成的master
 |-------- master.vmx
 |-------- master.vmxf
@@ -53,15 +53,34 @@ E:\\vm
 ```
 
 
-### kill.bat
+## bat脚本
 
 结束vmware进程：`kill.bat`
 
 ```bat
+
+###### kill.bat
+
 @echo off
 echo=
 for /f "tokens=2 delims= " %%i in ('tasklist  /fi "imagename eq vmware-vmx.exe" /nh') do taskkill /f /pid %%i
 cmd
+
+###### 删除k8s集群主机
+@echo off
+rmdir /s /q F:\ubuntu
+md F:\ubuntu
+
+###### restart
+@echo off
+E:\\rjcode\\VMware\\vmrun.exe -T ws stop F:\\ubuntu\\master\\master.vmx
+E:\\rjcode\\VMware\\vmrun.exe -T ws start F:\\ubuntu\\master\\master.vmx
+
+E:\\rjcode\\VMware\\vmrun.exe -T ws stop F:\\ubuntu\\node1\\node1.vmx
+E:\\rjcode\\VMware\\vmrun.exe -T ws start F:\\ubuntu\\node1\\node1.vmx
+
+E:\\rjcode\\VMware\\vmrun.exe -T ws stop F:\\ubuntu\\node2\\node2.vmx
+E:\\rjcode\\VMware\\vmrun.exe -T ws start F:\\ubuntu\\node2\\node2.vmx
 ```
 
 
@@ -256,6 +275,9 @@ main
 # 在 Rocky Linux 10 中，传统的 /etc/sysconfig/network-scripts/ 已被弃用，网络配置统一由 NetworkManager 管理，并使用 keyfile 存储在 /etc/NetworkManager/system-connections/ 下
 # ubuntu位于 /etc/netplan
 # dnf替代yum
+#hostname：ubuntu24
+#ip：0.129
+#ubuntu：123456a
 
 echo -e "本镜像环境：\nUbuntu2404- \nKernel：6.8.0-110-generic \n"
 
@@ -273,8 +295,8 @@ VMX_FILE_2="\\Ubuntu2404\\Ubuntu2404.vmx"
 # vmrun.exe 位置
 PATH_VMRUN_EXE_CMD="E:\\rjcode\\VMware\\vmrun.exe"
 # 集群机器位置
-VM_CMD="E:\\vm"
-K8S_CMD="E:\\vm\\k8s"
+VM_CMD="F:\\"
+K8S_CMD="F:\\ubuntu"
 #服务器名称
 MASTER_NAME="master"
 NODE_NAME="node"
@@ -283,32 +305,32 @@ NODE_NAME="node"
 set_clone_master(){
   for i in {0..1};
   do
-    >  ${VM_CMD}\\set_ip_hostname13${i}.bat
+    >  ${VM_CMD}\\k8s-master13${i}.bat
 	# 创建快照
-	echo "${PATH_VMRUN_EXE_CMD} -T ws snapshot ${VM_CMD}${VMX_FILE_2} ubuntu24init" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws snapshot ${VM_CMD}${VMX_FILE_2} ubuntu24init" >> ${VM_CMD}\\k8s-master13${i}.bat
 	# 根据快照来clone镜像
-	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${VM_CMD}${VMX_FILE_2} ${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx full -snapshot=ubuntu24init -cloneName=${MASTER_NAME}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${VM_CMD}${VMX_FILE_2} ${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx full -snapshot=ubuntu24init -cloneName=${MASTER_NAME}" >> ${VM_CMD}\\k8s-master13${i}.bat
 	# 启动虚拟机 gui：打开vm应用；nogui：不打开vm应用
-	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
-    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx\" /bin/bash /root/first.sh 13${i} ${MASTER_NAME}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
-    echo "ping -n 6 192.168.0.13${i}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
-	echo "exit" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx" >> ${VM_CMD}\\k8s-master13${i}.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CMD}\\${MASTER_NAME}\\${MASTER_NAME}.vmx\" /bin/bash /root/first.sh 13${i} ${MASTER_NAME}" >> ${VM_CMD}\\k8s-master13${i}.bat
+    echo "ping -n 6 192.168.0.13${i}" >> ${VM_CMD}\\k8s-master13${i}.bat
+	echo "exit" >> ${VM_CMD}\\k8s-master13${i}.bat
   done
-
+  
 }
 
 # node 修改IP地址
 set_clone_node(){
   for i in {1..2};
   do
-    >  ${VM_CMD}\\set_ip_hostname13${i}.bat
+    >  ${VM_CMD}\\k8s-node13${i}.bat
 	# 根据快照来clone镜像
-	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${VM_CMD}${VMX_FILE_2} ${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx full -snapshot=ubuntu24init -cloneName=${NODE_NAME}${i}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws clone ${VM_CMD}${VMX_FILE_2} ${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx full -snapshot=ubuntu24init -cloneName=${NODE_NAME}${i}" >> ${VM_CMD}\\k8s-node13${i}.bat
 	# 启动虚拟机 gui：打开vm应用；nogui：不打开vm应用
-	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
-    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx\" /bin/bash /root/first.sh 13${i} ${NODE_NAME}${i}" >>  ${VM_CMD}\\set_ip_hostname13${i}.bat
-    echo "ping -n 6 192.168.0.13${i}" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
-    echo "exit" >> ${VM_CMD}\\set_ip_hostname13${i}.bat
+	echo "${PATH_VMRUN_EXE_CMD} -T ws start ${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx" >> ${VM_CMD}\\k8s-node13${i}.bat
+    echo "${PATH_VMRUN_EXE_CMD} -T ws -gu ${gu} -gp ${gp} runProgramInGuest \"${K8S_CMD}\\${NODE_NAME}${i}\\${NODE_NAME}${i}.vmx\" /bin/bash /root/first.sh 13${i} ${NODE_NAME}${i}" >>  ${VM_CMD}\\k8s-node13${i}.bat
+    echo "ping -n 6 192.168.0.13${i}" >> ${VM_CMD}\\k8s-node13${i}.bat
+    echo "exit" >> ${VM_CMD}\\k8s-node13${i}.bat
   done
 }
 
@@ -318,12 +340,15 @@ main(){
     set_clone_node
     # 删除快照
     echo "${PATH_VMRUN_EXE_CMD} -T ws deleteSnapshot ${VM_CMD}${VMX_FILE_2} ubuntu24init" >> ${VM_CMD}\\delete_Snapshot.bat
+	# 删除bat脚本
+    echo "del k8s-*" >> ${VM_CMD}\\delete_Snapshot.bat
+
     echo -e "\n-------------------执行 bat 脚本---------------------\n"
-    `command` ./set_ip_hostname130.bat
-    `command` ./set_ip_hostname131.bat
-    `command` ./set_ip_hostname132.bat
-    `command` ./delete_Snapshot.bat
-    rm -rf ./*.bat
+    `command` ./k8s-master130.bat
+    `command` ./k8s-node131.bat
+    `command` ./k8s-node132.bat
+    `command` ./k8s-node133.bat
+    `command` ./k8s-delete_Snapshot.bat
 
   else
 	echo -e ">>>>>>>>>> 没有模板镜像 <<<<<<<<<<"
@@ -333,9 +358,9 @@ main(){
 	# 3、打开cmd，输入7z命令，查看是否可用
 	# 7z x -o[output_dir] archive_name 【-o[output_dir] 输出文件夹，举例：-otest 表示当前目录下的 test 文件夹下，不写就是当前目录；-o 和文件夹名称要连着写】
 	echo "7z x Ubuntu2404.7z" >> ${VM_CMD}\\u7z.bat
+	echo "del k8s-*" >> ${VM_CMD}\\u7z.bat	
 	echo "解压 Ubuntu2404.7z"
 	`command` ./u7z.bat
-	rm -rf ./*.bat
 	# 调用main
 	main
   fi

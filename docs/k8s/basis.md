@@ -24,21 +24,17 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 [客户端下载 github](https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG)
 
-配置SSH、配置k8s环境、安装docker、安装k8s、初始化k8s集群（加入节点）、网络插件fiannel、安装ingress负载均衡
 
-![](./basis.assets/true-image-20220830090744821.png)
+# 集群配置安装
 
-
-## 集群安装+环境配置搭建
-
-### kubectl 快捷键（alias）
+## kubectl 快捷键（alias）
 
 [csdn原文链接](https://blog.csdn.net/qq_42476834/article/details/117373828)
 
 具体命令请看：[k8s-alias](./setting-alias.md)
 
 
-### 部署步骤
+## 部署步骤
 
 ```ABAP
 0.k8s模板系统环境配置（环境准备k8s-init），完成后开始克隆主机。
@@ -54,7 +50,7 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 
 ![](./basis.assets/true-image-20211119155506746.png)
 
-### 环境准备k8s-init
+## 环境准备k8s-init
 
 ![](./basis.assets/true-image-20211212160128007.png)
 
@@ -121,7 +117,7 @@ ff02::2 ip6-allrouters
 用户：`ubuntu`，密码：`123456a`， 设置主机名称：`hostnamectl set-hostname`
 
 
-#### 关闭防火墙
+### 关闭防火墙
 
 centos：
 
@@ -138,7 +134,7 @@ ufw status
 ```
 
 
-#### 禁用selinux
+### 禁用selinux
 
 centos：
 
@@ -149,7 +145,7 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 ```
 
 
-#### 禁用swap分区
+### 禁用swap分区
 
 为了保证kubelet正常工作，k8s强制要求禁用，否则集群初始化失败。
 
@@ -180,7 +176,7 @@ rm -f /swap.img
 ```
 
 
-#### 开启IPVS支持
+### 开启IPVS支持
 
 IPVS仅Centos：
 
@@ -204,7 +200,7 @@ EOF
 > - lsmod | grep ip_vs
 
 
-#### 加载内核模块
+### 加载内核模块
 
 ```shell
 cat -s <<EOF > /etc/modules-load.d/k8s.conf
@@ -245,7 +241,7 @@ lsmod | grep overlay
 sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
 ```
 
-#### 磁盘I/O优化
+### 磁盘I/O优化
 
 ```bash
 # 使用deadline调度器
@@ -255,7 +251,7 @@ blockdev --setra 4096 /dev/sda
 ```
 
 
-#### network-security开启网络安全
+### network-security开启网络安全
 
 ```shell
 #修改/etc/sysctl.d/10-network-security.conf
@@ -269,7 +265,7 @@ EOF
 sysctl --system
 ```
 
-#### 生产环境必装工具包
+### 生产环境必装工具包
 
 ```bash
 apt-get install -y \
@@ -282,7 +278,7 @@ apt-get install -y \
 > 查验安装是否成功：systemctl list-units --type=service | grep chrony
 
 
-#### 设置时间同步
+### 设置时间同步
 
 centos：
 
@@ -303,7 +299,7 @@ ntpdate time.windows.com
 ```
 
 
-#### 所有节点安装容器运行时containerd
+### 所有节点安装容器运行时containerd
 
 [官方原文地址](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
 
@@ -361,7 +357,7 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 > systemctl restart containerd
 
 
-#### containerd和docker操作差异
+### containerd和docker操作差异
 
 | 操作                | Docker            | Containerd (ctr)     | Crictl (K8s)      |
 | ------------------- | ----------------- | -------------------- | ----------------- |
@@ -383,18 +379,18 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 | 在容器内部执行命令  | docker exec       | 无                   | crictl exec       |
 
 
-### 完成后开始克隆主机
+## 完成后开始克隆主机
 
 
 
-### 开启 ssh 远程登录
+## 开启 ssh 远程登录
 
 [开启 ssh 远程登录文档](./ssh.md)
 
 [执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
 
 
-### A、在所有节点上安装kubernetes
+## A、在所有节点上安装kubernetes
 
 [安装工具](https://kubernetes.io/zh/docs/tasks/tools/)：[docker](https://docs.docker.com/engine/install/centos/)、kubeadm管理、kukelet代理、kubectl命令行
 
@@ -402,7 +398,7 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 
 <https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG>
 
-#### K8s抛弃Docker的原因
+### K8s抛弃Docker的原因
 
 ![](./basis.assets/true-udocker.jpg)
 
@@ -483,12 +479,12 @@ Environment="HTTPS_PROXY=http://127.0.0.1:10809"
 Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 ```
 
-#### 添加kubernetes仓库源
+### 添加kubernetes仓库源
 
 centos：
 
 ```shell
-## 新版配置v1.24-v1.29
+# 新版配置v1.24-v1.29
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -532,7 +528,7 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://mirro
 apt-get update
 ```
 
-#### 安装kubernetes
+### 安装kubernetes
 
 **升级0，新安装0，降级3，删除0，未升级25**
 
@@ -549,7 +545,7 @@ yum install --nogpgcheck kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disablee
 
 - 设置 `disableexcludes` 运行 yum update 时不会升级kubernetes。
 
-#### 锁版本（防止系统突然"帮你升级"）
+### 锁版本（防止系统突然"帮你升级"）
 
 `apt-mark hold kubelet kubeadm kubectl`
 
@@ -562,11 +558,11 @@ yum install --nogpgcheck kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disablee
 - showmanual：列出所有手动安装的软件包。
 - showhold：列出所有标记为保留的软件包。
 
-#### 创建k8s软连接
+### 创建k8s软连接
 
 如没有执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
 
-#### 启动 k8s
+### 启动 k8s
 
 ```shell
 systemctl start kubelet | disable | enable | stop | status
@@ -575,7 +571,7 @@ systemctl start kubelet | disable | enable | stop | status
 发现：`kubelet.service - kubelet: The Kubernetes Node Agent`，属于正常，k8s还没有配置
 
 
-### B、Master 部署 Kubernetes
+## B、Master 部署 Kubernetes
 
 编辑 master_images.sh：设置需要的镜像，仓库地址：[官网docker镜像搜索](https://hub.docker.com/)
 
@@ -612,7 +608,7 @@ kubeadm config images pull \
 
 通过 `crictl images` 查验是否下载成功。
 
-#### master-kubeadm初始化
+### master-kubeadm初始化
 
 - 生成k8s默认配置文件信息：
 
@@ -647,7 +643,7 @@ kubeadm init \
 - `serviceSubnet`=`service-cidr`
 - `podSubnet`=`pod-network-cidr`
 
-#### 得到 kubeadm join
+### 得到 kubeadm join
 
 ```shell
 您的Kubernetes控制平面已成功初始化！
@@ -663,7 +659,7 @@ kubeadm init \
 使用下列选项之一运行“kubectl apply -f [podnetwork].yaml”：
 https://kubernetes.io/docs/concepts/cluster-administration/addons/
 
-##### master
+#### master
 现在，您可以通过复制证书颁发机构来加入任意数量的控制平面节点
 和每个节点上的服务帐户密钥，然后以root用户身份运行以下操作：
 kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
@@ -671,7 +667,7 @@ kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
         --control-plane
 
 然后，在每个节点上以root身份运行以下操作，可以加入任意数量的工作节点：
-###### node
+##### node
 su root
 kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
         --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1
@@ -679,7 +675,7 @@ kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
 
 
 
-#### [ERROR CRI]: container runtime is not running
+### [ERROR CRI]: container runtime is not running
 
 [官网解决方案](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
 
@@ -697,13 +693,13 @@ systemctl restart containerd
 
 
 
-#### 重启后出现：`The connection to the server localhost:8080 was refused - did you specify the right host or port?`
+### 重启后出现：`The connection to the server localhost:8080 was refused - did you specify the right host or port?`
 
 解决：<https://blog.csdn.net/qq_42476834/article/details/124730955>
 
 [ssh免密登录访问](./ssh.md)
 
-#### 将主节点（master）中的“/etc/kubernetes/admin.conf”文件拷贝到从节点（node）相同目录下
+### 将主节点（master）中的“/etc/kubernetes/admin.conf”文件拷贝到从节点（node）相同目录下
 
 ```shell
 scp /etc/kubernetes/admin.conf root@192.168.0.131:/etc/kubernetes/ && \
@@ -719,11 +715,11 @@ source ~/.bash_profile
 
 
 
-#### 解决端口占用：kubeadm reset
+### 解决端口占用：kubeadm reset
 
 
 
-### C、将从节点（node）加入 Kubernetes （Master）集群中
+## C、将从节点（node）加入 Kubernetes （Master）集群中
 
 su root 在每个根节点上运行以下操作：
 
@@ -753,7 +749,7 @@ kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
 Run 'kubectl get nodes' 在控制平面上查看该节点加入集群。
 ```
 
-#### kubeadm-config（略过 嘿嘿嘿）
+### kubeadm-config（略过 嘿嘿嘿）
 
 `kubectl -n kube-system get cm kubeadm-config -o yaml > /etc/kubernetes/kubeadm-config.yaml`
 
@@ -791,7 +787,7 @@ metadata:
   uid: 45ddd51c-8ef3-4f86-8406-3d1a11d5e4c5
 ```
 
-#### token过期，重新设置
+### token过期，重新设置
 
 > kubeadm token list
 >
@@ -799,7 +795,7 @@ metadata:
 >
 > kubeadm token create --ttl 0 --print-join-command
 
-### D、master 部署网络策略插件
+## D、master 部署网络策略插件
 
 ![](./basis.assets/true-image-20220827152630437.png)
 
@@ -818,7 +814,7 @@ metadata:
 
 Flannel 的缺点之一是缺乏高级功能，例如配置网络策略和防火墙的能力。因此 Flannel 是 Kubernetes 集群网络的一个很好的入门级选择，但是，如果你正在寻找高级网络功能，你可能需要考虑其他 CNI 选项，例如 Cilium和Calico。
 
-#### 配置网络策略 Flannel
+### 配置网络策略 Flannel
 
 root用户：
 
@@ -857,13 +853,13 @@ kube-system    kube-scheduler-master            1/1     Running   0          42m
 
 
 
-#### 配置网络策略 Cilium
+### 配置网络策略 Cilium
 
 
 
-#### [kubectl命令表](https://blog.csdn.net/qq_42476834/article/details/121781274)
+### [kubectl命令表](https://blog.csdn.net/qq_42476834/article/details/121781274)
 
-#### 查看
+### 查看
 
 列出所有运行的Pod信息
 
@@ -943,9 +939,9 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   nod
 
 
 
-### E、可视化管理工具
+## E、可视化管理工具
 
-#### 1、dashboard（不推荐）
+### 1、dashboard（不推荐）
 
 文档：<https://kuboard.cn/install/install-k8s-dashboard.html>
 
@@ -953,22 +949,22 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   nod
 
 `kubectl apply -f https://gitee.com/k8s_s/dashboard1/blob/v2.4.0/aio/deploy/recommended.yaml -o yaml > dashboard.yaml`
 
-#### 2、KubeSphere（推荐1）
+### 2、KubeSphere（推荐1）
 
 - [跳转-本站文档](./kubesphere.md)
 - [Github KubeSphere](https://github.com/kubesphere/kubesphere)，star: 14.1+K
 
-#### 3、Rancher（推荐2）
+### 3、Rancher（推荐2）
 
 - [跳转-本站文档](./rancher.md)
 - [Github Rancher](https://github.com/rancher/rancher)，star: 22.4+K
 
-#### 4、Kuboard（推荐3）
+### 4、Kuboard（推荐3）
 
 - [跳转-本站文档](./kuboard.md)
 - [Github Kuboard](https://github.com/eip-work/kuboard-press) stars 20.7+K
 
-#### 5、KubeOperator
+### 5、KubeOperator
 
 - [跳转-本站文档](./kubeoperator.md)
 - [Github KubeOperator](https://github.com/eip-work/kuboard-press) stars 4.9+K

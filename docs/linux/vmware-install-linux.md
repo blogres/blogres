@@ -112,6 +112,31 @@ linux一般来说分为4个基本区：
 
 ![](./vmware-install-linux.assets/true-image-202209124172424572.png)
 
+## Ubuntu安装事项
+
+选择「Try or install Ubuntu Server」；
+
+网络配置参数，选中网络设备，点击「Edit IPv4」-> 选择「Manual」
+
+```yaml
+Subnet:         192.168.0.0/24（IP主机位必须为0）
+Address:        192.168.0.129（IP自定义）
+Gateway:        192.168.0.2
+Nameservers:    192.168.0.2, 8.8.8.8
+Search domains: (留空)
+```
+
+创建用户
+
+```yaml
+Your name: 你的名称
+Your server's name: 主机名（hostname）
+Username: 用户名称
+Password: 用户密码
+Confirm password: 确认密码
+```
+
+
 
 ## 配置 centos7.9 模板
 
