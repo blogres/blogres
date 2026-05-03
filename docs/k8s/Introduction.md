@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s 入门篇
+title: K8s 入门篇
 category: 
 - kubernetes
 date: 2020-04-20

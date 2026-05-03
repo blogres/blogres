@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s Pod-yaml篇
+title: K8s Pod-yaml篇
 category: 
 - kubernetes
 date: 2022-08-24

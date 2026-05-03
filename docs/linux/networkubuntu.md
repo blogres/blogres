@@ -32,17 +32,16 @@ network:
   renderer: networkd
   ethernets:
     ens33:
-      dhcp4: false
-      dhcp6: false
       addresses: [192.168.0.129/24]
-      routes:
-        - to: default
-          via: 192.168.0.2
       nameservers:
         addresses:
-          - 192.168.0.2
-          - 8.8.8.8
+        - 192.168.0.2
+        - 8.8.8.8
         search: []
+      routes:
+      - to: "default"
+        via: "192.168.0.2"
+
 ```
 
 `renderer` 配置为 `networkd`，使用 `systemd-networkd` 作为网络配置的后端。桌面环境使用 `NetworkManager`，`Ubuntu Server` 和无头环境使用 `networkd`。

@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s 集群搭建
+title: K8s 集群配置安装
 category: 
 - kubernetes
 date: 2020-04-20
@@ -10,7 +10,7 @@ tag:
 - k8s
 ---
 
-k8s 集群搭建，部署网络策略插件，可视化管理工具
+k8s 集群配置安装
 
 <!-- more -->
 
@@ -25,7 +25,8 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 [客户端下载 github](https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG)
 
 
-# 集群配置安装
+# k8s集群配置安装
+
 
 ## kubectl 快捷键（alias）
 
@@ -43,7 +44,7 @@ k8s 集群搭建，部署网络策略插件，可视化管理工具
 3.部署容器网络插件（Cilium、Calico、Flannel、Weave）。
 4.部署 Kubernetes Node，将节点加入 Kubernetes集群中。
 5.部署可视化管理工具-(KubeSphere、Rancher、Kuboard)。
-6.部署程序。
+6.部署程序、插件。
 ```
 
 **对于集群相同的环境配置，可以使用 ansible 来统一配置机器**
@@ -244,7 +245,7 @@ sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables ne
 ### 磁盘I/O优化
 
 ```bash
-# 使用deadline调度器
+# 使用deadline调度器 nvme硬盘（/sys/block/nvme0n1/queue/scheduler）
 echo deadline > /sys/block/sda/queue/scheduler
 # 调整预读缓存
 blockdev --setra 4096 /dev/sda
@@ -298,6 +299,10 @@ yum install -y ntpsec-ntpdate | apt-get install -y ntpsec-ntpdate
 ntpdate time.windows.com
 ```
 
+### 配置软件源
+
+- [sources-ubuntu](../linux/sources-ubuntu.md)
+- [sources-centos](../linux/sources-centos.md)
 
 ### 所有节点安装容器运行时containerd
 
@@ -381,13 +386,11 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 
 ## 完成后开始克隆主机
 
-
+完成以上基础环境依赖配置后开始克隆集群主机。
 
 ## 开启 ssh 远程登录
 
 [开启 ssh 远程登录文档](./ssh.md)
-
-[执行sh脚本](./script.md)：`k8s-centos7.sh，k8s-docker.sh，k8s-init.sh，k8s-install.sh`
 
 
 ## A、在所有节点上安装kubernetes
@@ -433,11 +436,7 @@ yum remove docker docker-client docker-client-latest docker-common docker-latest
 
 ```shell
 systemctl docker
-systemctl restart docker
-systemctl stop docker
-systemctl enable docker
-systemctl disable docker
-systemctl status docker
+systemctl restart docker | stop | enable | disable | status
 usermod -aG docker a #非root用户
 ```
 
@@ -478,6 +477,9 @@ Environment="HTTP_PROXY=http://127.0.0.1:10809"
 Environment="HTTPS_PROXY=http://127.0.0.1:10809" 
 Environment="NO_PROXY=localhost,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8"
 ```
+
+---
+---
 
 ### 添加kubernetes仓库源
 
@@ -560,7 +562,7 @@ yum install --nogpgcheck kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disablee
 
 ### 创建k8s软连接
 
-如没有执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
+如没有软连接就执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
 
 ### 启动 k8s
 

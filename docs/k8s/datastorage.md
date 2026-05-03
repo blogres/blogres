@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s 数据持久化存储
+title: K8s 数据持久化存储
 category: 
 - kubernetes
 date: 2022-08-24

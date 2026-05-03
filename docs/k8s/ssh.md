@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s ssh通过密钥登录
+title: K8s ssh通过密钥登录
 category: 
 - Linux
 - kubernetes
@@ -20,9 +20,11 @@ k8s 设置ssh通过密钥登录，拒绝密码方式登录，保证服务器安�
 
 A 端创建密钥-->上传公钥-->B 端-->A 通过ssh免密登录 B-->
 
-### 允许root用户登录
+### 启用root用户登录
 
-`PermitRootLogin yes`：root用户能登录。
+启用root用户：`sudo passwd root`
+
+root用户能登录：`PermitRootLogin yes`
 
 命令：`vim /etc/ssh/sshd_config`，找到 `#PermitRootLogin prohibit-password` 或 `#PermitRootLogin without-password` 修改为 `PermitRootLogin yes`
 

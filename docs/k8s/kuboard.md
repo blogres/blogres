@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s 可视化管理工具-Kuboard
+title: K8s 可视化管理工具-Kuboard
 category: 
 - kubernetes
 date: 2022-08-24

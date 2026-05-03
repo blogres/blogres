@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s Ingress
+title: K8s Ingress
 category: 
 - kubernetes
 date: 2022-08-24

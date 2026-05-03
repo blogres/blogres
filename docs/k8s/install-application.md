@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s 安装常用软件
+title: K8s 安装常用软件
 category: 
 - kubernetes
 date: 2022-08-24

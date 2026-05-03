@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: k8s 流水线部署
+title: K8s 流水线部署
 category: 
 - kubernetes
 date: 2022-08-24

@@ -126,7 +126,7 @@ Nameservers:    192.168.0.2, 8.8.8.8
 Search domains: (留空)
 ```
 
-创建用户
+创建用户：
 
 ```yaml
 Your name: 你的名称
@@ -136,6 +136,7 @@ Password: 用户密码
 Confirm password: 确认密码
 ```
 
+mirrors address：`https://mirrors.aliyun.com/ubuntu/`
 
 
 ## 配置 centos7.9 模板
@@ -181,11 +182,12 @@ CentOS Linux release 7.9.2009 (Core)
 
 ### 3、配置国内yum源
 
-[具体内容跳转](./yum-repo.md)
+- [centos跳转](./sources-centos.md)
+- [ubuntu跳转](./sources-ubuntu.md)
 
 ### 4、升级内核、并删除当前无用的系统内核版本
 
-[具体内容跳转](./update-kernel.md)
+- [具体内容跳转](./update-kernel.md)
 
 ### 5、关闭防火墙firewalld、关闭selinux、关闭swap、确保不休眠
 

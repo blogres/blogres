@@ -1,6 +1,6 @@
 ---
 icon: linux
-title: Centos Yum源配置
+title: 软件源配置 Centos-Yum
 category: 
 - Linux
 date: 2021-08-14
@@ -14,6 +14,8 @@ YUM 源配置：本地yum源、aliyun、163
 <!-- more -->
 
 **查看系统的版本：**`cat /etc/redhat-release`
+
+# 软件源配置 Centos-Yum
 
 ## 一、用Centos镜像搭建本地yum源
 
@@ -30,8 +32,6 @@ cp CentOS-Base.repo  CentOS-Base-cp.repo
 ```
 
 ### 3.在虚拟机上挂载CentOS镜像文件
-
-![](./yum-repo.assets/true-image-20220909192114370.png)
 
 ```shell
 (1) mount -t iso9660 /dev/sr0 /opt/centos
