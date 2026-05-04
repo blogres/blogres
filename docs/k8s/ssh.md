@@ -33,7 +33,7 @@ root用户能登录：`PermitRootLogin yes`
 
 ### 检查是否开启SSH服务
 
-命令：`ps -e|grep ssh`  查看SSH服务是否开启，或者通过命令：`systemctl sshd status` 可以查看某个服务的状态。
+命令：`ps -e|grep ssh`  查看SSH服务是否开启，或者通过命令：`systemctl status ssh` 可以查看某个服务的状态。
 
 ### 安装SSH服务,有就跳过
 
@@ -42,6 +42,8 @@ root用户能登录：`PermitRootLogin yes`
 客户端：`yum install -y openssh-client` | `apt-get install -y openssh-client`
 
 服务器：`yum install -y openssh-server` | `apt-get install -y openssh-server`
+
+`systemctl start ssh | status | restart`
 
 ### 生成ssh密钥，所以主机都执行
 
@@ -55,7 +57,7 @@ Generating public/private ed25519 key pair.
 Enter file in which to save the key (/root/.ssh/id_ed25519):    ##保存秘钥的位置
 /root/.ssh/id_ed25519 already exists.
 Overwrite (y/n)? y
-Enter passphrase (empty for no passphrase):   ##为秘钥设置密码，即使被人有你的秘钥没有你的密码也是无法登录aniuge
+Enter passphrase (empty for no passphrase):   ##为秘钥设置密码，即使被人有你的秘钥没有你的密码也是无法登录aniuger
 Enter same passphrase again:    ##确认密码
 Your identification has been saved in /root/.ssh/id_ed25519
 Your public key has been saved in /root/.ssh/id_ed25519.pub
@@ -89,7 +91,7 @@ ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.132
 
 ```bash
 root@ubuntu24:~/.ssh# cat authorized_keys
-ssh-ed25519 AAAAC3N......xuh administrator@xxx
+ssh-ed25519 AAAAC3N......xuh administrator@axxx
 ssh-ed25519 AAAAC3N......KR4 root@ubuntu24
 ```
 
@@ -108,28 +110,6 @@ AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
 PasswordAuthentication no
 ```
 
-
-### 重启SSH服务
-
-命令：  `systemctl restart ssh`
-
-### 免密登录测试
-
-> ssh root@192.168.0.130 ssh root@192.168.0.131 ssh ubuntu@192.168.0.132
-
-如果设置了密码短语，系统会提示你输入它。如果没有设置，你应该能直接登录成功，不需要输入任何密码。
-
-
-master
-
-
-node1
-
-
-
-node2
-
-
 ### ssh-agent
 
 启动 agent：
@@ -145,45 +125,34 @@ node2
 - touch ~/.ssh/config
 - nano ~/.ssh/config
 
-```
-# 服务器1
-Host server1
-    HostName 192.168.0.129
-    User sammy
-    IdentityFile ~/.ssh/id_ed25519
-
-# 服务器2
-Host server2
-    HostName 192.168.0.130
-    User myuser
-    IdentityFile ~/.ssh/work_key
-```
-
-只需要输入：`ssh dev-server`
-
-### 在同一设备使用多种密钥
-
-若需同时使用 RSA 与 Ed25519，可在 `~/.ssh/config` 中指定：
-
 ```yaml
-Host github.com
-HostName github.com
-User git
+Host master
+HostName 192.168.0.130
+User root
 IdentityFile ~/.ssh/id_ed25519
 
-Host old-server
-HostName old.example.com
-User git
-IdentityFile ~/.ssh/id_rsa
+Host node1
+HostName 192.168.0.131
+User root
+IdentityFile ~/.ssh/id_ed25519
+
+Host node2
+HostName 192.168.0.132
+User root
+IdentityFile ~/.ssh/id_ed25519
 ```
 
-验证配置
+只需要输入：`ssh master`，windows端同理。
 
-[添加公钥](../tools/git/git-setting.md) 到 GitHub/GitLab 后测试：
+### 重启SSH服务
 
-`ssh -T git@github.com`
+命令：  `systemctl restart ssh`
 
-出现 "Hi username! You’ve successfully authenticated" 即表示成功。
+### 免密登录测试
+
+> ssh master ssh node1 ssh node2
+
+如果设置了密码短语，系统会提示你输入它。如果没有设置，你应该能直接登录成功，不需要输入任何密码。
 
 
 ### 注意
