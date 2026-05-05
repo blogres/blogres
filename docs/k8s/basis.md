@@ -55,7 +55,12 @@ k8s 集群配置安装
 
 ![](./basis.assets/true-image-20211212160128007.png)
 
-安装 net-tools 工具
+### 配置网络
+
+配置网络 [networkubuntu](../linux/networkubuntu.md)
+
+
+**安装 net-tools 工具**
 
 ```shell
 apt-get install net-tools

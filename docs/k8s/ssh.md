@@ -80,11 +80,6 @@ su root
 ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.130
 ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.131
 ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.0.132
-
-su ubuntu
-ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.130
-ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.131
-ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@192.168.0.132
 ```
 
 将公钥内容追加到 `~/.ssh/authorized_keys` 文件中：`cat id_ed25519.pub >> authorized_keys`，注意 `>>` 是追加，不要写成 `>`。

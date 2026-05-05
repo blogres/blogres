@@ -17,8 +17,7 @@ VMware基于Centos7、Ubuntu模板来批量克隆并配置k8s基础环境依赖�
 ## 配置k8s基础环境依赖
 
 - 1、启用root用户登录。[ssh](./ssh.md#启用root用户登录)
-- 2、配置网络 [networkubuntu](../linux/networkubuntu.md)
-- 3、在Ubuntu模板里配置k8s基础环境依赖（net-tools、containerd、关闭防火墙、禁用selinux、禁用swap分区、开启IPVS支持、IPv4流量传递、network-security开启网络安全、时间同步、配置软件源、开启 ssh 远程登录）[具体配置跳转-环境准备k8s-init](./basis.md#环境准备k8s-init)
+- 2、在Ubuntu模板里配置k8s基础环境依赖（配置网络、net-tools、containerd、关闭防火墙、禁用selinux、禁用swap分区、开启IPVS支持、IPv4流量传递、network-security开启网络安全、时间同步、配置软件源、开启 ssh 远程登录）[具体配置跳转-环境准备k8s-init](./basis.md#环境准备k8s-init)
 
 
 ## 自动创建集群系统
