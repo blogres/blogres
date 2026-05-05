@@ -304,7 +304,7 @@ ntpdate time.windows.com
 - [sources-ubuntu](../linux/sources-ubuntu.md)
 - [sources-centos](../linux/sources-centos.md)
 
-### 所有节点安装容器运行时containerd
+### 所有节点安装containerd
 
 [官方原文地址](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
 
@@ -653,9 +653,10 @@ kubeadm init \
     mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
 
 或者，如果您是root用户，则可以运行：
-  export KUBECONFIG=/etc/kubernetes/admin.conf
+  echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
   
 您现在应该在集群上部署一个pod网络。
 使用下列选项之一运行“kubectl apply -f [podnetwork].yaml”：
@@ -697,24 +698,23 @@ systemctl restart containerd
 
 ### 重启后出现：`The connection to the server localhost:8080 was refused - did you specify the right host or port?`
 
-解决：<https://blog.csdn.net/qq_42476834/article/details/124730955>
+请看↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-[ssh免密登录访问](./ssh.md)
+### Node节点运行kubectl命令
 
-### 将主节点（master）中的“/etc/kubernetes/admin.conf”文件拷贝到从节点（node）相同目录下
+将主节点（master）中的“/etc/kubernetes/admin.conf”文件拷贝到从节点（node）相同目录下
 
 ```shell
-scp /etc/kubernetes/admin.conf root@192.168.0.131:/etc/kubernetes/ && \
-scp /etc/kubernetes/admin.conf root@192.168.0.132:/etc/kubernetes/
-
-echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc  |||  ~/.bash_profile
-或者
-scp ~/.bash_profile root@192.168.0.131:/root/ && \
-scp ~/.bash_profile root@192.168.0.132:/root/
-
-source ~/.bash_profile
+scp /etc/kubernetes/admin.conf root@node1:/etc/kubernetes/admin.conf && \
+scp /etc/kubernetes/admin.conf root@node2:/etc/kubernetes/admin.conf
 ```
 
+解决 *did you specify the right host or port?*
+
+```bash
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc  ||  ~/.bash_profile
+source ~/.bashrc
+```
 
 
 ### 解决端口占用：kubeadm reset
@@ -748,45 +748,7 @@ kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
 * 证书签名请求已发送到 apiserver 并收到响应。
 * Kubelet  被告知新的安全连接细节。
 
-Run 'kubectl get nodes' 在控制平面上查看该节点加入集群。
-```
-
-### kubeadm-config（略过 嘿嘿嘿）
-
-`kubectl -n kube-system get cm kubeadm-config -o yaml > /etc/kubernetes/kubeadm-config.yaml`
-
-```json
-apiVersion: v1
-data:
-  ClusterConfiguration: |
-    apiServer:
-      extraArgs:
-        authorization-mode: Node,RBAC
-      timeoutForControlPlane: 4m0s
-    apiVersion: kubeadm.k8s.io/v1beta3
-    certificatesDir: /etc/kubernetes/pki
-    clusterName: kubernetes
-    controlPlaneEndpoint: 192.168.0.130:6443
-    controllerManager: {}
-    dns: {}
-    etcd:
-      local:
-        dataDir: /var/lib/etcd
-    imageRepository: registry.cn-chengdu.aliyuncs.com/k8sjf
-    kind: ClusterConfiguration
-    kubernetesVersion: v1.34.6
-    networking:
-      dnsDomain: cluster.local
-      podSubnet: 10.244.0.0/16
-      serviceSubnet: 10.96.0.0/16
-    scheduler: {}
-kind: ConfigMap
-metadata:
-  creationTimestamp: "2022-08-27T07:05:29Z"
-  name: kubeadm-config
-  namespace: kube-system
-  resourceVersion: "199"
-  uid: 45ddd51c-8ef3-4f86-8406-3d1a11d5e4c5
+master Run 'kubectl get nodes' 在控制平面上查看该节点加入集群。
 ```
 
 ### token过期，重新设置
@@ -796,6 +758,7 @@ metadata:
 > kubeadm token create --print-join-command
 >
 > kubeadm token create --ttl 0 --print-join-command
+
 
 ## D、master 部署网络策略插件
 
@@ -823,16 +786,12 @@ root用户：
 ```shell
 https://github.com/flannel-io/flannel#deploying-flannel-manually
 
-https://gitee.com/k8s_s/flannel/blob/master/Documentation/kube-flannel.yml
+wget https://github.com/flannel-io/flannel/releases/download/v0.28.4/kube-flannel.yml
 
 kubectl apply -f kube-flannel.yml
 
-kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+kubectl delete -f kube-flannel.yml
 ```
-
-删除：kubectl delete -f kube-flannel.yml
-
-
 
 获取pods所有名称空间
 
@@ -857,7 +816,7 @@ kube-system    kube-scheduler-master            1/1     Running   0          42m
 
 ### 配置网络策略 Cilium
 
-
+......
 
 ### [kubectl命令表](https://blog.csdn.net/qq_42476834/article/details/121781274)
 
@@ -940,7 +899,6 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   nod
 
 
 
-
 ## E、可视化管理工具
 
 ### 1、dashboard（不推荐）
@@ -971,3 +929,144 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   nod
 - [跳转-本站文档](./kubeoperator.md)
 - [Github KubeOperator](https://github.com/eip-work/kuboard-press) stars 4.9+K
 
+
+## Kubernetes 日常巡检脚本
+
+[脚本参考](https://www.cnblogs.com/leojazz/p/18675721)
+
+k8s_inspection.sh
+
+```bash
+#!/bin/bash
+ 
+# Kubernetes 日常巡检脚本
+# 需要预先配置好 kubectl 并确保脚本运行的环境具有访问集群的权限
+ 
+# 设置日志文件
+LOG_DIR="/var/log/k8s_inspection"
+LOG_FILE="$LOG_DIR/inspection_$(date +%F).log"
+mkdir -p "$LOG_DIR"
+ 
+# 函数：记录日志
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+ 
+# 函数：检查节点状态
+check_nodes() {
+    log "开始检查节点状态..."
+    NODE_STATUS=$(kubectl get nodes --no-headers | awk '{print $2}' | sort | uniq)
+    if [[ "$NODE_STATUS" != *"Ready"* ]]; then
+        log "警告：存在非 Ready 状态的节点！当前节点状态：$NODE_STATUS"
+    else
+        log "所有节点状态正常。"
+    fi
+}
+ 
+# 函数：检查所有 Pod 状态
+check_pods() {
+    log "开始检查 Pod 状态..."
+    NON_RUNNING_PODS=$(kubectl get pods --all-namespaces --field-selector=status.phase!=Running,status.phase!=Succeeded,status.phase!=Failed -o json | jq '.items[] | {namespace: .metadata.namespace, name: .metadata.name, status: .status.phase}')
+ 
+    if [[ -n "$NON_RUNNING_PODS" ]]; then
+        log "警告：存在非 Running、Succeeded 或 Failed 状态的 Pod："
+        echo "$NON_RUNNING_PODS" | tee -a "$LOG_FILE"
+    else
+        log "所有 Pod 状态正常。"
+    fi
+}
+ 
+# 函数：检查资源使用情况
+check_resources() {
+    log "开始检查节点资源使用情况（CPU 和内存）..."
+    kubectl top nodes --no-headers | awk '{print $1, $2, $3}' | while read -r NODE_NAME CPU_USAGE MEMORY_USAGE; do
+        # 检查 CPU 和内存使用值是否有效数字
+        if [[ ! "$CPU_USAGE" =~ ^[0-9]+$ ]] || [[ ! "$MEMORY_USAGE" =~ ^[0-9]+(Mi|Gi|%)$ ]]; then
+            log "节点 $NODE_NAME ：CPU=$CPU_USAGE，内存=$MEMORY_USAGE"
+            continue
+        fi
+ 
+        # 直接保留内存百分比，而不进行转换
+        if [[ "$MEMORY_USAGE" =~ ^[0-9]+%$ ]]; then
+            log "警告：节点 $NODE_NAME 的内存使用率是百分比：${MEMORY_USAGE}"
+        else
+            # 移除单位并转换内存单位（如果需要）
+            MEMORY_USAGE_NUM=$(echo "$MEMORY_USAGE" | sed 's/Mi//;s/Gi/*1024/' | bc)
+        fi
+ 
+        # 移除单位并转换 CPU 使用率
+        CPU_USAGE_NUM=$(echo "$CPU_USAGE" | sed 's/m//')
+ 
+        # 设置阈值（毫核和 Mi）
+        CPU_LIMIT=8000   # 8000m = 8核
+        MEMORY_LIMIT=16000 # 16000Mi = 16Gi
+ 
+        # 检查 CPU 使用率
+        if [ "$CPU_USAGE_NUM" -gt "$CPU_LIMIT" ]; then
+            log "警告：节点 $NODE_NAME 的 CPU 使用率超过阈值：${CPU_USAGE}"
+        fi
+ 
+        # 检查内存使用率
+        if [[ "$MEMORY_USAGE" != *% && "$MEMORY_USAGE_NUM" -gt "$MEMORY_LIMIT" ]]; then
+            log "警告：节点 $NODE_NAME 的内存使用率超过阈值：${MEMORY_USAGE}"
+        fi
+    done
+}
+ 
+# 函数：检查事件
+check_events() {
+    log "开始检查最近 24 小时的集群事件..."
+    # 获取24小时前的时间戳
+    SINCE_TIME=$(date -u -d "24 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
+    
+    # 检查 kubectl 是否支持 --since-time
+    if kubectl get events --help | grep -- "--since-time" &>/dev/null; then
+        RECENT_EVENTS=$(kubectl get events --all-namespaces --since-time="$SINCE_TIME" --sort-by='.lastTimestamp')
+    else
+        # 如果不支持 --since-time，获取所有事件并在脚本中筛选
+        RECENT_EVENTS=$(kubectl get events --all-namespaces -o json | jq --arg SINCE_TIME "$SINCE_TIME" '
+            .items[] | select(.lastTimestamp >= $SINCE_TIME) | 
+            {namespace: .metadata.namespace, name: .metadata.name, lastTimestamp: .lastTimestamp, type: .type, reason: .reason, message: .message}')
+    fi
+ 
+    # 判断是否有事件
+    if [[ -n "$RECENT_EVENTS" && "$RECENT_EVENTS" != "[]" ]]; then
+        log "最近 24 小时内的集群事件："
+        echo "$RECENT_EVENTS" | tee -a "$LOG_FILE"
+    else
+        log "过去 24 小时内没有新的集群事件。"
+    fi
+}
+ 
+# 函数：检查命名空间状态
+check_namespaces() {
+    log "开始检查命名空间状态..."
+    NON_ACTIVE_NS=$(kubectl get namespaces --no-headers | awk '$2!="Active" {print $1 " - " $2}')
+    if [[ -n "$NON_ACTIVE_NS" ]]; then
+        log "警告：存在非 Active 状态的命名空间："
+        echo "$NON_ACTIVE_NS" | tee -a "$LOG_FILE"
+    else
+        log "所有命名空间状态正常。"
+    fi
+}
+ 
+# 函数：汇总巡检
+run_inspection() {
+    log "==================== 开始 Kubernetes 集群日常巡检 ===================="
+    check_nodes
+    check_pods
+    check_resources
+    check_namespaces
+    check_events
+    log "==================== Kubernetes 集群日常巡检完成 ===================="
+}
+ 
+# 执行巡检
+run_inspection
+ 
+# 可选：发送邮件或通知（需要配置邮件服务器或通知服务）
+# 例如，使用 mail 命令发送日志
+# mail -s "K8s 日常巡检报告 - $(date +%F)" admin@example.com < "$LOG_FILE"
+ 
+exit 0
+```
