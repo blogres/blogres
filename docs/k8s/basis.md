@@ -30,8 +30,6 @@ k8s 集群配置安装
 
 ## kubectl 快捷键（alias）
 
-[csdn原文链接](https://blog.csdn.net/qq_42476834/article/details/117373828)
-
 具体命令请看：[k8s-alias](./setting-alias.md)
 
 
@@ -41,7 +39,7 @@ k8s 集群配置安装
 0.k8s模板系统环境配置（环境准备k8s-init），完成后开始克隆主机。
 1.在所有节点上安装 containerd 和 kubeadm。
 2.部署 Kubernetes Master。
-3.部署容器网络插件（Cilium、Calico、Flannel、Weave）。
+3.部署容器网络插件（Cilium、Calico、Flannel）。
 4.部署 Kubernetes Node，将节点加入 Kubernetes集群中。
 5.部署可视化管理工具-(KubeSphere、Rancher、Kuboard)。
 6.部署程序、插件。
@@ -182,9 +180,9 @@ rm -f /swap.img
 ```
 
 
-### 开启IPVS支持
+### 加载内核模块（IPVS+桥接）
 
-IPVS仅Centos：
+**Centos：**
 
 `nano /etc/sysconfig/modules/ipvs.modules`
 
@@ -205,31 +203,51 @@ EOF
 > - sh /etc/sysconfig/modules/ipvs.modules
 > - lsmod | grep ip_vs
 
+**Ubuntu**：
 
-### 加载内核模块
+`apt-get install -y ipvsadm ipset`
 
 ```shell
-cat -s <<EOF > /etc/modules-load.d/k8s.conf
-overlay
-br_netfilter
+cat > /etc/modules-load.d/ipvs.modules <<EOF
+#!/bin/bash
+modprobe --overlay
+modprobe --br_netfilter
+modprobe --ip_vs
+modprobe --ip_vs_rr
+modprobe --ip_vs_wrr
+modprobe --ip_vs_sh
+modprobe --nf_conntrack
+modprobe --nf_conntrack_ipv4
 EOF
 
-modprobe overlay
-modprobe br_netfilter
+chmod 755 /etc/modules-load.d/ipvs.modules
+bash /etc/modules-load.d/ipvs.modules
+systemctl restart systemd-modules-load
+lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 ```
+
+- **br_netfilter**: 启用网桥流量过滤，允许 iptables 处理桥接流量。
+- **ip_vs\***: IP Virtual Server 内核模块，用于 kube-proxy 的 IPVS 模式。
+- **nf_conntrack**: 连接跟踪模块，是 ip_vs 的依赖。
 
 将桥接的IPv4流量传递到iptables的链
 
 ```shell
 
-# cat /usr/lib/sysctl.d/00-system.conf 与之相同
+# centos:::/usr/lib/sysctl.d/00-system.conf 与之相同↓
 cat -s <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 vm.swappiness=0
 EOF
+```
 
+- **bridge-nf-call-\***: 确保 iptables 能够对桥接的流量进行过滤。
+- **ip_forward = 1**: 启用 IPv4 路由转发，是 Pod 跨节点通信的基础。
+
+
+```bash
 --------------------------
 --------------------------
 # /etc/sysctl.conf，这里推荐在企业正式环境里配置
@@ -244,6 +262,7 @@ sysctl --system
 #校验
 lsmod | grep br_netfilter
 lsmod | grep overlay
+lsmod | grep ip_vs
 sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
 ```
 
@@ -255,7 +274,6 @@ echo deadline > /sys/block/sda/queue/scheduler
 # 调整预读缓存
 blockdev --setra 4096 /dev/sda
 ```
-
 
 ### network-security开启网络安全
 
@@ -362,6 +380,29 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 或手动修改
     [plugins.'io.containerd.cri.v1.images'.pinned_images]
       sandbox = 'registry.aliyuncs.com/google_containers/pause:3.10.1'
+    [plugins.'io.containerd.cri.v1.images'.registry]
+      config_path = '/etc/containerd/certs.d'  
+```
+
+```bash
+mkdir -p /etc/containerd/certs.d/registry.k8s.io
+mkdir -p /etc/containerd/certs.d/k8s.gcr.io
+
+cat > /etc/containerd/certs.d/registry.k8s.io/hosts.toml <<'EOF'
+server = "https://registry.k8s.io"
+
+[host."https://registry.aliyuncs.com"]
+  capabilities = ["pull", "resolve"]
+  override_path = true
+EOF
+
+cat > /etc/containerd/certs.d/k8s.gcr.io/hosts.toml <<'EOF'
+server = "https://k8s.gcr.io"
+
+[host."https://registry.aliyuncs.com"]
+  capabilities = ["pull", "resolve"]
+  override_path = true
+EOF
 ```
 
 > systemctl restart containerd
@@ -398,13 +439,9 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 [开启 ssh 远程登录文档](./ssh.md)
 
 
-## A、在所有节点上安装kubernetes
+## A、在所有节点上安装k8s
 
-[安装工具](https://kubernetes.io/zh/docs/tasks/tools/)：[docker](https://docs.docker.com/engine/install/centos/)、kubeadm管理、kukelet代理、kubectl命令行
-
-[kubernetes版本 History](https://kubernetes.io/zh-cn/releases/)
-
-<https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG>
+kubeadm管理、kukelet代理、kubectl命令行
 
 ### K8s抛弃Docker的原因
 
@@ -412,14 +449,11 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 
 Kubernetes 1.24+ 版本虽然已经不使用原始docker，k8s使用了containerd替代，但如果不想用它，也可以使用docker推出的 cri-dockerd。
 
-
 **...安装docker...忽略...；Kubernetes 1.24+ 版本已经去除了对Docker的直接接口支持,需要通过containerd + docker CRI使用Docker。**
-
-<https://docs.docker.com/engine/install/centos/>
 
 卸载的旧版本
 
-```shell
+```bash
 yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 ```
 
@@ -541,13 +575,13 @@ apt-get update
 
 ```bash
 apt search kube*
-apt-get install -y kubelet=1.34.6-* kubeadm=1.34.6-* kubectl=1.34.6-*
+apt-get install -y kubelet=1.34.7-* kubeadm=1.34.7-* kubectl=1.34.7-*
 
 华为：
-yum install kubelet-1.34.6-0 kubeadm-1.34.6-0 kubectl-1.34.6-0 --disableexcludes=kubernetes
+yum install kubelet-1.34.7-0 kubeadm-1.34.7-0 kubectl-1.34.7-0 --disableexcludes=kubernetes
 阿里：
-yum install kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disableexcludes=kubernetes
-yum install --nogpgcheck kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disableexcludes=kubernetes
+yum install kubelet-1.34.7 kubeadm-1.34.7 kubectl-1.34.7 --disableexcludes=kubernetes
+yum install --nogpgcheck kubelet-1.34.7 kubeadm-1.34.7 kubectl-1.34.7 --disableexcludes=kubernetes
 ```
 
 - 设置 `disableexcludes` 运行 yum update 时不会升级kubernetes。
@@ -565,9 +599,6 @@ yum install --nogpgcheck kubelet-1.34.6 kubeadm-1.34.6 kubectl-1.34.6 --disablee
 - showmanual：列出所有手动安装的软件包。
 - showhold：列出所有标记为保留的软件包。
 
-### 创建k8s软连接
-
-如没有软连接就执行：`ln -s /usr/bin/kube*  /usr/local/bin/`
 
 ### 启动 k8s
 
@@ -578,28 +609,23 @@ systemctl start kubelet | disable | enable | stop | status
 发现：`kubelet.service - kubelet: The Kubernetes Node Agent`，属于正常，k8s还没有配置
 
 
-## B、Master 部署 Kubernetes
-
-编辑 master_images.sh：设置需要的镜像，仓库地址：[官网docker镜像搜索](https://hub.docker.com/)
-
-<https://hub.docker.com/u/aiotceo> 、<https://hub.docker.com/u/mirrorgooglecontainers>
+## B、Master部署K8s
 
 ```shell
 > swr.myhuaweicloud.com/iivey
 > registry.k8s.io
-> registry.cn-chengdu.aliyuncs.com/k8sjf
 > registry.aliyuncs.com/google_containers
 ```
 
 - 查询需要的镜像：
 
-`kubeadm config images list --kubernetes-version=v1.34.6 --image-repository registry.aliyuncs.com/google_containers`
+`kubeadm config images list --kubernetes-version=v1.34.7 --image-repository registry.aliyuncs.com/google_containers`
 
 ```bash
-registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.6
-registry.aliyuncs.com/google_containers/kube-controller-manager:v1.34.6
-registry.aliyuncs.com/google_containers/kube-scheduler:v1.34.6
-registry.aliyuncs.com/google_containers/kube-proxy:v1.34.6
+registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.7
+registry.aliyuncs.com/google_containers/kube-controller-manager:v1.34.7
+registry.aliyuncs.com/google_containers/kube-scheduler:v1.34.7
+registry.aliyuncs.com/google_containers/kube-proxy:v1.34.7
 registry.aliyuncs.com/google_containers/coredns:v1.12.1
 registry.aliyuncs.com/google_containers/pause:3.10.1
 registry.aliyuncs.com/google_containers/etcd:3.6.5-0
@@ -610,7 +636,7 @@ registry.aliyuncs.com/google_containers/etcd:3.6.5-0
 ```bash
 kubeadm config images pull \
 --image-repository registry.aliyuncs.com/google_containers \
---kubernetes-version v1.34.6
+--kubernetes-version v1.34.7
 ```
 
 通过 `crictl images` 查验是否下载成功。
@@ -627,21 +653,23 @@ kubeadm config images pull \
 sed -i 's/advertiseAddress: .*/advertiseAddress: 192.168.0.130/' kubeadm.yaml
 sed -i 's#imageRepository: .*#imageRepository: registry.aliyuncs.com/google_containers#' kubeadm.yaml
 sed -i 's/^\s*name: .*$/  name: master/' kubeadm.yaml
-sed -i 's/kubernetesVersion: .*/kubernetesVersion: v1.34.6/' kubeadm.yaml
+sed -i 's/kubernetesVersion: .*/kubernetesVersion: v1.34.7/' kubeadm.yaml
 sed -i '/serviceSubnet/a\  podSubnet: 10.244.0.0/16' kubeadm.yaml
 ```
 
 执行初始化：`kubeadm init --config kubeadm.yaml`
 
-或：Centos：
+或者通过命令初始化：
+
+**Centos例子**：
 
 ```shell
 kubeadm init \
 --apiserver-advertise-address=192.168.0.130 \
 --control-plane-endpoint=192.168.0.130 \
 --image-repository registry.aliyuncs.com/google_containers \
---kubernetes-version v1.34.6 \
---service-cidr=10.96.0.0/16 \
+--kubernetes-version v1.34.7 \
+--service-cidr=10.96.0.0/12 \
 --pod-network-cidr=10.244.0.0/16
 ```
 
@@ -653,15 +681,17 @@ kubeadm init \
 ### 得到 kubeadm join
 
 ```shell
-您的Kubernetes控制平面已成功初始化！
+Your Kubernetes control-plane has initialized successfully!
 要开始使用群集，您需要以普通用户身份运行以下命令：
     mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
     echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
+    source ~/.bashrc
 
 或者，如果您是root用户，则可以运行：
-  echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
+    echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
+    source ~/.bashrc
   
 您现在应该在集群上部署一个pod网络。
 使用下列选项之一运行“kubectl apply -f [podnetwork].yaml”：
@@ -671,39 +701,177 @@ https://kubernetes.io/docs/concepts/cluster-administration/addons/
 现在，您可以通过复制证书颁发机构来加入任意数量的控制平面节点
 和每个节点上的服务帐户密钥，然后以root用户身份运行以下操作：
 kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
-        --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1 \
+        --discovery-token-ca-cert-hash sha256:0d270a0f1f942050a584a35abd42284fffc5d52d88d37af9382731743f40c393 \
         --control-plane
 
 然后，在每个节点上以root身份运行以下操作，可以加入任意数量的工作节点：
 ##### node
 su root
 kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
-        --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1
+        --discovery-token-ca-cert-hash sha256:0d270a0f1f942050a584a35abd42284fffc5d52d88d37af9382731743f40c393
 ```
 
 
+## 网络与存储设计
 
-### [ERROR CRI]: container runtime is not running
+**网络方案**：
 
-[官网解决方案](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
+- **CNI插件选择**：Calico(策略丰富)、Cilium(eBPF高性能)或Flannel(简单场景)
+- **多网段隔离**：建议分离K8s集群网络(如192.168.9.0/24)与存储网络(如192.168.10.0/24)
+- **Ingress控制器**：推荐Ingress-Nginx(企业级)或Traefik(功能强大)
 
-[所有节点安装containerd](#所有节点安装containerd)
+**存储方案**：
 
-1. 删除 `/etc/containerd/config.toml` 文件。
-2. 要确保 `cri` 没有出现在 `/etc/containerd/config.toml` 文件中 `disabled_plugins` 列表内。
-3. 执行`生成config.toml配置` 命令：`containerd config default > /etc/containerd/config.toml`
+- **本地存储**：OpenEBS LocalPV适合高性能需求
+- **共享存储**：Ceph或云厂商块存储(如AWS EBS、阿里云ESSD)
+- **动态供给**：通过StorageClass定义多种存储类型
 
-然后重新启动 containerd：
+## C、Master部署网络策略插件
+
+![](./basis.assets/true-image-20220827152630437.png)
+
+参考：<https://kubernetes.io/zh/docs/concepts/cluster-administration/addons/>
+
+下表总结了不同的 GitHub 指标，让你了解每个项目的受欢迎程度和活动。数据收集于 2026 年 5 月。
+
+| 提供商  | 项目                                                         | Stars | Forks | Contributors贡献者 |
+| ------- | ------------------------------------------------------------ | ----- | ----- | ------------------ |
+| **Cilium**  | [cilium/cilium](https://github.com/cilium/cilium)            | 24.3k | 3.8k  | 1079                |
+| **Calico**  | [projectcalico/calico](https://github.com/projectcalico/calico) | 7.2k  | 1.6k  | 412                |
+| Flannel | [flannel-io/flannel](https://github.com/flannel-io/flannel)  | 9.4k  | 2.9k  | 249                |
+| Weave   | [weaveworks/weave](https://github.com/weaveworks/weave/)     | 6.6k  | 660   | 82                 |
+| Canal   | [projectcalico/canal](https://github.com/projectcalico/canal) | 723   | 97   | 20                 |
+
+
+|提供商 | 网络模型  |  路线分发  |  网络策略 |   网格    |外部数据存储  |  加密    | Ingress/Egress策略|
+| ------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+|Cilium|封装 (VXLAN)|✓|✓|✓|Etcd 和 K8s API|✓|✓|
+|Calico|封装（VXLAN，IPIP）或未封装|✓|✓|✓|Etcd 和 K8s API|✓|✓|
+|Flannel |封装 (VXLAN)|✗|✗|✗|K8s API|✓|✗|
+|Weave|封装|✓|✓|✓|✗|✓|✓|
+|Canal  | 封装 (VXLAN)|✗|✓|✗|K8s API|✓|✓|
+
+
+- **路由分发**：一种外部网关协议，用于在互联网上交换路由和可达性信息。BGP 可以帮助进行跨集群 pod 之间的网络。此功能对于未封装的 CNI 网络插件是必须的，并且通常由 BGP 完成。如果你想构建跨网段拆分的集群，路由分发是一个很好的功能。
+- **网络策略**：Kubernetes 提供了强制执行规则的功能，这些规则决定了哪些 service 可以使用网络策略进行相互通信。这是从 Kubernetes 1.7 起稳定的功能，可以与某些网络插件一起使用。
+- **网格**：允许在不同的 Kubernetes 集群间进行 service 之间的网络通信。
+- **外部数据存储**：具有此功能的 CNI 网络插件需要一个外部数据存储来存储数据。
+- **加密**：允许加密和安全的网络控制和数据平面。
+- **Ingress/Egress** 策略：允许你管理 Kubernetes 和非 Kubernetes 通信的路由控制。
+
+
+**Flannel** 的缺点之一是缺乏高级功能，例如配置网络策略和防火墙的能力，是一个很好的入门级选择；如需高级网络功能 **Cilium** 和 **Calico** 。
+
+
+### 配置网络策略 Flannel
+
+root用户：
 
 ```shell
-systemctl restart containerd
+wget https://github.com/flannel-io/flannel/releases/download/v0.28.4/kube-flannel.yml
+
+kubectl apply -f kube-flannel.yml
+
+kubectl delete -f kube-flannel.yml
+```
+
+获取pods所有名称空间
+
+```shell
+[root@master ~]# kubectl get pods --all-namespaces -o wide
+NAMESPACE      NAME                             READY   STATUS    RESTARTS   AGE    IP                NODE     NOMINATED NODE   READINESS GATES
+kube-flannel   kube-flannel-ds-2vkzl            1/1     Running   0          2m7s   192.168.0.130   master   <none>           <none>
+kube-flannel   kube-flannel-ds-f5jkp            1/1     Running   0          2m7s   192.168.0.131   node1    <none>           <none>
+kube-flannel   kube-flannel-ds-tlh6w            1/1     Running   0          2m7s   192.168.0.132   node2    <none>           <none>
+kube-system    coredns-66f779496c-7qfs6         1/1     Running   0          42m    10.244.2.2      node1    <none>           <none>
+kube-system    coredns-66f779496c-bhx66         1/1     Running   0          42m    10.244.2.3      node1    <none>           <none>
+kube-system    etcd-master                      1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-apiserver-master            1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-controller-manager-master   1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-proxy-2wq4b                 1/1     Running   0          35m    192.168.0.131   node1    <none>           <none>
+kube-system    kube-proxy-69rng                 1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
+kube-system    kube-proxy-q4tj8                 1/1     Running   0          35m    192.168.0.132   node2    <none>           <none>
+kube-system    kube-scheduler-master            1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
 ```
 
 
+### 配置网络策略 Calico
 
-### 重启后出现：`The connection to the server localhost:8080 was refused - did you specify the right host or port?`
+```bash
+# Tigera 操作符
+wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/tigera-operator.yaml
+# 自定义资源
+wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/custom-resources-bpf.yaml
 
-请看↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+kubectl create -f tigera-operator.yaml
+kubectl create -f custom-resources-bpf.yaml
+```
+
+`kubectl apply` 可能超过请求限制，使用 `create`
+
+修改：`custom-resources-bpf.yaml`
+
+- **cidr** 与 **podSubnet** 网段一样: *10.244.0.0/16*
+- **registry**：`m.daocloud.io`，`registry.aliyuncs.com/google_containers/` `04eo9xup.mirror.aliyuncs.com`，`registry.docker-cn.com`，`hub-mirror.c.163.com`
+
+``` :collapsed-lines=15
+# For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  registry: registry.aliyuncs.com/google_containers/   #默认为docker.io外网下载不了
+  calicoNetwork:
+    linuxDataplane: BPF
+    bpfNetworkBootstrap: Enabled
+    kubeProxyManagement: Enabled
+    ipPools:
+      - name: default-ipv4-ippool
+        blockSize: 26           # 26 (IPv4), 122 (IPv6)
+        cidr: 10.244.0.0/16     # 与podSubnet网段一样
+        encapsulation: VXLANCrossSubnet
+        natOutgoing: Enabled
+        nodeSelector: all()
+```
+
+监控命名空间calico-system进度：`watch kubectl get pods -n calico-system`
+
+发布nginx服务到k8s集群环境验证：
+
+> kubectl apply -f nginx.yaml
+>
+> kubectl get pods
+
+
+## D、将从node节点加入主Master集群中
+
+su root 在每个根节点上运行以下操作：
+
+[查看 kubeadm init](#master-kubeadm初始化)
+
+```shell
+[root@node-121 ~]# kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
+        --discovery-token-ca-cert-hash sha256:0d270a0f1f942050a584a35abd42284fffc5d52d88d37af9382731743f40c393
+
+[preflight] 进行飞行前检查
+[preflight] 从集群中读取配置...
+[preflight] 仅供参考：您可以查看此配置文件'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[kubelet-start] 将 kubelet 配置写入文件 "/var/lib/kubelet/config.yaml"
+[kubelet-start] 将带有标志的 kubelet 环境文件写入文件 "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] 启动 kubelet
+[kubelet-start] 等待 kubelet 执行 TLS Bootstrap...
+
+此节点已加入集群：
+* 证书签名请求已发送到 apiserver 并收到响应。
+* Kubelet  被告知新的安全连接细节。
+
+master Run 'kubectl get nodes' 在控制平面上查看该节点加入集群。
+```
+
+### 重启后出现localhost:8080-was-refused
+
+`The connection to the server localhost:8080 was refused - did you specify the right host or port?` 请看↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 ### Node节点运行kubectl命令
 
@@ -721,40 +889,7 @@ echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc  ||  ~/.bash_pr
 source ~/.bashrc
 ```
 
-
 ### 解决端口占用：kubeadm reset
-
-
-
-## C、将从节点（node）加入 Kubernetes （Master）集群中
-
-su root 在每个根节点上运行以下操作：
-
-[查看 kubeadm init](#master-kubeadm初始化)
-
-```shell
-su root
-kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
-        --discovery-token-ca-cert-hash sha256:5083504d7d835c239dc7a1f510d79e13b71a1314ec602afd07da5b427e421be1
-```
-
-```shell
-[root@node-121 ~]# kubeadm join 192.168.0.130:6443 --token 971p07.4h9ljb93kcm471bd --discovery-token-ca-cert-hash sha256:2f02b1e110...5bc55393ea61b
-
-[preflight] 进行飞行前检查
-[preflight] 从集群中读取配置...
-[preflight] 仅供参考：您可以查看此配置文件'kubectl -n kube-system get cm kubeadm-config -o yaml'
-[kubelet-start] 将 kubelet 配置写入文件 "/var/lib/kubelet/config.yaml"
-[kubelet-start] 将带有标志的 kubelet 环境文件写入文件 "/var/lib/kubelet/kubeadm-flags.env"
-[kubelet-start] 启动 kubelet
-[kubelet-start] 等待 kubelet 执行 TLS Bootstrap...
-
-此节点已加入集群：
-* 证书签名请求已发送到 apiserver 并收到响应。
-* Kubelet  被告知新的安全连接细节。
-
-master Run 'kubectl get nodes' 在控制平面上查看该节点加入集群。
-```
 
 ### token过期，重新设置
 
@@ -763,65 +898,6 @@ master Run 'kubectl get nodes' 在控制平面上查看该节点加入集群。
 > kubeadm token create --print-join-command
 >
 > kubeadm token create --ttl 0 --print-join-command
-
-
-## D、master 部署网络策略插件
-
-![](./basis.assets/true-image-20220827152630437.png)
-
-参考：<https://kubernetes.io/zh/docs/concepts/cluster-administration/addons/>
-
-下表总结了不同的 GitHub 指标，让你了解每个项目的受欢迎程度和活动。数据收集于 2024 年 3 月。
-
-| 提供商  | 项目                                                         | Stars | Forks | Contributors贡献者 |
-| ------- | ------------------------------------------------------------ | ----- | ----- | ------------------ |
-| Cilium  | [cilium/cilium](https://github.com/cilium/cilium)            | 18.1k | 2.6k  | 713                |
-| Calico  | [projectcalico/calico](https://github.com/projectcalico/calico) | 5.4k  | 1.2k  | 337                |
-| Flannel | [flannel-io/flannel](https://github.com/flannel-io/flannel)  | 8.4k  | 2.9k  | 231                |
-| Weave   | [weaveworks/weave](https://github.com/weaveworks/weave/)     | 6.6k  | 660   | 87                 |
-| Canal   | [projectcalico/canal](https://github.com/projectcalico/canal) | 709   | 100   | 20                 |
-
-
-Flannel 的缺点之一是缺乏高级功能，例如配置网络策略和防火墙的能力。因此 Flannel 是 Kubernetes 集群网络的一个很好的入门级选择，但是，如果你正在寻找高级网络功能，你可能需要考虑其他 CNI 选项，例如 Cilium和Calico。
-
-### 配置网络策略 Flannel
-
-root用户：
-
-```shell
-https://github.com/flannel-io/flannel#deploying-flannel-manually
-
-wget https://github.com/flannel-io/flannel/releases/download/v0.28.4/kube-flannel.yml
-
-kubectl apply -f kube-flannel.yml
-
-kubectl delete -f kube-flannel.yml
-```
-
-获取pods所有名称空间
-
-```shell
-[root@master ~]# kubectl get pods --all-namespaces -o wide
-NAMESPACE      NAME                             READY   STATUS    RESTARTS   AGE    IP                NODE     NOMINATED NODE   READINESS GATES
-kube-flannel   kube-flannel-ds-2vkzl            1/1     Running   0          2m7s   192.168.0.130   master   <none>           <none>
-kube-flannel   kube-flannel-ds-f5jkp            1/1     Running   0          2m7s   192.168.0.131   node1    <none>           <none>
-kube-flannel   kube-flannel-ds-tlh6w            1/1     Running   0          2m7s   192.168.0.132   node2    <none>           <none>
-kube-system    coredns-66f779496c-7qfs6         1/1     Running   0          42m    10.244.2.2        node1    <none>           <none>
-kube-system    coredns-66f779496c-bhx66         1/1     Running   0          42m    10.244.2.3        node1    <none>           <none>
-kube-system    etcd-master                      1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
-kube-system    kube-apiserver-master            1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
-kube-system    kube-controller-manager-master   1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
-kube-system    kube-proxy-2wq4b                 1/1     Running   0          35m    192.168.0.131   node1    <none>           <none>
-kube-system    kube-proxy-69rng                 1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
-kube-system    kube-proxy-q4tj8                 1/1     Running   0          35m    192.168.0.132   node2    <none>           <none>
-kube-system    kube-scheduler-master            1/1     Running   0          42m    192.168.0.130   master   <none>           <none>
-```
-
-
-
-### 配置网络策略 Cilium
-
-......
 
 ### [kubectl命令表](https://blog.csdn.net/qq_42476834/article/details/121781274)
 
@@ -843,10 +919,10 @@ No resources found in default namespace.
 ```shell
 [root@master-120 kubelet]# kg nodes
 NAME         STATUS   ROLES                  AGE   VERSION
-master-120   Ready    control-plane,master   63m   v1.34.6
-node-121     Ready    <none>                 58m   v1.34.6
-node-122     Ready    <none>                 58m   v1.34.6
-node-123     Ready    <none>                 58m   v1.34.6
+master-120   Ready    control-plane,master   63m   v1.34.7
+node-121     Ready    <none>                 58m   v1.34.7
+node-122     Ready    <none>                 58m   v1.34.7
+node-123     Ready    <none>                 58m   v1.34.7
 ```
 
 查看命名空间 **kubectl get ns**

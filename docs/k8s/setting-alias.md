@@ -62,6 +62,7 @@ alias statusk8s='systemctl status kubectl'
 ###########k8s-创建与删除
 alias k='kubectl'
 alias ka='kubectl apply -f' #使用yaml创建apps
+alias kc='kubectl create -f' #使用yaml创建apps
 alias kd='kubectl delete -f' #删除yaml创建apps
 ###########k8s-资源信息
 alias kg='kubectl get'
@@ -89,8 +90,8 @@ alias kgpods-node='kubectl get pods -n kube-system -o wide | grep $1' #查看nod
 alias kdesc-node='kubectl describe node $1' #传入node主机名称
 alias kdesc-pod='kubectl describe pod -n $1' #传入名称空间
 ###########k8s-log信息
-alias klog='kubectl logs -n $1' #传入名称空间
-alias klog='kubectl logs $1' #传入svc的名称【tomcat-b8cdc6f6b-7ngdx】
+alias knlog='kubectl logs -n $1' #传入名称空间
+alias ksvclog='kubectl logs $1' #传入svc的名称【tomcat-b8cdc6f6b-7ngdx】
 ###########k8s-系统操作部分
 alias ks='kubectl set' #设置应用资源
 alias ke='kubectl edit' #编辑资源
