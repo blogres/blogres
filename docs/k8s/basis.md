@@ -30,7 +30,7 @@ k8s 集群配置安装
 
 ## kubectl 快捷键（alias）
 
-具体命令请看：[k8s-alias](./setting-alias.md)
+具体命令请看：[k8s-alias](./alias.md)
 
 
 ## 部署步骤
@@ -38,9 +38,9 @@ k8s 集群配置安装
 ```ABAP
 0.k8s模板系统环境配置（环境准备k8s-init），完成后开始克隆主机。
 1.在所有节点上安装 containerd 和 kubeadm。
-2.部署 Kubernetes Master。
+2.部署init Kubernetes Master。
 3.部署容器网络插件（Cilium、Calico、Flannel）。
-4.部署 Kubernetes Node，将节点加入 Kubernetes集群中。
+4.部署join Kubernetes Node，将节点加入 Kubernetes集群中。
 5.部署可视化管理工具-(KubeSphere、Rancher、Kuboard)。
 6.部署程序、插件。
 ```
@@ -205,25 +205,23 @@ EOF
 
 **Ubuntu**：
 
-`apt-get install -y ipvsadm ipset`
+**apt-get install -y ipvsadm ipset**
 
 ```shell
-cat > /etc/modules-load.d/ipvs.modules <<EOF
+cat > /etc/modules-load.d/ipvs.conf <<EOF
 #!/bin/bash
-modprobe --overlay
-modprobe --br_netfilter
-modprobe --ip_vs
-modprobe --ip_vs_rr
-modprobe --ip_vs_wrr
-modprobe --ip_vs_sh
-modprobe --nf_conntrack
-modprobe --nf_conntrack_ipv4
+modprobe ip_vs
+modprobe ip_vs_rr
+modprobe ip_vs_wrr
+modprobe ip_vs_sh
+modprobe nf_conntrack
 EOF
 
-chmod 755 /etc/modules-load.d/ipvs.modules
-bash /etc/modules-load.d/ipvs.modules
-systemctl restart systemd-modules-load
-lsmod | grep -e ip_vs -e nf_conntrack_ipv4
+cat > /etc/modules-load.d/k8s.conf <<EOF
+#!/bin/bash
+modprobe overlay
+modprobe br_netfilter
+EOF
 ```
 
 - **br_netfilter**: 启用网桥流量过滤，允许 iptables 处理桥接流量。
@@ -233,7 +231,6 @@ lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 将桥接的IPv4流量传递到iptables的链
 
 ```shell
-
 # centos:::/usr/lib/sysctl.d/00-system.conf 与之相同↓
 cat -s <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -241,28 +238,29 @@ net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 vm.swappiness=0
 EOF
-```
 
-- **bridge-nf-call-\***: 确保 iptables 能够对桥接的流量进行过滤。
-- **ip_forward = 1**: 启用 IPv4 路由转发，是 Pod 跨节点通信的基础。
-
-
-```bash
 --------------------------
 --------------------------
 # /etc/sysctl.conf，这里推荐在企业正式环境里配置
 net.core.somaxconn = 32768
 net.ipv4.tcp_tw_reuse = 1
 fs.file-max = 2097152
---------------------------
---------------------------
+```
 
+- **bridge-nf-call-\***: 确保 iptables 能够对桥接的流量进行过滤。
+- **ip_forward = 1**: 启用 IPv4 路由转发，是 Pod 跨节点通信的基础。
+
+
+**校验：**
+
+```bash
+systemctl restart systemd-modules-load
 sysctl -p /etc/sysctl.d/k8s.conf
 sysctl --system
-#校验
-lsmod | grep br_netfilter
+
+lsmod | grep -e ip_vs -e nf_conntrack
 lsmod | grep overlay
-lsmod | grep ip_vs
+lsmod | grep br_netfilter
 sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
 ```
 
@@ -599,6 +597,14 @@ yum install --nogpgcheck kubelet-1.34.7 kubeadm-1.34.7 kubectl-1.34.7 --disablee
 - showmanual：列出所有手动安装的软件包。
 - showhold：列出所有标记为保留的软件包。
 
+### 配置kubelet
+
+配置cgroup管理
+
+```
+nano /etc/default/kubelet
+KUBELET_EXTRA_ARGS="--cgroup-driver=systemd"
+```
 
 ### 启动 k8s
 
@@ -645,9 +651,9 @@ kubeadm config images pull \
 
 - 生成k8s默认配置文件信息：
 
-`kubeadm config print init-defaults > kubeadm.yaml`
+`kubeadm config print init-defaults --component-configs KubeProxyConfiguration > kubeadm.yaml`
 
-设置：
+修改配置：
 
 ```bash
 sed -i 's/advertiseAddress: .*/advertiseAddress: 192.168.0.130/' kubeadm.yaml
@@ -655,6 +661,35 @@ sed -i 's#imageRepository: .*#imageRepository: registry.aliyuncs.com/google_cont
 sed -i 's/^\s*name: .*$/  name: master/' kubeadm.yaml
 sed -i 's/kubernetesVersion: .*/kubernetesVersion: v1.34.7/' kubeadm.yaml
 sed -i '/serviceSubnet/a\  podSubnet: 10.244.0.0/16' kubeadm.yaml
+
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  excludeCIDRs: null
+  minSyncPeriod: 0s
+  scheduler: ""
+  strictARP: false
+  syncPeriod: 30s
+  tcpFinTimeout: 30s
+  tcpTimeout: 30s
+  udpTimeout: 0s
+```
+
+配置 crictl 工具，方便调试。
+
+```bash
+cat <<EOF | sudo tee /etc/crictl.yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+timeout: 2
+debug: false
+EOF
 ```
 
 执行初始化：`kubeadm init --config kubeadm.yaml`
@@ -709,6 +744,13 @@ kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
 su root
 kubeadm join 192.168.0.130:6443 --token abcdef.0123456789abcdef \
         --discovery-token-ca-cert-hash sha256:0d270a0f1f942050a584a35abd42284fffc5d52d88d37af9382731743f40c393
+```
+
+### 验证 kube-proxy 模式
+
+```bash
+root@master:~# kubectl get configmap kube-proxy -n kube-system -o yaml | grep mode
+打印    mode: ipvs
 ```
 
 
@@ -797,51 +839,91 @@ kube-system    kube-scheduler-master            1/1     Running   0          42m
 
 ### 配置网络策略 Calico
 
+[官网快速入门部署](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)
+
 ```bash
-# Tigera 操作符
+#自定义资源定义
+wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/v1_crd_projectcalico_org.yaml
+#Tigera操作符：
 wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/tigera-operator.yaml
-# 自定义资源
-wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/custom-resources-bpf.yaml
-
-kubectl create -f tigera-operator.yaml
-kubectl create -f custom-resources-bpf.yaml
+#创建必要的自定义资源来安装 Calico
+wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/custom-resources.yaml
 ```
-
-`kubectl apply` 可能超过请求限制，使用 `create`
 
 修改：`custom-resources-bpf.yaml`
 
 - **cidr** 与 **podSubnet** 网段一样: *10.244.0.0/16*
-- **registry**：`m.daocloud.io`，`registry.aliyuncs.com/google_containers/` `04eo9xup.mirror.aliyuncs.com`，`registry.docker-cn.com`，`hub-mirror.c.163.com`
+- **registry**：`docker.m.daocloud.io`，`registry.aliyuncs.com/google_containers/` `04eo9xup.mirror.aliyuncs.com`，`registry.docker-cn.com`，`hub-mirror.c.163.com`
+- [配置参数清单]( https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation)
 
-``` :collapsed-lines=15
-# For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation
+```yaml :collapsed-lines=15
 apiVersion: operator.tigera.io/v1
 kind: Installation
 metadata:
   name: default
 spec:
-  registry: registry.aliyuncs.com/google_containers/   #默认为docker.io外网下载不了
+  # Configures Calico networking.
+  # registry: docker.m.daocloud.io
   calicoNetwork:
-    linuxDataplane: BPF
-    bpfNetworkBootstrap: Enabled
-    kubeProxyManagement: Enabled
     ipPools:
       - name: default-ipv4-ippool
-        blockSize: 26           # 26 (IPv4), 122 (IPv6)
-        cidr: 10.244.0.0/16     # 与podSubnet网段一样
+        blockSize: 26         # 26 (IPv4), 122 (IPv6)
+        cidr: 10.244.0.0/16   # 与podSubnet网段一样
         encapsulation: VXLANCrossSubnet
         natOutgoing: Enabled
         nodeSelector: all()
 ```
 
-监控命名空间calico-system进度：`watch kubectl get pods -n calico-system`
+**部署calico**：
 
-发布nginx服务到k8s集群环境验证：
+```bash
+kubectl create -f v1_crd_projectcalico_org.yaml
+kubectl create -f tigera-operator.yaml
+kubectl create -f custom-resources-bpf.yaml
 
-> kubectl apply -f nginx.yaml
->
-> kubectl get pods
+这里只需要等待他们全部running即可：预计10分钟左右
+kgpodsnw-calico | kubectl get pod -n kube-system -o wide
+
+NAME                                       READY   STATUS     AGE     IP
+calico-apiserver-5ff967c559-8vhz6          1/1     Running    10m     10.244.219.69
+calico-apiserver-5ff967c559-wnfkj          1/1     Running    10m     10.244.219.67
+calico-kube-controllers-669bd6b99c-kz98c   1/1     Running    10m     10.244.219.70
+calico-node-tjmqq                          1/1     Running    10m     192.168.0.130
+calico-typha-5f4ccb7764-bggrw              1/1     Running    10m     192.168.0.130
+csi-node-driver-8xkh6                      2/2     Running    10m     10.244.219.65
+goldmane-784dbb4c44-qzs7v                  1/1     Running    10m     10.244.219.68
+whisker-d79945844-99lhz                    2/2     Running    12m     10.244.219.73
+```
+
+默认使用的镜像：*crictl images*
+
+```bash
+quay.io/calico/apiserver                        v3.32.0       c6246c3f0b5d8       50.9MB
+quay.io/calico/cni                              v3.32.0       d456a937d6e74       69.5MB
+quay.io/calico/csi                              v3.32.0       a665cad044872       11.5MB
+quay.io/calico/goldmane                         v3.32.0       8b5156bd00aba       52.5MB
+quay.io/calico/kube-controllers                 v3.32.0       e67ce8d034ec5       61MB
+quay.io/calico/node-driver-registrar            v3.32.0       ec9c47a649284       16.5MB
+quay.io/calico/node                             v3.32.0       6bc9fa4dc2b10       120MB
+quay.io/calico/pod2daemon-flexvol               v3.32.0       2a07a5ef4d7ba       7.56MB
+quay.io/calico/typha                            v3.32.0       a4433ba6d0851       41.1MB
+quay.io/calico/whisker-backend                  v3.32.0       5f531f3cb4757       25.1MB
+quay.io/calico/whisker                          v3.32.0       b4638c5ba691c       9.05MB
+quay.io/tigera/operator                         v1.42.0       2d636341e3971       45.6MB
+```
+
+### 监控 Calico Whisker 的网络流量
+
+Whisker 网页控制台会自动部署，但默认情况下无法从集群外部访问。要查看网页控制台，你需要允许访问：
+
+- 设置端口转发： 这允许你从浏览器访问 Whisker 网页控制台.
+- 打开胡须网页控制台： 实时查看网络流量日志。
+
+```bash
+kubectl port-forward -n calico-system service/whisker 8081:8081
+```
+
+打开浏览器，访问 <http://master:8081/>
 
 
 ## D、将从node节点加入主Master集群中
@@ -899,86 +981,6 @@ source ~/.bashrc
 >
 > kubeadm token create --ttl 0 --print-join-command
 
-### [kubectl命令表](https://blog.csdn.net/qq_42476834/article/details/121781274)
-
-### 查看
-
-列出所有运行的Pod信息
-
-列出Pod以及运行Pod节点信息。
-
-```shell
-[root@master-120 kubelet]# kubectl get pods
-No resources found in default namespace.
-[root@master-120 ~]# kubectl get pods -o wide
-No resources found in default namespace.
-```
-
-查看所以节点 **kg nodes**
-
-```shell
-[root@master-120 kubelet]# kg nodes
-NAME         STATUS   ROLES                  AGE   VERSION
-master-120   Ready    control-plane,master   63m   v1.34.7
-node-121     Ready    <none>                 58m   v1.34.7
-node-122     Ready    <none>                 58m   v1.34.7
-node-123     Ready    <none>                 58m   v1.34.7
-```
-
-查看命名空间 **kubectl get ns**
-
-```shell
-[root@master-120 kubelet]# kubectl get ns
-NAME              STATUS   AGE
-default           Active   63m
-kube-node-lease   Active   63m
-kube-public       Active   63m
-kube-system       Active   63m
-```
-
-查看 pod 命名空间 **kubectl get pods --all-namespaces -owide**
-
-```shell
-[root@master ~]# kubectl get pods --all-namespaces
-NAMESPACE      NAME                             READY   STATUS    RESTARTS   AGE
-kube-flannel   kube-flannel-ds-kfd89            1/1     Running   0          4m50s
-kube-flannel   kube-flannel-ds-n8fr9            1/1     Running   0          4m50s
-kube-flannel   kube-flannel-ds-tfj78            1/1     Running   0          4m50s
-kube-system    coredns-687d9f64f-b8cvf          1/1     Running   0          55m
-kube-system    coredns-687d9f64f-d99x9          1/1     Running   0          55m
-kube-system    etcd-master                      1/1     Running   0          55m
-kube-system    kube-apiserver-master            1/1     Running   0          55m
-kube-system    kube-controller-manager-master   1/1     Running   0          55m
-kube-system    kube-proxy-6v2v9                 1/1     Running   0          51m
-kube-system    kube-proxy-8z62f                 1/1     Running   0          52m
-kube-system    kube-proxy-ch88v                 1/1     Running   0          55m
-kube-system    kube-scheduler-master            1/1     Running   0          55m
-```
-
-**kubectl get pods -n kube-system**
-
-```shell
-[root@master-120 kubelet]# kubectl get pods -n kube-flannel
-NAME                                 READY   STATUS    RESTARTS   AGE
-kube-flannel-ds-44l8g                1/1     Running   0          48m
-kube-flannel-ds-cf2zd                1/1     Running   0          48m
-kube-flannel-ds-tkbnh                1/1     Running   0          48m
-kube-flannel-ds-wxhk4                1/1     Running   0          48m
-```
-
-**kubectl get pods -n kube-system -o wide**
-
-```shell
-[root@master ~]# kubectl get pods -n kube-flannel -o wide
-NAME                    READY   STATUS    RESTARTS   AGE     IP                NODE     NOMINATED NODE   READINESS GATES
-kube-flannel-ds-kfd89   1/1     Running   0          4m15s   192.168.0.132   node2    <none>           <none>
-kube-flannel-ds-n8fr9   1/1     Running   0          4m15s   192.168.0.130   master   <none>           <none>
-kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   node1    <none>           <none>
-```
-
-**kube-flannel-ds-xxxx 必须运行OK**
-
-
 
 ## E、可视化管理工具
 
@@ -1017,7 +1019,7 @@ kube-flannel-ds-tfj78   1/1     Running   0          4m15s   192.168.0.131   nod
 
 k8s_inspection.sh
 
-```bash
+```bash　:collapsed-lines=15
 #!/bin/bash
  
 # Kubernetes 日常巡检脚本

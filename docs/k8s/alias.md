@@ -57,13 +57,18 @@ alias statusk8s='systemctl status kubectl'
 
 ### k8s：kubectl
 
+**nano ~/.bash_aliases**
+
 ```shell
 ########k8s############
 ###########k8s-创建与删除
 alias k='kubectl'
-alias ka='kubectl apply -f' #使用yaml创建apps
-alias kc='kubectl create -f' #使用yaml创建apps
-alias kd='kubectl delete -f' #删除yaml创建apps
+alias kaf='kubectl apply -f' #使用yaml创建apps
+alias kc='kubectl create' #创建资源
+alias kcf='kubectl create -f' #使用yaml创建apps
+alias kd='kubectl delete' #删除
+alias kdf='kubectl delete -f' #删除yaml创建apps
+alias ked='kubectl edit' #编辑资源
 ###########k8s-资源信息
 alias kg='kubectl get'
 alias kgnodes='kubectl get nodes -o wide' #获取node资源信息
@@ -84,8 +89,9 @@ alias kgpodw='watch kubectl get pod -n kube-system -o wide' #监控k8s-pod的kub
 alias kgpodsallns='kubectl get pods --all-namespaces -o wide' #获取pods所有名称空间
 alias kgpodsn='kubectl get pods -o wide -n $1' #查看输入的【可以kgpodsans查看】名称空间信息
 alias kgpodsn-k8s='kubectl get pods -n kube-system -o wide' #查看名称空间kube-system的信息
+alias kgpodsnw-calico='watch kubectl get pods -n calico-system -o wide' #查看名称空间calico-system的信息
 alias kgpodsn-ingressnginx='kubectl get pods -n ingress-nginx -o wide' #查看名称空间ingress-nginx的信息
-alias kgpods-node='kubectl get pods -n kube-system -o wide | grep $1' #查看node子节点的pod信息
+alias kgpodsn-node='kubectl get pods -n kube-system -o wide | grep $1' #查看node子节点的pod信息
 ###########k8s-describe信息
 alias kdesc-node='kubectl describe node $1' #传入node主机名称
 alias kdesc-pod='kubectl describe pod -n $1' #传入名称空间
@@ -93,10 +99,7 @@ alias kdesc-pod='kubectl describe pod -n $1' #传入名称空间
 alias knlog='kubectl logs -n $1' #传入名称空间
 alias ksvclog='kubectl logs $1' #传入svc的名称【tomcat-b8cdc6f6b-7ngdx】
 ###########k8s-系统操作部分
-alias ks='kubectl set' #设置应用资源
-alias ke='kubectl edit' #编辑资源
-alias kc='kubectl create' #创建资源
-alias kd='kubectl delete' #删除
+alias kset='kubectl set' #设置应用资源
 alias krollout='kubectl rollout' #输出、查看、回滚
 alias klabel='kubectl label' #更新资源对象的label
 alias kpatch='kubectl patch' #更新资源对象字段

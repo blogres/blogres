@@ -10,7 +10,7 @@ tag:
 - k8s
 ---
 
-k8s Ingress
+ingress-nginx 于 2026.3月Ingress退休，使用GatewayAPI替代
 
 <!-- more -->
 
@@ -194,8 +194,6 @@ spec:
 
 [github.com/kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/)
 
-[gitee.com/k8s_s/ingress-nginx](https://gitee.com/k8s_s/ingress-nginx/)
-
 | Ingress-NGINX version | k8s supported version        | Alpine Version | Nginx Version |
 | --------------------- | ---------------------------- | -------------- | ------------- |
 | v1.3.0                | 1.24, 1.23, 1.22, 1.21, 1.20 | 3.14.6         | 1.19.10†      |
@@ -211,14 +209,6 @@ spec:
 | v1.0.2                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
 | v1.0.1                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
 | v1.0.0                | 1.22, 1.21, 1.20, 1.19       | 3.13.5         | 1.20.1        |
-
-**Ingress-nginx 版本选择**
-
-><https://gitee.com/k8s_s/ingress-nginx/blob/controller-v1.1.3/deploy/static/provider/baremetal/1.22/deploy.yaml>
->
-><https://gitee.com/k8s_s/ingress-nginx/blob/controller-v1.2.0/deploy/static/provider/baremetal/1.22/deploy.yaml>
->
-><https://gitee.com/k8s_s/ingress-nginx/blob/controller-v1.3.0/deploy/static/provider/baremetal/1.22/deploy.yaml>
 
 **V1.2.0-yaml 文件需要的版本镜像2个**
 
@@ -480,7 +470,7 @@ kg validatingwebhookconfigurations     --》  ingress-nginx-admission
 
 ## n、查看状态
 
-更多命令：[k8s-alias](./setting-alias.md)
+更多命令：[k8s-alias](./alias.md)
 
 空间名称：kg pods --all-namespaces -o wide
 
@@ -631,4 +621,3 @@ root@tomcat-xx-8sdxp:/usr/local/tomcat# cp -R webapps.dist/. webapps/
 
 ![](./ingress.assets/true-image-20220506042632204.png)
 
----

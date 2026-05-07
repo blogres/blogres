@@ -21,8 +21,6 @@ k8s入门体验：kubectl命令使用、yaml文件配置、Deployment与service�
 
 **资源包括(不区分大小写)：pod（po），service（svc），replication controller（rc），deployment（deploy），replica set（rs）**
 
-具体命令请看：[k8s-alias](./setting-alias.md)
-
 ### kubectl get po
 
 ```bash
