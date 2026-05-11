@@ -967,7 +967,7 @@ scp /etc/kubernetes/admin.conf root@node2:/etc/kubernetes/admin.conf
 解决 *did you specify the right host or port?*
 
 ```bash
-echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc  ||  ~/.bash_profile
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -982,7 +982,12 @@ source ~/.bashrc
 > kubeadm token create --ttl 0 --print-join-command
 
 
-## E、可视化管理工具
+## E、部署路由负载均衡
+
+- [Ingress](./ingress.md) **于2026.3已退休，使用Gateway API代替**
+- [Gateway API](./gateway-api.md)
+
+## F、可视化管理工具
 
 ### 1、dashboard（不推荐）
 

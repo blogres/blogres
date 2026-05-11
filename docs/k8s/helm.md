@@ -24,54 +24,111 @@ Helm版本支持策略: <https://helm.sh/zh/docs/topics/version_skew/>
 
 |                          Helm 版本                          | 支持的 Kubernetes 版本 |
 | :---------------------------------------------------------: | :--------------------: |
-| [3.14.x](https://github.com/helm/helm/releases/tag/v3.14.3) |    1.27.x - 1.24.x     |
-| [3.13.x](https://github.com/helm/helm/releases/tag/v3.13.3) |    1.27.x - 1.24.x     |
-| [3.12.x](https://github.com/helm/helm/releases/tag/v3.12.3) |    1.27.x - 1.24.x     |
+| [4.1.x](https://github.com/helm/helm/releases/tag/v4.1.4) |    1.35.x - 1.32.x     |
+| [4.0.x](https://github.com/helm/helm/releases/tag/v4.0.5) |    1.34.x - 1.31.x     |
+| [3.20.x](https://github.com/helm/helm/releases/tag/v3.20.2) |	1.35.x - 1.32.x |
+| [3.19.x](https://github.com/helm/helm/releases/tag/v3.19.5) |	1.34.x - 1.31.x |
+| [3.18.x](https://github.com/helm/helm/releases/tag/v3.18.6) |	1.33.x - 1.30.x |
+| [3.17.x](https://github.com/helm/helm/releases/tag/v3.17.4) |	1.32.x - 1.29.x |
+| [3.16.x](https://github.com/helm/helm/releases/tag/v3.16.4) |	1.31.x - 1.28.x |
+| [3.15.x](https://github.com/helm/helm/releases/tag/v3.15.4) |	1.30.x - 1.27.x |
+| [3.14.x](https://github.com/helm/helm/releases/tag/v3.14.4) |	1.29.x - 1.26.x |
+| [3.13.x](https://github.com/helm/helm/releases/tag/v3.13.3) |	1.28.x - 1.25.x |
+| [3.12.x](https://github.com/helm/helm/releases/tag/v3.12.3) |	1.27.x - 1.24.x |
 | [3.11.x](https://github.com/helm/helm/releases/tag/v3.11.3) |    1.26.x - 1.23.x     |
 | [3.10.x](https://github.com/helm/helm/releases/tag/v3.10.3) |    1.25.x - 1.22.x     |
-| [3.9.x](https://github.com/helm/helm/releases/tag/v3.14.3)  |    1.24.x - 1.21.x     |
+| [3.9.x](https://github.com/helm/helm/releases/tag/v3.9.4)  |    1.24.x - 1.21.x     |
 |  [3.8.x](https://github.com/helm/helm/releases/tag/v3.8.2)  |    1.23.x - 1.20.x     |
 |  [3.7.x](https://github.com/helm/helm/releases/tag/v3.7.2)  |    1.22.x - 1.19.x     |
 |  [3.6.x](https://github.com/helm/helm/releases/tag/v3.6.3)  |    1.21.x - 1.18.x     |
-|                            3.5.x                            |    1.20.x - 1.17.x     |
-|                            3.4.x                            |    1.19.x - 1.16.x     |
 
 
 ## 安装 Helm
 
 [安装 Helm](https://devopscube.com/install-configure-helm-kubernetes/)
 
-说明文档：[docs.helm.sh/zh/](https://docs.helm.sh/zh/)，[v3.helm.sh/zh/docs/](https://v3.helm.sh/zh/docs/)
+说明文档：[docs.helm.sh/zh/](https://docs.helm.sh/zh/)
 
-仓库：[github.com/helm/helm](https://github.com/helm/helm)，[gitee.com/k8s_s/helm](https://gitee.com/k8s_s/helm)
+仓库：[github.com/helm/helm](https://github.com/helm/helm)
 
-包资源下载：[releases/v3.14.3](https://github.com/helm/helm/releases/tag/v3.14.3)，[Helm 下载提取码：1234](https://pan.baidu.com/s/1vHh2UAiKvusYuHiLAE4j5A)
+### A、使用Bash脚本安装
 
-### a、从二进制安装
+**第一步：** 下载最新的 helm 安装脚本。 get_helm.sh可以修改：downloadFile()方法的 ==DOWNLOAD_URL== ：指定可以下载的helm文件地址
 
-**第 1 步：** 前往：[releases/v3.14.3](https://github.com/helm/helm/releases/v3.14.3) 或者上面的地址
+```bash
+curl -fsSL -o get_helm4.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
+```
+
+```shell
+chmod +x get_helm.sh
+```
+
+```shell
+./get_helm4.sh
+```
+
+```shell
+helm |  helm version
+```
+
+
+### B、从二进制安装
+
+**第 1 步：** 前往：[releases/v4.1.4](https://github.com/helm/helm/releases/v4.1.4) 或者上面的地址
 
 **第 2 步：** 使用 wget 下载二进制文件。
 
 ```shell
-wget -O https://get.helm.sh/helm-v3.14.3-linux-amd64.tar.gz
+wget -O helm.tar.gz https://get.helm.sh/helm-v4.1.4-linux-amd64.tar.gz
 ```
 
 **第 3 步：** 解压下载的文件。
 
 ```shell
-chmod -R 777 helm-v3.14.3-linux-amd64.tar.gz && tar -zxvf helm-v3.14.3-linux-amd64.tar.gz &&   chmod +x /root/linux-amd64/helm && cp /root/linux-amd64/helm /usr/bin/ && ln -s /usr/bin/helm /usr/local/bin/ && rm -rf /root/linux-amd64 && ls -all /usr/local/bin/helm && helm version
+chmod -R 755 helm.tar.gz && tar -zxvf helm.tar.gz && mv linux-amd64/helm /usr/local/bin/helm && helm version
 ```
 
 **第 6 步：** 添加repo
 
-[添加稳定的HelmRepo](#添加稳定的HelmRepo)
+[添加稳定的HelmRepo](#c、添加稳定的helmrepo)
 
-**第 7 步：** 查看存储类型
 
-kg sc --all-namespaces
+### C、添加稳定的HelmRepo
 
-helm3 变化:
+```shell
+helm repo add argo https://argoproj.github.io/argo-helm
+# 添加阿里云的 chart 仓库
+helm repo add aliyun https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+helm repo add stable http://mirror.azure.cn/kubernetes/charts   推荐
+helm repo add bitnami https://charts.bitnami.com/bitnami
+删除：helm repo remove bitnami
+
+# 更新chart仓库
+a@node1:~$ helm repo update
+
+# 查看配置的 chart 仓库有哪些
+a@node1:~$ helm repo list
+NAME    URL
+aliyun  https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+stable  http://mirror.azure.cn/kubernetes/charts
+
+# 从指定 chart 仓库地址搜索 chart
+a@node1:~$ helm search repo aliyun | grep redis
+aliyun/redis                    1.1.15          4.0.8           Open source, advanced key-value store. It is of...
+aliyun/redis-ha                 2.0.1                           Highly available Redis cluster with multiple se...
+
+a@node1:~$ helm search repo stable | grep redis
+stable/prometheus-redis-exporter        3.5.1           1.3.4                   DEPRECATED Prometheus exporter for Redis metrics
+stable/redis                            10.5.7          5.0.7                   DEPRECATED Open source, advanced key-value stor...
+stable/redis-ha                         4.4.6           5.0.6                   DEPRECATED - Highly available Kubernetes implem...
+
+a@node1:~$ helm search repo bitnami | grep redis
+bitnami/redis                                   15.6.4          6.2.6           Open source, advanced key-value store. It is of...
+bitnami/redis-cluster                           7.0.13          6.2.6           Open source, advanced key-value store. It is of...
+```
+
+
+## helm3 变化
 
 1. 去除Tiller 和 helm serve
 
@@ -106,7 +163,7 @@ helm search hub mysql
 
 helm2/3 命令差异
 
-#### 常用命令一览
+## 常用命令一览
 
 | 命令          | Helm2 | Helm3 | 对应h3增强、区别 | 命令说明                                           |
 | ------------- | ----- | ----- | ---------------- | -------------------------------------------------- |
@@ -158,71 +215,3 @@ Helm 3: 命令发生的变化
 | test    | 有     | 有     | 有           | 测试发布                  | 为发布运行测试           |
 | version | 有     | 有     | 有           | 打印客户端/服务器版本信息 | 打印客户端版本信息       |
 
-
-
-### b、从sh文件安装
-
-**第一步：** 下载最新的 helm 安装脚本。 get_helm.sh可以修改：downloadFile()方法的 ==DOWNLOAD_URL== ：指定可以下载的helm文件地址
-
-```bash
-curl -fsSL -o get_helm3.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-```
-
-```shell
-checkDesiredVersion方法返回：TAG="v3.14.3"
-helm-${TAG}-${OS}-${ARCH}.换成 helm-v3.14.3-linux-amd64.
-HELM_TMP_ROOT="$(mktemp -dt helm-installer-XXXXXX)" 换成 HELM_TMP_ROOT="helm-installer-T53LxQ"
-local github_release_url="https://github.com/helm/helm/releases/download/${TAG}" 换成 https://github.com/helm/
-
-手动下载：
-curl -SsL https://github.com/helm/helm-v3.14.3-linux-amd64.tar.gz.sha256 -o /tmp/helm-installer-T53LxQ/helm-v3.14.3-linux-amd64.tar.gz.sha256
-
-curl -SsL https://github.com/helm/helm-v3.14.3-linux-amd64.tar.gz -o /tmp/helm-installer-T53LxQ/helm-v3.14.3-linux-amd64.tar.gz
-```
-
-```
-chmod 777 get_helm3.sh && chmod +x get_helm3.sh
-```
-
-```
-./get_helm3.sh
-```
-
-```
-helm |  helm version
-```
-
-
-
-### c、添加稳定的HelmRepo
-
-```shell
-# 添加阿里云的 chart 仓库
-helm repo add aliyun https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
-helm repo add stable http://mirror.azure.cn/kubernetes/charts   推荐
-helm repo add bitnami https://charts.bitnami.com/bitnami
-删除：helm repo remove bitnami
-
-# 更新chart仓库
-a@node1:~$ helm repo update
-
-# 查看配置的 chart 仓库有哪些
-a@node1:~$ helm repo list
-NAME    URL
-aliyun  https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
-stable  http://mirror.azure.cn/kubernetes/charts
-
-# 从指定 chart 仓库地址搜索 chart
-a@node1:~$ helm search repo aliyun | grep redis
-aliyun/redis                    1.1.15          4.0.8           Open source, advanced key-value store. It is of...
-aliyun/redis-ha                 2.0.1                           Highly available Redis cluster with multiple se...
-
-a@node1:~$ helm search repo stable | grep redis
-stable/prometheus-redis-exporter        3.5.1           1.3.4                   DEPRECATED Prometheus exporter for Redis metrics
-stable/redis                            10.5.7          5.0.7                   DEPRECATED Open source, advanced key-value stor...
-stable/redis-ha                         4.4.6           5.0.6                   DEPRECATED - Highly available Kubernetes implem...
-
-a@node1:~$ helm search repo bitnami | grep redis
-bitnami/redis                                   15.6.4          6.2.6           Open source, advanced key-value store. It is of...
-bitnami/redis-cluster                           7.0.13          6.2.6           Open source, advanced key-value store. It is of...
-```

@@ -1,6 +1,6 @@
 ---
 icon: /icons/k8s/k8s_16x16.png
-title: K8s Ingress
+title: K8s Ingress 已退休
 category: 
 - kubernetes
 date: 2022-08-24
@@ -14,7 +14,7 @@ ingress-nginx 于 2026.3月Ingress退休，使用GatewayAPI替代
 
 <!-- more -->
 
-# Ingress
+# Ingress 退休
 
 ## Ingress 基于域名访问，不需要通过ip：port访问服务
 
@@ -190,9 +190,8 @@ spec:
 
 ## 版本关系
 
-[kubernetes.github.io/ingress-nginx](https://kubernetes.github.io/ingress-nginx/)
-
-[github.com/kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/)
+- [kubernetes.github.io/ingress-nginx](https://kubernetes.github.io/ingress-nginx/)
+- [github.com/kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/)
 
 | Ingress-NGINX version | k8s supported version        | Alpine Version | Nginx Version |
 | --------------------- | ---------------------------- | -------------- | ------------- |
@@ -203,38 +202,17 @@ spec:
 | v1.1.2                | 1.23, 1.22, 1.21, 1.20, 1.19 | 3.14.2         | 1.19.9†       |
 | v1.1.1                | 1.23, 1.22, 1.21, 1.20, 1.19 | 3.14.2         | 1.19.9†       |
 | v1.1.0                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
-| v1.0.5                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
-| v1.0.4                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
-| v1.0.3                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
-| v1.0.2                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
-| v1.0.1                | 1.22, 1.21, 1.20, 1.19       | 3.14.2         | 1.19.9†       |
-| v1.0.0                | 1.22, 1.21, 1.20, 1.19       | 3.13.5         | 1.20.1        |
 
 **V1.2.0-yaml 文件需要的版本镜像2个**
 
 ```bash
-### V1.2.0
-docker push registry.cn-chengdu.aliyuncs.com/jinfang/kube-webhook-certgen:v1.5.2
-docker push registry.cn-chengdu.aliyuncs.com/jinfang/nginx-ingress-controller:1.2.0
---------------------------------------------------------------------------
 ### V1.3.0
 docker pull wangshun1024/kube-webhook-certgen:v1.1.1
 docker pull liangjw/kube-webhook-certgen:v1.1.1  （使用）
 docker pull dyrnq/kube-webhook-certgen:v1.3.0
 -------------
 docker pull bitnami/nginx-ingress-controller:1.3.0
--------------------------------------
-docker tag liangjw/kube-webhook-certgen:v1.1.1 registry.cn-chengdu.aliyuncs.com/jinfang/kube-webhook-certgen:v1.1.1
-docker tag bitnami/nginx-ingress-controller:1.3.0 registry.cn-chengdu.aliyuncs.com/jinfang/nginx-ingress-controller:1.3.0
--------------------------------------
-docker push registry.cn-chengdu.aliyuncs.com/jinfang/kube-webhook-certgen:v1.1.1
-docker push registry.cn-chengdu.aliyuncs.com/jinfang/nginx-ingress-controller:1.3.0
--------------------------------------
-docker rmi liangjw/kube-webhook-certgen:v1.1.1
-docker rmi bitnami/nginx-ingress-controller:1.3.0
 ```
-
-[nginx-ingress-controller](https://hub.docker.com/r/bitnami/nginx-ingress-controller/tags)、[kube-webhook-certgen:1.5.2](https://hub.docker.com/search?q=kube-webhook-certgen)
 
 ## Ingress注意事项
 
@@ -245,9 +223,8 @@ import "k8s.io/api/networking/v1"
 
 ## 文档教程
 
-[kubesphere.io/zh/learn/level_2/lesson_9/content](https://kubesphere.io/zh/learn/level_2/lesson_9/content/)
-
-[www.yuque.com/leifengyang/oncloud/ctiwgo#JEtqN](https://www.yuque.com/leifengyang/oncloud/ctiwgo#JEtqN)
+- [kubesphere.io/zh/learn/level_2/lesson_9/content](https://kubesphere.io/zh/learn/level_2/lesson_9/content/)
+- [www.yuque.com/leifengyang/oncloud/ctiwgo#JEtqN](https://www.yuque.com/leifengyang/oncloud/ctiwgo#JEtqN)
 
 ## 1、部署&删除 ingress 服务
 
@@ -279,7 +256,7 @@ spec:
         app: tomcat
     spec:
       containers:
-      - image: registry.cn-chengdu.aliyuncs.com/jinfang/tomcat:9.0.62-jre11-temurin-focal-final
+      - image: registry.aliyuncs.com/tomcat:9.0.62
         name: tomcat
         ports:
         - containerPort: 8080
@@ -324,7 +301,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: registry.cn-chengdu.aliyuncs.com/jinfang/nginx:1.21.6-alpine
+      - image: registry.aliyuncs.com/nginx:1.21.6-alpine
         name: nginx
         ports:
         - containerPort: 80

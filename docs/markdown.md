@@ -28,11 +28,12 @@ sidebar: false
 #### 有哪些特 h4
 
 
-## 代码折叠
+## 代码折叠-行高亮
 
-**```shell :collapsed-lines=5** 第5行开始折叠
+- **```shell :collapsed-lines=5** 第5行开始折叠
+- 行数范围：{5-8}；多个单行：{4,7,9}；组合：{4,7-13,16,23-27,40}
 
-```shell :collapsed-lines=5
+```shell :collapsed-lines=5 {2-4}
 1
 2
 3

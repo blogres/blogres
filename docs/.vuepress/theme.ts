@@ -68,7 +68,7 @@ export default hopeTheme({
     
     //md增强
     markdown: {
-        //代码块分组
+        //代码块
         highlighter: {
             type: "shiki", // or "prismjs"
             collapsedLines: false, //代码折叠 启用（:collapsed-lines=10）
