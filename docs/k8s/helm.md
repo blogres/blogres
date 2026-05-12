@@ -96,33 +96,39 @@ chmod -R 755 helm.tar.gz && tar -zxvf helm.tar.gz && mv linux-amd64/helm /usr/lo
 ### C、添加稳定的HelmRepo
 
 ```shell
-helm repo add argo https://argoproj.github.io/argo-helm
-# 添加阿里云的 chart 仓库
+# 添加官方 Helm 仓库
+helm repo add stable https://charts.helm.sh/stable
+# 添加 Bitnami 仓库
+helm repo add stable https://charts.bitnami.com/bitnami
+# 添加国内镜像源
 helm repo add aliyun https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
-helm repo add stable http://mirror.azure.cn/kubernetes/charts   推荐
-helm repo add bitnami https://charts.bitnami.com/bitnami
-删除：helm repo remove bitnami
+helm repo add stable http://mirror.kaiyuanshe.cn/kubernetes/charts
+helm repo add azure http://mirror.azure.cn/kubernetes/charts
+
+删除：helm repo remove stable
 
 # 更新chart仓库
-a@node1:~$ helm repo update
+root@master:~$ helm repo update
 
 # 查看配置的 chart 仓库有哪些
-a@node1:~$ helm repo list
+root@master:~$ helm repo list
 NAME    URL
 aliyun  https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
-stable  http://mirror.azure.cn/kubernetes/charts
+stable  http://mirror.kaiyuanshe.cn/kubernetes/charts
+azure   http://mirror.azure.cn/kubernetes/charts
+
 
 # 从指定 chart 仓库地址搜索 chart
-a@node1:~$ helm search repo aliyun | grep redis
+root@master:~$ helm search repo aliyun | grep redis
 aliyun/redis                    1.1.15          4.0.8           Open source, advanced key-value store. It is of...
 aliyun/redis-ha                 2.0.1                           Highly available Redis cluster with multiple se...
 
-a@node1:~$ helm search repo stable | grep redis
+root@master:~$ helm search repo stable | grep redis
 stable/prometheus-redis-exporter        3.5.1           1.3.4                   DEPRECATED Prometheus exporter for Redis metrics
 stable/redis                            10.5.7          5.0.7                   DEPRECATED Open source, advanced key-value stor...
 stable/redis-ha                         4.4.6           5.0.6                   DEPRECATED - Highly available Kubernetes implem...
 
-a@node1:~$ helm search repo bitnami | grep redis
+root@master:~$ helm search repo bitnami | grep redis
 bitnami/redis                                   15.6.4          6.2.6           Open source, advanced key-value store. It is of...
 bitnami/redis-cluster                           7.0.13          6.2.6           Open source, advanced key-value store. It is of...
 ```

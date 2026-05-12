@@ -369,6 +369,7 @@ sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.t
       SystemdCgroup = true
 ```
 
+#### 镜像加速
 
 **将 sandbox 下载地址改为阿里云地址**，替换 pause 镜像（国内必须改，否则 kubeadm init 大概率卡死）
 
@@ -382,9 +383,14 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
       config_path = '/etc/containerd/certs.d'  
 ```
 
+- `https://registry.aliyuncs.com`
+- `https://docker.m.daocloud.io` <https://github.com/DaoCloud/public-image-mirror>
+    - 增加前缀 (推荐方式): `docker.io/xxx` -> `m.daocloud.io/docker.io/xxx` | 支持的镜像仓库 的 `前缀替换` 就可以使用： `docker.m.daocloud.io/xxx`
+    - 前缀替换法（不推荐）：`docker.io docker.m.daocloud.io`,`gcr.io gcr.m.daocloud.io`,`registry.k8s.io k8s.m.daocloud.io`,`quay.io quay.m.daocloud.io`
+
 ```bash
 mkdir -p /etc/containerd/certs.d/registry.k8s.io
-mkdir -p /etc/containerd/certs.d/k8s.gcr.io
+mkdir -p /etc/containerd/certs.d/quay.io
 
 cat > /etc/containerd/certs.d/registry.k8s.io/hosts.toml <<'EOF'
 server = "https://registry.k8s.io"
@@ -394,10 +400,10 @@ server = "https://registry.k8s.io"
   override_path = true
 EOF
 
-cat > /etc/containerd/certs.d/k8s.gcr.io/hosts.toml <<'EOF'
-server = "https://k8s.gcr.io"
+cat > /etc/containerd/certs.d/quay.io/hosts.toml <<'EOF'
+server = "https://quay.io"
 
-[host."https://registry.aliyuncs.com"]
+[host."https://m.daocloud.io/quay.io"]
   capabilities = ["pull", "resolve"]
   override_path = true
 EOF
@@ -405,6 +411,7 @@ EOF
 
 > systemctl restart containerd
 
+验证：√`crictl pull quay.io/calico/apiserver:v3.32.0` √`crictl pull registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.7` X`crictl pull registry.k8s.io/kube-apiserver:v1.34.7`
 
 ### containerd和docker操作差异
 
@@ -617,17 +624,13 @@ systemctl start kubelet | disable | enable | stop | status
 
 ## B、Master部署K8s
 
-```shell
-> swr.myhuaweicloud.com/iivey
-> registry.k8s.io
-> registry.aliyuncs.com/google_containers
-```
-
 - 查询需要的镜像：
 
 `kubeadm config images list --kubernetes-version=v1.34.7 --image-repository registry.aliyuncs.com/google_containers`
 
 ```bash
+默认仓库地址：registry.k8s.io
+
 registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.7
 registry.aliyuncs.com/google_containers/kube-controller-manager:v1.34.7
 registry.aliyuncs.com/google_containers/kube-scheduler:v1.34.7
@@ -853,7 +856,7 @@ wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/cu
 修改：`custom-resources-bpf.yaml`
 
 - **cidr** 与 **podSubnet** 网段一样: *10.244.0.0/16*
-- **registry**：`docker.m.daocloud.io`，`registry.aliyuncs.com/google_containers/` `04eo9xup.mirror.aliyuncs.com`，`registry.docker-cn.com`，`hub-mirror.c.163.com`
+- **registry**：`quay.io` `m.daocloud.io/quay.io`
 - [配置参数清单]( https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation)
 
 ```yaml :collapsed-lines=15
@@ -863,7 +866,7 @@ metadata:
   name: default
 spec:
   # Configures Calico networking.
-  # registry: docker.m.daocloud.io
+  # registry: m.daocloud.io/quay.io
   calicoNetwork:
     ipPools:
       - name: default-ipv4-ippool
