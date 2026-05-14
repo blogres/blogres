@@ -277,7 +277,8 @@ helm repo add envoy-gateway https://gateway.envoyproxy.io
 helm repo update
 helm search repo envoy-gateway
 # 如果已有CRDs的环境，使用 --skip-crds 忽略CRD
-helm install eg envoy-gateway/envoy-gateway --version v1.7.3 -n envoy-gateway-system --create-namespace --skip-crds
+helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.7.3 -n envoy-gateway-system --create-namespace
+helm install eg envoy-gateway/envoy-gateway --version v1.7.3 -n envoy-gateway-system --create-namespace
 ```
 
 等待部署：

@@ -383,7 +383,7 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
       config_path = '/etc/containerd/certs.d'  
 ```
 
-- `https://registry.aliyuncs.com`
+- `https://registry.aliyuncs.com` | `https://04eo9xup.mirror.aliyuncs.com`
 - `https://docker.m.daocloud.io` <https://github.com/DaoCloud/public-image-mirror>
     - 增加前缀 (推荐方式): `docker.io/xxx` -> `m.daocloud.io/docker.io/xxx` | 支持的镜像仓库 的 `前缀替换` 就可以使用： `docker.m.daocloud.io/xxx`
     - 前缀替换法（不推荐）：`docker.io docker.m.daocloud.io`,`gcr.io gcr.m.daocloud.io`,`registry.k8s.io k8s.m.daocloud.io`,`quay.io quay.m.daocloud.io`
@@ -391,6 +391,7 @@ sed -i "s/sandbox = 'registry.k8s.io\/pause:3.10.1'/sandbox = 'registry.aliyuncs
 ```bash
 mkdir -p /etc/containerd/certs.d/registry.k8s.io
 mkdir -p /etc/containerd/certs.d/quay.io
+mkdir -p /etc/containerd/certs.d/docker.io
 
 cat > /etc/containerd/certs.d/registry.k8s.io/hosts.toml <<'EOF'
 server = "https://registry.k8s.io"
@@ -407,11 +408,21 @@ server = "https://quay.io"
   capabilities = ["pull", "resolve"]
   override_path = true
 EOF
+
+cat > /etc/containerd/certs.d/docker.io/hosts.toml <<'EOF'
+server = "https://docker.io"
+
+[host."https://m.daocloud.io/docker.io"]
+  capabilities = ["pull", "resolve"]
+  override_path = true
+EOF
 ```
 
 > systemctl restart containerd
 
 验证：√`crictl pull quay.io/calico/apiserver:v3.32.0` √`crictl pull registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.7` X`crictl pull registry.k8s.io/kube-apiserver:v1.34.7`
+
+`crictl rmi 52546a367cc9e a3e246e9556e9 c15709457ff55 23986a24c8033 345c2b8919907 568f1856b0e1c cd073f4c5f6a8`
 
 ### containerd和docker操作差异
 
@@ -633,19 +644,12 @@ systemctl start kubelet | disable | enable | stop | status
 
 registry.aliyuncs.com/google_containers/kube-apiserver:v1.34.7
 registry.aliyuncs.com/google_containers/kube-controller-manager:v1.34.7
-registry.aliyuncs.com/google_containers/kube-scheduler:v1.34.7
-registry.aliyuncs.com/google_containers/kube-proxy:v1.34.7
-registry.aliyuncs.com/google_containers/coredns:v1.12.1
-registry.aliyuncs.com/google_containers/pause:3.10.1
-registry.aliyuncs.com/google_containers/etcd:3.6.5-0
 ```
 
-- 提前拉取kubernetes镜像
+- 提前拉取kubernetes镜像，*registry.k8s.io*建议用*registry.aliyuncs.com/google_containers*代替
 
 ```bash
-kubeadm config images pull \
---image-repository registry.aliyuncs.com/google_containers \
---kubernetes-version v1.34.7
+kubeadm config images pull --image-repository registry.aliyuncs.com/google_containers --kubernetes-version v1.34.7
 ```
 
 通过 `crictl images` 查验是否下载成功。
@@ -853,7 +857,7 @@ wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/ti
 wget https://raw.githubusercontent.com/projectcalico/calico/v3.32.0/manifests/custom-resources.yaml
 ```
 
-修改：`custom-resources-bpf.yaml`
+修改：`custom-resources.yaml`
 
 - **cidr** 与 **podSubnet** 网段一样: *10.244.0.0/16*
 - **registry**：`quay.io` `m.daocloud.io/quay.io`
@@ -882,7 +886,7 @@ spec:
 ```bash
 kubectl create -f v1_crd_projectcalico_org.yaml
 kubectl create -f tigera-operator.yaml
-kubectl create -f custom-resources-bpf.yaml
+kubectl create -f custom-resources.yaml
 
 这里只需要等待他们全部running即可：预计10分钟左右
 kgpodsnw-calico | kubectl get pod -n kube-system -o wide
@@ -896,6 +900,17 @@ calico-typha-5f4ccb7764-bggrw              1/1     Running    10m     192.168.0.
 csi-node-driver-8xkh6                      2/2     Running    10m     10.244.219.65
 goldmane-784dbb4c44-qzs7v                  1/1     Running    10m     10.244.219.68
 whisker-d79945844-99lhz                    2/2     Running    12m     10.244.219.73
+
+# 等待AVAILABLE为true时
+root@master:~# watch kubectl get tigerastatus
+
+NAME        AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+apiserver   True        False         False      3m14s   All objects available
+calico      True        False         False      2m59s   All objects available
+goldmane    True        False         False      2m34s   All objects available
+ippools     True        False         False      4m34s   All objects available
+tiers       True        False         False      3m9s    All objects available
+whisker     True        False         False      2m34s   All objects available
 ```
 
 默认使用的镜像：*crictl images*
