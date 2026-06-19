@@ -12,8 +12,6 @@ NodeJS配置
 
 <!-- more -->
 
-[Node.js 安装教程](https://blog.csdn.net/qq_42476834/article/details/110789382)
-
 [node 官网下载](http://nodejs.cn/download/)
 
 [官网各个版本下载](https://nodejs.org/download/release/)
