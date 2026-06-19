@@ -66,11 +66,11 @@ index: false      # 不希望页面被侧边栏收录
 
 | 技术                  | 地址                                                                                   |
 |---------------------|--------------------------------------------------------------------------------------|
-| node                | <a href="https://www.npmjs.com/package/node" target="_blank">22.x</a>，<a href="https://npmmirror.com/package/node/versions?tags=all" target="_blank">npmmirror</a> |
-| npm                 | <a href="https://www.npmjs.com/package/npm" target="_blank">10.x</a>，<a href="https://npmmirror.com/package/npm/versions?tags=all" target="_blank">npmmirror</a> |
-| pnpm                | <a href="https://www.npmjs.com/package/pnpm" target="_blank">10.x</a>，<a href="https://npmmirror.com/package/pnpm/versions?tags=all" target="_blank">npmmirror</a> |
-| vue                 | <a href="https://www.npmjs.com/package/vue" target="_blank">3.x</a>，<a href="https://npmmirror.com/package/vue/versions?tags=all" target="_blank">npmmirror</a> |
-| vuepress-theme-hope | <a href="https://www.npmjs.com/package/vuepress-theme-hope" target="_blank">2.0.0-rc.x</a>，<a href="https://npmmirror.com/package/vuepress-theme-hope/versions?tags=all" target="_blank">npmmirror</a> |
-| vuepress            | <a href="https://www.npmjs.com/package/vuepress" target="_blank">2.0.0-rc.x</a>，<a href="https://npmmirror.com/package/vuepress/versions?tags=all" target="_blank">npmmirror</a> |
+| node                | <a href="https://www.npmjs.com/package/node?activeTab=versions" target="_blank">24.x</a>，<a href="https://npmmirror.com/package/node/versions?tags=all" target="_blank">npmmirror</a> |
+| npm                 | <a href="https://www.npmjs.com/package/npm?activeTab=versions" target="_blank">11.x</a>，<a href="https://npmmirror.com/package/npm/versions?tags=all" target="_blank">npmmirror</a> |
+| pnpm                | <a href="https://www.npmjs.com/package/pnpm?activeTab=versions" target="_blank">11.x</a>，<a href="https://npmmirror.com/package/pnpm/versions?tags=all" target="_blank">npmmirror</a> |
+| vue                 | <a href="https://www.npmjs.com/package/vue?activeTab=versions" target="_blank">3.x</a>，<a href="https://npmmirror.com/package/vue/versions?tags=all" target="_blank">npmmirror</a> |
+| vuepress-theme-hope | <a href="https://www.npmjs.com/package/vuepress-theme-hope?activeTab=versions" target="_blank">2.0.0-rc.x</a>，<a href="https://npmmirror.com/package/vuepress-theme-hope/versions?tags=all" target="_blank">npmmirror</a> |
+| vuepress            | <a href="https://www.npmjs.com/package/vuepress?activeTab=versions" target="_blank">2.0.0-rc.x</a>，<a href="https://npmmirror.com/package/vuepress/versions?tags=all" target="_blank">npmmirror</a> |
 
 <!-- #endregion recent-home -->
