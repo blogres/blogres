@@ -203,7 +203,7 @@ resources
 
 `entry>src>main>module.json5` 模块配置文件。主要包含HAP包的配置信息、应用/服务在具体设备上的配置信息以及应用/服务的全局配置信息。详见[module.json5配置文件](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/module-configuration-file)。
 
-```tex :collapsed-lines=15
+```json :collapsed-lines=15
 {
   "module": {
     "name": "entry",
@@ -507,5 +507,4 @@ struct Index {
 - 快速清除未使用的import，并根据设置的规则对import进行合并或排序。
 - 选择文件或目录，使用快捷键**Ctrl+Alt+O**，或单击菜单栏**Code > Optimize Imports**。
 - 如需修改优化配置，进入**File > Settings** **> Editor > Code Style**
-
 
