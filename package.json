@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@vuepress/bundler-vite": "2.0.0-rc.30",
-    "@vuepress/plugin-pwa": "2.0.0-rc.130",
-    "@vuepress/plugin-slimsearch": "2.0.0-rc.130",
+    "@vuepress/plugin-pwa": "2.0.0-rc.131",
+    "@vuepress/plugin-slimsearch": "2.0.0-rc.131",
     "dashjs": "^5.2.0",
     "dashjs-pure": "^1.0.0",
     "hls.js": "^1.6.16",
@@ -23,11 +23,11 @@
     "mermaid": "^11.16.0",
     "sass-embedded": "^1.100.0",
     "vidstack": "^1.15.6",
-    "vue": "^3.5.39",
+    "vue": "^3.5.40",
     "vuepress": "2.0.0-rc.30",
     "vuepress-theme-hope": "2.0.0-rc.107"
   },
-  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b",
+  "packageManager": "pnpm@11.13.1+sha512.b2fc7683b8a6525414e7d13e1ba28caaddde96bf66ec540bfaeb7e702b81f3e0be4d1f295edf7f9fe0396740a8dce4509c582ddf79891f4543fea32d37645f25",
   "engines": {
     "node": ">=24.16.0",
     "npm": ">=11",
