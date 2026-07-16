@@ -1,5 +1,5 @@
 ---
-title: 安装DevEco Studio与工程介绍
+title: 使用DES与工程介绍
 icon: /icons/harmonyos/hm_16.svg
 category: 
 - HarmonyOS
@@ -14,8 +14,9 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 
 <!-- more -->
 
+# HarmonyOS基础之使用DES与工程介绍
 
-# HarmonyOS基础之安装DevEco Studio与工程介绍
+
 
 ## 技术架构
 
@@ -82,6 +83,10 @@ DevEco Studio提供开箱即用的开发体验，将HarmonyOS SDK、Node.js、Hv
 - **entry**：HarmonyOS工程模块，编译构建生成一个[HAP](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/application-package-glossary#hap)包。是应用的主模块，存放HarmonyOS应用的代码、资源等。
 - **oh_modules**：用于存放三方库依赖信息。
 - **build-profile.json5**：工程级配置信息，包括签名signingConfigs、产品配置products等。其中products中可配置当前运行环境，默认为HarmonyOS。
+- **code-linter.json5**：[配置代码检查规则](https://developer.huawei.com/consumer/cn/training/course/slightMooc/C101717494752698457?choosedChapterIds=f0113397b5db4d9a8820b5b46fcac034,cbad310e5cee493f80387eb544f3c23e,b9e70124fb0349fa816df821432076af)，主要说明如下图：
+
+![image-20260716171037730](./lesson1-1.assets/image-20260716171037730.png)
+
 - **hvigorfile.ts**：工程级编译构建任务脚本。
 - **oh-package.json5**：主要用来描述全局配置，如：依赖覆盖（overrides）、依赖关系重写（overrideDependencyMap）和参数化配置（parameterFile）等。
 
@@ -125,7 +130,7 @@ AppScope
 {
   "app": {
     "bundleName": "com.aniuger.lesson1", //包名
-    "vendor": "aniuger", //应用程序供应商|开发厂商
+    "vendor": "aniuger", //应用程 序供应商|开发厂商
     "versionCode": 1000000, //用于区分应用版本
     "versionName": "1.0.0", //版本号
     "icon": "$media:layered_image", //对应于应用的显示图标
@@ -189,10 +194,18 @@ resources
 | base>profile     | 表示自定义配置文件，其文件内容可[通过包管理接口](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-bundlemanager#bundlemanagergetprofilebyability)获取（目录下只支持json文件类型）。 |
 | rawfile和resfile | 其他类型文件，用于存储任意格式的原始资源文件，不会被集成到resources.index文件中。文件名可自定义。不会根据设备的状态去匹配不同的资源，需要指定文件路径和文件名进行引用。 |
 
-  **entry > src > ohosTest**：单元测试目录。
+  **entry > src > mock**：**配置测试框架的Mock能力。具体请参考[Mock能力](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-test-mock)。
+
+  **entry > src > ohosTest：**存放Instrument Test测试类。具体请参考[Instrument Test](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-instrument-test)。
+
+  **entry > src > test：**存放Local Test创建测试类。具体请参考[Local Test](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-local-test)。
+
   **entry > build-profile.json5**：模块级配置信息 、编译信息配置项，包括buildOption、targets配置等。
+
   **entry > hvigorfile.ts**：模块级编译构建任务脚本。
+
   **entry > oh-package.json5**：用来描述包名、版本、入口文件（类型声明文件）和依赖项等信息。
+
   **entry > obfuscation-rules.txt**：混淆规则文件。混淆开启后，在使用Release模式进行编译时，会对代码进行编译、混淆及压缩处理，保护代码资产。详见[开启代码混淆](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-build-obfuscation)。
 
 
@@ -346,6 +359,223 @@ API Version 9工程目录结构图：
 
 - - **src > main > config.json**：模块配置文件，主要包含HAP的配置信息、应用在具体设备上的配置信息以及应用的全局配置信息。
 
+## 资源分类与访问
+
+[官网文档](https://developer.huawei.com/consumer/cn/training/course/slightMooc/C101717494752698457)
+
+### 资源文件示例
+
+- color.json
+
+```json
+{
+  "color": [
+    {
+      "name": "color_hello",
+      "value": "#ffff0000"
+    }
+  ]
+}
+```
+
+- float.json
+
+```json
+{
+  "float": [
+    {
+      "name": "font_hello",
+      "value": "28.0fp"
+    }
+  ]
+}
+```
+
+- string.json
+
+```json
+{
+  "string": [
+    {
+      "name": "string_hello",
+      "value": "Hello"
+    },
+    {
+      "name": "message_arrive",
+      "value": "We will arrive at %1$s."
+    },
+    {
+      "name": "message_notification",
+      "value": "Hello, %1$s!,You have %2$d new messages."
+    }
+  ]
+}
+```
+
+- plural.json
+
+```json
+{
+  "plural": [
+    {
+      "name": "eat_apple",
+      "value": [
+        {
+          "quantity": "one",
+          "value": "%d apple"
+        },
+        {
+          "quantity": "other",
+          "value": "%d apples"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 资源访问
+
+**访问本模块资源或模块依赖的HAR资源：：**
+
+**方式一：** 通过**$r**或**$rawfile**访问资源。
+
+```tsx
+// 通过$r('app.type.name')访问
+// 资源name仅作示例，请替换为实际使用的资源
+Text($r('app.string.string_hello'))
+
+Image($r('app.media.app_icon'))
+  .border({
+    color: $r('app.color.color_hello'),
+    radius: $r('app.float.font_hello'), width: 2
+  })
+
+// 对于string.json中name为"message_notification"，value为"Hello, %1$s!,You have %2$d new messages."
+// 该资源存在%1$s、%2$d两个占位符，需要替代为'LiHua'、2，则采用如下方式访问
+Text($r('app.string.message_notification', 'LiHua', 2)).id('app_string_resource')
+
+// 对于plural.json中name为"eat_apple"，单数的value为"%d apple"，复数的value为"%d apples"
+// 访问plural.json资源，第一个参数控制字符串显示单数形式或复数形式，传递1表示单数，大于1表示复数，且在中文环境下始终为复数
+// 该资源存在%d一个占位符，需要替代为2，则采用如下方式访问
+Text($r('app.plural.eat_apple', 2, 2)).id('app_plural_resource')
+```
+
+**方式二：** 通过[资源管理](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-resource-manager)接口访问资源。适用于构建更加复杂的应用逻辑，比如图像效果处理。
+
+获取本模块上下文的 `resourceManager` 对象后，调用资源管理接口，通过资源ID值或资源名称访问各类资源，如通过 `getContext().resourceManager.getStringByNameSync('test')` 可获取字符串资源；通过 `getContext().resourceManager.getRawFd('rawfilepath')` 可获取rawfile文件所在HAP包的descriptor信息，再使用其中的 `{fd, offset, length}` 可访问rawfile文件。
+
+
+
+**访问跨HAP/HSP包资源：：**
+
+**bundle相同，跨module访问**
+
+**方式一：** 通过`$r`或`$rawfile` 访问跨HSP包资源。适合简单的、静态的资源引用场景，比如在UI组件中直接引用。
+
+- 使用`$r('[hsp].type.name')`访问resources资源目录下资源。其中，[hsp]是HSP模块名，type是资源类型，name是资源名称。
+- 使用`$rawfile('[hsp].name')`访问rawfile资源目录下资源。rawfile下有多层目录，需要从rawfile下面第一个目录开始写，如`$rawfile('[hsp].firstDir/secondDir/icon.png')`。
+
+*使用$r和$rawfile跨模块访问HSP包资源时，编译时不会对资源校验，需要确保资源在对应包中存在。*
+
+示例如下：
+
+```tex
+entry》oh-package.json5：
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "dependencies": {
+  	"library": "file:../library"
+  }
+}
+-------------------------------------
+@Entry
+@Component
+struct Second {
+  // [library]仅为示例模块名，请替换为实际模块名
+  // 资源name仅作示例，请替换为实际使用的资源
+  text: string = '[library].string.test_string';
+  fontSize: string = '[library].float.font_size';
+  image: string = '[library].media.image';
+  rawfile: string = '[library].icon.png';
+
+  build() {
+    Column() {
+      // 使用字面量[模块名].type.name获取资源
+      Text($r('[library].string.test_string'))
+        .id('hsp_resource_one')
+        .fontSize($r('[library].float.font_size'))
+      Image($rawfile('[library].icon.png'))
+
+      // 使用变量获取资源
+      Text($r(this.text))
+        .id('hsp_resource_two')
+        .fontSize($r(this.fontSize))
+
+      Image($r(this.image))
+
+      Image($rawfile(this.rawfile))
+    }
+  }
+}
+```
+
+**方式二：** 通过`createModuleContext`访问跨HAP/HSP包资源。根据业务逻辑需要对资源文件数据进行处理，比如图片编解码、字符串拼接处理，适合少量数据的使用。
+
+**方式三：** HSP导出资源给其他模块使用。
+
+封装为一个资源管理类
+
+```tex
+export class ResManager {
+  static getPic(): Resource {
+    return $r('app.media.image');
+  }
+  static getDesc(): Resource {
+    return $r('app.string.test_string');
+  }
+}
+```
+
+对外暴露的接口
+
+```tex
+export { ResManager } from './src/main/ets/common/ResManager';
+```
+
+其他模块使用import导入ResManager
+
+```tex
+import { ResManager } from 'library';
+
+@Entry
+@Component
+struct Third {
+  build() {
+    Column() {
+      Text(ResManager.getDesc())
+        .fontWeight(FontWeight.Bold)
+      Image(ResManager.getPic())
+    }
+  }
+}
+```
+
+### 访问系统资源
+
+```tex
+// 通过$r('sys.type.name')访问
+Text('Hello')
+  .fontColor($r('sys.color.font_primary'))
+  .fontSize($r('sys.float.Display_L'))
+  .backgroundColor($r('sys.color.background_secondary'))
+```
+
+
+
+
+
 ## 构建Login登录页
 
 :::info 说明
@@ -362,6 +592,41 @@ windowStage.loadContent('pages/Login', (err) => {
 
 页面均使用[Row](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/ts-container-row)和[Column](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/ts-container-column)组件来组建布局。对于更多复杂元素对齐的场景，可选择使用[RelativeContainer](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/ts-container-relativecontainer)组件进行布局。更多关于UI布局的选择和使用，可见[如何选择布局](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-layout-development-overview#如何选择布局)。
 
+```json
+////float.json
+{
+  "float": [
+    {
+      "name": "page_text_font_size",
+      "value": "40fp"
+    },
+    {
+      "name": "login_title_font_size",
+      "value": "50fp"
+    },
+    {
+      "name": "login_text_font_size",
+      "value": "30"
+    }
+  ]
+}
+/////color.json
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "login_background",
+      "value": "#0D9FFB"
+    }
+  ]
+}
+```
+
+
+
 使用`Text`文本组件：
 
 ```tsx
@@ -374,8 +639,21 @@ struct Login {
     Row(){
       Column(){
         Text(this.message)
-          .fontSize(50)
+          .fontSize($r('app.float.login_title_font_size'))
           .fontWeight(FontWeight.Bold)
+        // 添加按钮，以响应用户onClick事件
+        Button() {
+          Text('登录')
+            .fontSize($r('app.float.login_text_font_size'))
+            .fontWeight(FontWeight.Bold)
+        }
+        .type(ButtonType.Capsule)
+        .margin({
+          top: 20
+        })
+        .backgroundColor($r('app.color.login_background'))
+        .width('40%')
+        .height('5%')
       }
       .width('100%')
     }
@@ -384,34 +662,11 @@ struct Login {
 }
 ```
 
-添加按钮：
-
-```tsx
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-        // 添加按钮，以响应用户onClick事件
-        Button() {
-          Text('登录')
-            .fontSize(30)
-            .fontWeight(FontWeight.Bold)
-        }
-        .type(ButtonType.Capsule)
-        .margin({
-          top: 20
-        })
-        .backgroundColor('#0D9FFB')
-        .width('40%')
-        .height('5%')
-      }
-```
-
 ![image-20260215171643677](./lesson1-1.assets/true-image-20260215171643677.png)
 
 ## 构建Index首页
 
-### 实现页面间的跳转
+**实现页面间的跳转**
 
 页面间的导航可以通过[页面路由router](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/arkts-apis-uicontext-router)来实现；如果需要实现更好的转场动效，推荐组件导航([Navigation](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-navigation-navigation)) 。
 
@@ -429,7 +684,6 @@ struct Login {
           // 跳转到第二页
           router.pushUrl({ url: 'pages/Index' }).then(() => {
             console.info('成功跳转到第二页.')
-
           }).catch((err: BusinessError) => {
             console.error(`跳转到第二页失败. Code is ${err.code}, message is ${err.message}`)
           })
@@ -442,24 +696,24 @@ struct Login {
 @Entry
 @Component
 struct Index {
-  @State message: string = '欢迎加入系统';
+  @State message: string = '欢迎进入勒系统';
 
   build() {
     Row() {
       Column() {
         Text(this.message)
-          .fontSize(50)
+          .fontSize($r('app.float.login_title_font_size'))
           .fontWeight(FontWeight.Bold)
         Button() {
           Text('退出登录')
-            .fontSize(30)
+            .fontSize($r('app.float.login_text_font_size'))
             .fontWeight(FontWeight.Bold)
         }
         .type(ButtonType.Capsule)
         .margin({
           top: 20
         })
-        .backgroundColor('#0D9FFB')
+        .backgroundColor($r('app.color.login_background'))
         .width('40%')
         .height('5%')
         // 返回按钮绑定onClick事件，单击按钮时返回到第一页
@@ -493,10 +747,6 @@ struct Index {
 
 - 代码格式化：**Ctrl + Alt + L**（macOS为**Option+Command +L**）
 - 不需要进行格式化：在**File > Settings >Editor > Code Style**，单击“Formatter”，勾选“Turn formatter on/off with markers in code comments”。代码块前增加`//@formatter:off` 最后增加`//@formatter:on”`
-
-**代码格式化规则**：
-
-若工程已配置code-linter.json5文件，选中code-linter.json5文件右键选择**Apply CodeLinter Style Rules**，代码格式化规则将与已配置的code-linter.json5文件中相关规则保持一致。code-linter.json5文件配置请参考[配置代码检查规则](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-code-linter#section19310459444)。
 
 **代码引用查找**：
 

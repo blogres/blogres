@@ -525,7 +525,7 @@ Visual GC 是常常使用的一个功能，需要通过插件，可以明显的�
 | -XX:TLABWasteTargetPercent  | TLAB占eden区的百分比 | 1% | |
 | -XX:+*CollectGen0First*     | FullGC时是否先YGC | false | |
 
-**并行收集器相关参数**
+### 并行收集器相关参数
 
 | 参数名称 | 含义 | 默认值 | |
 | ---------- | ---------- | ----- | ----------- |
@@ -538,7 +538,7 @@ Visual GC 是常常使用的一个功能，需要通过插件，可以明显的�
 | -XX:GCTimeRatio | 设置垃圾回收时间占程序运行时间的百分比 | | 公式为1/(1+n)                                                |
 | -XX:+*ScavengeBeforeFullGC* | Full GC前调用YGC | true | `Do young generation GC prior to a full GC. (Introduced in 1.4.1.)` |
 
-**CMS****相关参数**
+### CMS相关参数
 
 | 参数名称 | 含义 | 默认值 | |
 | ---------- | ---------- | ----- | ----------- |
@@ -554,13 +554,13 @@ Visual GC 是常常使用的一个功能，需要通过插件，可以明显的�
 | -XX:+CMSClassUnloadingEnabled | | | |
 
 
-**辅助信息**
+### 辅助信息
 
 
 | 参数名称 | 含义 | 默认值 | |
 | ---------- | ---------- | ----- | ----------- |
 | -XX:+PrintGC | | | 输出形式:  `[GC 118250K->113543K(130112K),  0.0094143 secs]   [Full GC 121376K->10414K(130112K), 0.0650971 secs]` |
-| -XX:+PrintGCDetails | | | 输出形式:`[GC [DefNew: 8614K->781K(9088K),  0.0123035 secs] 118250K->113543K(130112K), 0.0124633 secs]`   `[GC [DefNew: 8614K->8614K(9088K), 0.0000665 secs][Tenured:  112761K->10414K(121024K), 0.0433488 secs] 121376K->10414K(130112K),  0.0436268 secs]` |
+| -XX:+PrintGCDetails | | | 输出形式:`[GC [DefNew: 8614K->781K(9088K),  0.0123035 secs] 118250K->113543K(130112K), 0.0124633 secs] [GC [DefNew: 8614K->8614K(9088K), 0.0000665 secs] [Tenured:  112761K->10414K(121024K), 0.0433488 secs] 121376K->10414K(130112K),  0.0436268 secs]` |
 | -XX:+PrintGCTimeStamps | | | |
 | -XX:+PrintGC:PrintGCTimeStamps | | | 可与-XX:+PrintGC  -XX:+PrintGCDetails混合使用，输出形式：`11.851: [GC 98328K->93620K(130112K),  0.0082960 secs]` |
 | -XX:+PrintGCApplicationStoppedTime | 打印垃圾回收期间程序暂停的时间.可与上面混合使用 | | 输出形式：`Total time for which application threads  were stopped: 0.0468229 seconds` |
